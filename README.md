@@ -27,7 +27,7 @@ $reporter = new NavOnlineInvoice\Reporter($config);
 
 ```
 
-Minta JSON fájlok: [userData.json](tests/testdata/userData.sample.md), [softwareData.json](tests/testdata/softwareData.md). JSON fájl helyett az értékeket tömbben is át lehet adni (lásd lent, Dokumentáció / Config osztály fejezet).
+Minta JSON fájlok: [userData.json](tests/testdata/userData.sample.json), [softwareData.json](tests/testdata/softwareData.json). JSON fájl helyett az értékeket tömbben is át lehet adni (lásd lent, Dokumentáció / Config osztály fejezet).
 
 ### Adószám ellenőrzése (`queryTaxpayer`)
 
