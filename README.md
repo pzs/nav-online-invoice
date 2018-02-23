@@ -27,6 +27,7 @@ $reporter = new NavOnlineInvoice\Reporter($config);
 
 ```
 
+Minta JSON fájlok: [userData.json](tests/testdata/userData.sample.md), [softwareData.json](tests/testdata/softwareData.md). JSON fájl helyett az értékeket tömbben is át lehet adni (lásd lent, Dokumentáció / Config osztály fejezet).
 
 ### Adószám ellenőrzése (`queryTaxpayer`)
 
@@ -220,7 +221,6 @@ Szükséges modulok:
 
 ## TODO
 
-- Composer csomag készítése
 - További tesztek írása, ami a NAV szerverét is meghívja teszt közben
 - Műveletek (queryTaxpayer, queryInvoiceStatus) manuális tesztelése, amint elérhető lesz az interfész a NAV szerverén
 - queryInvoiceData implementálása
