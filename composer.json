@@ -1,6 +1,6 @@
 {
     "name": "pzs/nav-online-invoice",
-    "description": "PHP Invoice Data Reporting interface to the Hungarian Tax Office (NAV)",
+    "description": "A PHP interface for Online Invoice Data Reporting of Hungarian Tax Office (NAV)",
     "license": "MIT",
     "autoload": {
         "psr-0" : {
