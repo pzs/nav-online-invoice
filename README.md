@@ -106,7 +106,7 @@ try {
 
 ### Számla (szakmai) XML validálása küldés nélkül
 
-Ha engedélyezzük a validációt az `InvoiceOperations` példányon, akkor az `add()` metódus hívásakor az átadott XML-ek validálva lesznek. (Hiba esetén `XsdValidationError` exception-t lesz dobja).
+Ha engedélyezzük a validációt az `InvoiceOperations` példányon, akkor az `add()` metódus hívásakor az átadott XML-ek validálva lesznek. (Hiba esetén `XsdValidationError` exception lesz dobja).
 
 
 ```php
@@ -136,7 +136,7 @@ try {
 - teszt környezetben: `https://api-test.onlineszamla.nav.gov.hu/invoiceService`
 - éles környezetben: `https://api.onlineszamla.nav.gov.hu/invoiceService`
 
-Konstruktorban a `$user` paraméter lehet egy JSON fájl neve, vagy egy array, mely a következő mezőket tartalmazza (NAV oldalán történő regisztrációkor kapott adatok):
+Konstruktorban a `$user` paraméter lehet egy JSON fájl neve, vagy egy array, mely a következő mezőket tartalmazza (NAV oldalán létrehozott technikai felhasználó adatai):
 - `login`
 - `password`
 - `taxNumber`
@@ -174,10 +174,10 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 
 - `__construct(Config $config)`
-- `manageInvoice(InvoiceOperations $invoiceOperations)`: A számla adatszolgáltatás beküldésére szolgáló operáció
-- `queryInvoiceData()`: A számla adatszolgáltatások lekérdezésére szolgáló operáció
+- `manageInvoice(InvoiceOperations $invoiceOperations)`: A számla adatszolgáltatás beküldésére szolgáló operáció. Visszatérési értékként a transactionId-t adja vissza string-ként.
+- `queryInvoiceData()`: A számla adatszolgáltatások lekérdezésére szolgáló operáció (:warning: Még nincs implementálva)
 - `queryInvoiceStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
-- `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló operáció
+- `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló operáció. Visszatérési éréke lehet `true`: valid adószám, `false`: invalid adószám
 - `tokenExchange()`: Token kérése manageInvoice művelethez (közvetlen használata nem szükséges, viszont lehet használni, mint teszt hívás). Visszatérési értékként a dekódolt tokent adja vissza string-ként.
 
 
@@ -232,3 +232,5 @@ Szükséges modulok:
 [MIT](http://opensource.org/licenses/MIT)
 
 Copyright (c) 2018 github.com/pzs
+
+https://github.com/pzs/nav-online-invoice
