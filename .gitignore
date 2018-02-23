@@ -1,0 +1,4 @@
+/.htaccess
+/tmp
+/navdocs
+/tests/testdata/userData.real.json
