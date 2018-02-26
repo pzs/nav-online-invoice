@@ -247,9 +247,8 @@ Szükséges modulok:
 
 ## TODO
 
+- Műveletek (queryTaxpayer, queryInvoiceStatus, queryInvoiceData) manuális tesztelése, amint elérhető lesz az interfész a NAV szerverén
 - További tesztek írása, ami a NAV szerverét is meghívja teszt közben
-- Műveletek (queryTaxpayer, queryInvoiceStatus) manuális tesztelése, amint elérhető lesz az interfész a NAV szerverén
-- Bizonyos hibák esetén automatikus újrapróbálkozás opcionálisan
 
 
 ## License
