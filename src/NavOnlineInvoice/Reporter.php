@@ -47,10 +47,17 @@ class Reporter {
      * A /queryInvoiceData a számla adatszolgáltatások lekérdezésére szolgáló operáció. A lekérdezés
      * történhet konkrét számla sorszámra, vagy lekérdezési paraméterek alapján.
      *
-     * @return SimpleXMLElement  $responseXml
+     * @param  String            $queryType     A queryType értéke lehet 'invoiceQuery' vagy 'queryParams'
+     *                                          függően attól, hogy konktér számla sorszámot, vagy általános
+     *                                          lekérdezési paramétereket adunk át.
+     * @param  Array             $queryData     A queryType-nak megfelelően összeállított lekérdezési adatok
+     * @return SimpleXMLElement  $responseXml   A teljes visszakapott XML, melyből a 'queryResults' elem releváns
      */
-    public function queryInvoiceData() {
-        throw new Exception("Nincs implementálva.");
+    public function queryInvoiceData($queryType, $queryData) {
+        $requestXml = new QueryInvoiceDataRequestXml($this->config, $queryType, $queryData);
+        $responseXml = $this->connector->post("/queryInvoiceStatus", $requestXml);
+
+        return $responseXml;
     }
 
 
