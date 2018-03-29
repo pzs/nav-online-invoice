@@ -952,7 +952,7 @@
 					<xs:documentation xml:lang="en">Sequential number of the original or modifiation invoice - section 169 (b) or section 170 (1) b) of the VAT law</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="invoiceCategory" type="InvoiceCategoryType" minOccurs="0">
+			<xs:element name="invoiceCategory" type="InvoiceCategoryType">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">A számla típusa</xs:documentation>
 					<xs:documentation xml:lang="en">Type of invoice</xs:documentation>

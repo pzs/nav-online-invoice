@@ -1,6 +1,6 @@
 # NAV Online Invoice reporter
 
-> A PHP interface for Online Invoice Data Reporting of Hungarian Tax Office (NAV)
+> A PHP interface for Online Invoice Data Reporting System of Hungarian Tax Office (NAV)
 
 _PHP interfész a NAV Online számla adatszolgáltatásához_
 
@@ -130,7 +130,7 @@ try {
 
 ### Számla (szakmai) XML validálása küldés nélkül
 
-Ha engedélyezzük a validációt az `InvoiceOperations` példányon, akkor az `add()` metódus hívásakor az átadott XML-ek validálva lesznek. (Hiba esetén `XsdValidationError` exception lesz dobja).
+Ha engedélyezzük a validációt az `InvoiceOperations` példányon, akkor az `add()` metódus hívásakor az átadott XML-ek validálva lesznek. (Hiba esetén `XsdValidationError` exception lesz dobva).
 
 
 ```php
