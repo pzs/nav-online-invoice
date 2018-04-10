@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Invoice xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.nav.gov.hu/OSA/1.0/data" xs:schemaLocation="http://schemas.nav.gov.hu/OSA/1.0/data invoiceData_20180110.xsd">
+<Invoice xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.nav.gov.hu/OSA/1.0/data" xs:schemaLocation="http://schemas.nav.gov.hu/OSA/1.0/data invoiceData_20180319.xsd">
 	<invoiceExchange>
 		<invoiceHead>
 			<supplierInfo>
@@ -42,17 +42,15 @@
 				</customerAddress>
 			</customerInfo>
 			<invoiceData>
-				<invoiceNumber>T20190003</invoiceNumber>
-				<invoiceCategory>AGGREGATE</invoiceCategory>
+				<invoiceNumber>2019/000345</invoiceNumber>
+				<invoiceCategory>NORMAL</invoiceCategory>
 				<invoiceIssueDate>2019-05-15</invoiceIssueDate>
-				<invoiceDeliveryDate>2019-05-15</invoiceDeliveryDate>
-				<invoiceDeliveryPeriodStart>2019-05-02</invoiceDeliveryPeriodStart>
-				<invoiceDeliveryPeriodEnd>2019-05-13</invoiceDeliveryPeriodEnd>
-				<currencyCode>HUF</currencyCode>
+				<invoiceDeliveryDate>2019-05-10</invoiceDeliveryDate>
+				<currencyCode>EUR</currencyCode>
+				<exchangeRate>310.00</exchangeRate>
 				<paymentMethod>TRANSFER</paymentMethod>
 				<paymentDate>2019-05-30</paymentDate>
 				<invoiceAppearance>PAPER</invoiceAppearance>
-				<!--aggregateInvoiceIndicator>true</aggregateInvoiceIndicator-->
 			</invoiceData>
 		</invoiceHead>
 		<invoiceLines>
@@ -67,24 +65,15 @@
 				<lineDescription>Hűtött házi sertés (fél)</lineDescription>
 				<quantity>1500.00</quantity>
 				<unitOfMeasure>kg</unitOfMeasure>
-				<unitPrice>400.00</unitPrice>
+				<unitPrice>2.00</unitPrice>
 				<lineAmountsNormal>
-					<lineNetAmount>600000.00</lineNetAmount>
+					<lineNetAmount>3000.00</lineNetAmount>
 					<lineVatRate>
 						<vatPercentage>0.05</vatPercentage>
 					</lineVatRate>
-					<lineVatAmount>30000.00</lineVatAmount>
-					<lineVatAmountHUF>30000.00</lineVatAmountHUF>
-					<lineGrossAmount>630000.00</lineGrossAmount>
+					<lineVatAmount>150.00</lineVatAmount>
+					<lineGrossAmountNormal>3150.00</lineGrossAmountNormal>
 				</lineAmountsNormal>
-				<aggregateInvoiceLineData>
-					<lineDeliveryDate>2019-05-02</lineDeliveryDate>
-				</aggregateInvoiceLineData>
-				<additionalLineData>
-					<dataName>X00001_SZSZ</dataName>
-					<dataDescription>Szállítólevél száma</dataDescription>
-					<dataValue>SZ20190001</dataValue>
-				</additionalLineData>
 			</line>
 			<line>
 				<lineNumber>2</lineNumber>
@@ -97,24 +86,16 @@
 				<lineDescription>Érlelt szalámi</lineDescription>
 				<quantity>1600.00</quantity>
 				<unitOfMeasure>kg</unitOfMeasure>
-				<unitPrice>3000.00</unitPrice>
+				<unitPrice>10.00</unitPrice>
 				<lineAmountsNormal>
-					<lineNetAmount>4800000.00</lineNetAmount>
+					<lineNetAmount>16000.00</lineNetAmount>
 					<lineVatRate>
 						<vatPercentage>0.27</vatPercentage>
 					</lineVatRate>
-					<lineVatAmount>1296000.00</lineVatAmount>
-					<lineGrossAmount>6096000.00</lineGrossAmount>
+					<lineVatAmount>4320.00</lineVatAmount>
+					<lineGrossAmountNormal>20320.00</lineGrossAmountNormal>
 				</lineAmountsNormal>
-				<aggregateInvoiceLineData>
-					<lineDeliveryDate>2019-05-08</lineDeliveryDate>
-				</aggregateInvoiceLineData>
-				<additionalLineData>
-					<dataName>X00001_SZSZ</dataName>
-					<dataDescription>Szállítólevél száma</dataDescription>
-					<dataValue>SZ20190002</dataValue>
-				</additionalLineData>
-			</line>
+			</line>						
 			<line>
 				<lineNumber>3</lineNumber>
 				<productCodes>
@@ -126,23 +107,15 @@
 				<lineDescription>Kenőmájas</lineDescription>
 				<quantity>40.00</quantity>
 				<unitOfMeasure>kg</unitOfMeasure>
-				<unitPrice>800.00</unitPrice>
+				<unitPrice>3.00</unitPrice>
 				<lineAmountsNormal>
-					<lineNetAmount>32000.00</lineNetAmount>
+					<lineNetAmount>120.00</lineNetAmount>
 					<lineVatRate>
-						<vatPercentage>0.05</vatPercentage>
+						<vatPercentage>0.27</vatPercentage>
 					</lineVatRate>
-					<lineVatAmount>8640.00</lineVatAmount>
-					<lineGrossAmount>40640.00</lineGrossAmount>
+					<lineVatAmount>32.40</lineVatAmount>
+					<lineGrossAmountNormal>152.40</lineGrossAmountNormal>
 				</lineAmountsNormal>
-				<aggregateInvoiceLineData>
-					<lineDeliveryDate>2019-05-13</lineDeliveryDate>
-				</aggregateInvoiceLineData>
-				<additionalLineData>
-					<dataName>X00001_SZSZ</dataName>
-					<dataDescription>Szállítólevél száma</dataDescription>
-					<dataValue>SZ20190003</dataValue>
-				</additionalLineData>
 			</line>
 		</invoiceLines>
 		<invoiceSummary>
@@ -151,25 +124,24 @@
 					<vatRate>
 						<vatPercentage>0.05</vatPercentage>
 					</vatRate>
-					<vatRateNetAmount>600000.00</vatRateNetAmount>
-					<vatRateVatAmount>30000.00</vatRateVatAmount>
-					<vatRateVatAmountHUF>30000.00</vatRateVatAmountHUF>
-					<vatRateGrossAmount>630000.00</vatRateGrossAmount>
+					<vatRateNetAmount>3000.00</vatRateNetAmount>
+					<vatRateVatAmount>150.00</vatRateVatAmount>
+					<vatRateVatAmountHUF>46500.00</vatRateVatAmountHUF>
+					<vatRateGrossAmount>3150.00</vatRateGrossAmount>
 				</summaryByVatRate>
 				<summaryByVatRate>
 					<vatRate>
 						<vatPercentage>0.27</vatPercentage>
 					</vatRate>
-					<vatRateNetAmount>4832000.00</vatRateNetAmount>
-					<vatRateVatAmount>1304640.00</vatRateVatAmount>
-					<vatRateVatAmountHUF>1304640.00</vatRateVatAmountHUF>
-					<vatRateGrossAmount>6136640.00</vatRateGrossAmount>
+					<vatRateNetAmount>16120.00</vatRateNetAmount>
+					<vatRateVatAmount>4352.40</vatRateVatAmount>
+					<vatRateVatAmountHUF>1349277.00</vatRateVatAmountHUF>
 				</summaryByVatRate>
-				<invoiceNetAmount>5432000.00</invoiceNetAmount>
-				<invoiceVatAmount>1334640.00</invoiceVatAmount>
-				<invoiceVatAmountHUF>1334640.00</invoiceVatAmountHUF>
+				<invoiceNetAmount>19120.00</invoiceNetAmount>
+				<invoiceVatAmount>4502.40</invoiceVatAmount>
+				<invoiceVatAmountHUF>1395744.00</invoiceVatAmountHUF>
 			</summaryNormal>
-			<invoiceGrossAmount>6766640.00</invoiceGrossAmount>
+			<invoiceGrossAmount>23622.40</invoiceGrossAmount>
 		</invoiceSummary>
 	</invoiceExchange>
 </Invoice>

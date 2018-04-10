@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 # Projekt: Magyar Online Számla Rendszer invoiceApi XML XSD séma
 # Author: NAV Informatikai Intézet
 
-# Version: v1.0 2018/01/11
+# Version: v1.0 2018/03/11
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.nav.gov.hu/OSA/1.0/api" xmlns:data="http://schemas.nav.gov.hu/OSA/1.0/data" targetNamespace="http://schemas.nav.gov.hu/OSA/1.0/api" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:import namespace="http://schemas.nav.gov.hu/OSA/1.0/data" schemaLocation="invoiceData.xsd"/>
@@ -265,6 +265,12 @@
 					<xs:documentation xml:lang="en">Online cash register exchange</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="OSZ">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">NAV online számlázó</xs:documentation>
+					<xs:documentation xml:lang="en">NTCA online invoicing</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TechnicalResultCodeType">
@@ -305,10 +311,16 @@
 					<xs:documentation xml:lang="en">Inserting technical user name</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="sourceType" type="SourceType">
+			<xs:element name="source" type="SourceType">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">Az adatszolgáltatás forrása</xs:documentation>
 					<xs:documentation xml:lang="en">Data exchange source</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="transactionId" type="EntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A számla tranzakció azonosítója, ha az gépi interfészen került beküldésre</xs:documentation>
+					<xs:documentation xml:lang="en">Transaction ID of the invoice if it was exchanged via M2M interface</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="userConfirmation" type="xs:boolean" default="false" minOccurs="0">
@@ -331,7 +343,7 @@
 					<xs:documentation xml:lang="en">Identifier of the request/response, unique with the taxnumber in every data exchange transaction</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="timestamp" type="xs:dateTime">
+			<xs:element name="timestamp" type="data:TimestampType">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">A kérés/válasz keletkezésének UTC ideje</xs:documentation>
 					<xs:documentation xml:lang="en">UTC time of the request/response</xs:documentation>
@@ -453,6 +465,12 @@
 					<xs:documentation xml:lang="en">Processing message</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="pointer" type="PointerType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Feldolgozási kurzor adatok</xs:documentation>
+					<xs:documentation xml:lang="en">Processing cursor data</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="GeneralErrorResponseType">
@@ -560,6 +578,12 @@
 					<xs:documentation xml:lang="en">Form of appearance of the invoice</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="source" type="SourceType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Az adatszolgáltatás forrása</xs:documentation>
+					<xs:documentation xml:lang="en">Data exchange source</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="invoiceDeliveryGreaterThan" type="xs:date" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">Számla teljesítési dátumának nagyobb mint paramétere</xs:documentation>
@@ -616,7 +640,7 @@
 			<xs:documentation xml:lang="en">Invoice query results</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="queryResult" type="InvoiceQueryResultType" minOccurs="0" maxOccurs="100">
+			<xs:element name="queryResult" type="InvoiceQueryResultType" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">Számla lekérdezési eredmény</xs:documentation>
 					<xs:documentation xml:lang="en">Invoice query result</xs:documentation>
@@ -642,7 +666,7 @@
 					<xs:documentation xml:lang="en">Invoice audit data</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="invoiceModificationReference" type="data:InvoiceReferenceType" minOccurs="0">
+			<xs:element name="invoiceReference" type="data:InvoiceReferenceType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">A módosítás hivatkozási adatai</xs:documentation>
 					<xs:documentation xml:lang="en">Modification reference data</xs:documentation>
@@ -692,6 +716,32 @@
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">Jelöli, ha a lekérdezett számla minden módosító számláját is vissza kell adni a válaszban</xs:documentation>
 					<xs:documentation xml:lang="en">Indicates if every modification of the queried invoice should be returned in the response</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PointerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Feldolgozási kurzor adatok</xs:documentation>
+			<xs:documentation xml:lang="en">Processing cursor data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="tag" type="data:SimpleText50NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Tag hivatkozás</xs:documentation>
+					<xs:documentation xml:lang="en">Tag reference</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="value" type="data:SimpleText1024NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Érték hivatkozás</xs:documentation>
+					<xs:documentation xml:lang="en">Value reference</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="line" type="data:LineNumberType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Sorhivatkozás</xs:documentation>
+					<xs:documentation xml:lang="en">Line reference</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -799,6 +849,94 @@
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">A számlázóprogram fejlesztőjének adószáma</xs:documentation>
 					<xs:documentation xml:lang="en">Tax number of the billing software's developer</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaxpayerAddressType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Az adózó címadatai</xs:documentation>
+			<xs:documentation xml:lang="en">Address data of the taxpayer</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="countryCode" type="data:CountryCodeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Az országkód ISO 3166 alpha-2 szabvány szerint</xs:documentation>
+					<xs:documentation xml:lang="en">ISO 3166 alpha-2 country code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="postalCode" type="data:PostalCodeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Irányítószám</xs:documentation>
+					<xs:documentation xml:lang="en">ZIP code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="city" type="data:SimpleText255NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Település</xs:documentation>
+					<xs:documentation xml:lang="en">Settlement</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="streetName" type="data:SimpleText255NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Közterület neve</xs:documentation>
+					<xs:documentation xml:lang="en">Name of public place</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="publicPlaceCategory" type="data:SimpleText50NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Közterület jellege</xs:documentation>
+					<xs:documentation xml:lang="en">Category of public place</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="number" type="data:SimpleText50NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Házszám</xs:documentation>
+					<xs:documentation xml:lang="en">House number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="building" type="data:SimpleText50NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Épület</xs:documentation>
+					<xs:documentation xml:lang="en">Building</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="staircase" type="data:SimpleText50NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Lépcsőház</xs:documentation>
+					<xs:documentation xml:lang="en">Staircase</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="floor" type="data:SimpleText50NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Emelet</xs:documentation>
+					<xs:documentation xml:lang="en">Floor</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="door" type="data:SimpleText50NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Ajtó</xs:documentation>
+					<xs:documentation xml:lang="en">Door number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaxpayerDataType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Az adózó lekérdezés válasz adatai</xs:documentation>
+			<xs:documentation xml:lang="en">Response data of the taxpayer query</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="taxpayerName" type="data:SimpleText512NotBlankType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Az adózó neve</xs:documentation>
+					<xs:documentation xml:lang="en">Name of the taxpayer</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxpayerAddress" type="TaxpayerAddressType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Az adózó címadatai</xs:documentation>
+					<xs:documentation xml:lang="en">Address data of the taxpayer</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -1033,10 +1171,16 @@
 			<xs:complexContent>
 				<xs:extension base="BasicResponseType">
 					<xs:sequence>
-						<xs:element name="validTaxpayer" type="xs:boolean" minOccurs="0">
+						<xs:element name="taxpayerValidity" type="xs:boolean" minOccurs="0">
 							<xs:annotation>
 								<xs:documentation xml:lang="hu">Jelzi, hogy a lekérdezett adózó létezik és érvényes-e</xs:documentation>
 								<xs:documentation xml:lang="en">Indicates whether the queried taxpayer is existing and valid</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="taxpayerData" type="TaxpayerDataType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation xml:lang="hu">Az adózó lekérdezés válasz adatai</xs:documentation>
+								<xs:documentation xml:lang="en">Response data of the taxpayer query</xs:documentation>
 							</xs:annotation>
 						</xs:element>
 					</xs:sequence>
@@ -1072,14 +1216,14 @@
 						</xs:element>
 						<xs:element name="tokenValidityFrom" type="xs:dateTime">
 							<xs:annotation>
-								<xs:documentation xml:lang="hu">A kiadott token érvényességének kezdete UTC alakban</xs:documentation>
-								<xs:documentation xml:lang="en">Validity start of the issued exchange token in UTC form</xs:documentation>
+								<xs:documentation xml:lang="hu">A kiadott token érvényességének kezdete</xs:documentation>
+								<xs:documentation xml:lang="en">Validity start of the issued exchange token</xs:documentation>
 							</xs:annotation>
 						</xs:element>
 						<xs:element name="tokenValidityTo" type="xs:dateTime">
 							<xs:annotation>
-								<xs:documentation xml:lang="hu">A kiadott token érvényességének vége UTC alakban</xs:documentation>
-								<xs:documentation xml:lang="en">Validity end of the issued exchange token in UTC form</xs:documentation>
+								<xs:documentation xml:lang="hu">A kiadott token érvényességének vége</xs:documentation>
+								<xs:documentation xml:lang="en">Validity end of the issued exchange token</xs:documentation>
 							</xs:annotation>
 						</xs:element>
 					</xs:sequence>
