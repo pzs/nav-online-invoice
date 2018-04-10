@@ -92,9 +92,9 @@ class Reporter {
         $requestXml = new QueryTaxpayerRequestXml($this->config, $taxNumber);
         $responseXml = $this->connector->post("/queryTaxpayer", $requestXml);
 
-        // 1.9.4.2 fejezet alapján (QueryTaxpayerResponse) a validTaxpayer tag csak akkor kerül a válaszba, ha a lekérdezett adószám létezik.
+        // 1.9.4.2 fejezet alapján (QueryTaxpayerResponse) a taxpayerValidity tag csak akkor kerül a válaszba, ha a lekérdezett adószám létezik.
         // Nem létező adószámra csak egy <funcCode>OK</funcCode> kerül visszaadásra (funcCode===OK megléte a Connector-ban ellenőrizve van).
-        return isset($responseXml->validTaxpayer);
+        return isset($responseXml->taxpayerValidity);
     }
 
 
