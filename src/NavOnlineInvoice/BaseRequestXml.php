@@ -64,12 +64,15 @@ class BaseRequestXml {
 
 
     /**
-     * A kérés kliens oldali időpontja UTC-ben
+     * A kérés kliens oldali időpontja UTC-ben, ezredmásodperccel
      *
      * @return String
      */
     protected function getTimestamp() {
-        return gmdate("Y-m-d\TH:i:s\Z");
+        $now = microtime(true);
+        $milliseconds = round(($now - floor($now)) * 1000);
+
+        return gmdate("Y-m-d\TH:i:s", $now) . sprintf(".%03dZ", $milliseconds);
     }
 
 
@@ -148,8 +151,8 @@ class BaseRequestXml {
         // requestId értéke
         $string .= $this->requestId;
 
-        // timestamp tag értéke yyyyMMddHHmmss maszkkal, UTC időben
-        $string .= preg_replace("/\D+/", "", $this->timestamp);
+        // timestamp tag értéke yyyyMMddHHmmss maszkkal, UTC időben (ezredmásodperc nélkül)
+        $string .= preg_replace("/\.\d{3}|\D+/", "", $this->timestamp);
 
         // technikai felhasználó aláíró kulcsának literál értéke
         $string .= $this->config->user["signKey"];
