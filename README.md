@@ -38,8 +38,15 @@ Minta JSON fájlok: [userData.json](tests/testdata/userData.sample.json), [softw
 
 ```php
 try {
-    $isValid = $reporter->queryTaxpayer("12345678");
-    print "Az adószám: " . ($isValid ? "valid" : "nem valid");
+    $result = $reporter->queryTaxpayer("12345678");
+
+    if (!$result) {
+        print "Az adószám nem valid.";
+    } else {
+        print "Az adószám valid.\n";
+        print "Az adószámhoz tartozó név és címadatok: " . $result->taxpayerName . "\n";
+        print_r($result->taxpayerAddress);
+    }
 
 } catch(Exception $ex) {
     print get_class($ex) . ": " . $ex->getMessage();
@@ -202,7 +209,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 - `manageInvoice(InvoiceOperations $invoiceOperations)`: A számla adatszolgáltatás beküldésére szolgáló operáció. Visszatérési értékként a transactionId-t adja vissza string-ként.
 - `queryInvoiceData($queryType, $queryData)`: A számla adatszolgáltatások lekérdezésére szolgáló operáció
 - `queryInvoiceStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
-- `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló operáció. Visszatérési éréke lehet `true`: valid adószám, `false`: invalid adószám
+- `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `false` invalid adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
 - `tokenExchange()`: Token kérése manageInvoice művelethez (közvetlen használata nem szükséges, viszont lehet használni, mint teszt hívás). Visszatérési értékként a dekódolt tokent adja vissza string-ként.
 
 

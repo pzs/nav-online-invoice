@@ -8,8 +8,15 @@ try {
     $config->useApiSchemaValidation();
     $reporter = new NavOnlineInvoice\Reporter($config);
 
-    $isValid = $reporter->queryTaxpayer("12345678");
-    print "Az adószám: " . ($isValid ? "valid" : "nem valid");
+    $result = $reporter->queryTaxpayer("12345678");
+
+    if (!$result) {
+        print "Az adószám nem valid.";
+    } else {
+        print "Az adószám valid.\n";
+        print "Az adószámhoz tartozó név és címadatok: " . $result->taxpayerName . "\n";
+        print_r($result->taxpayerAddress);
+    }
 
 } catch(Exception $ex) {
     print get_class($ex) . ": " . $ex->getMessage();

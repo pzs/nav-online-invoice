@@ -85,8 +85,9 @@ class Reporter {
      * A /queryTaxpayer belföldi adószám validáló operáció, mely a számlakiállítás folyamatába építve képes
      * a megadott adószám valódiságáról és érvényességéről a NAV adatbázisa alapján adatot szolgáltatni.
      *
-     * @param  String $taxNumber    Adószám, pattern: [0-9]{8}
-     * @return Boolean              true=valid adószám, false=invalid adószám
+     * @param  String $taxNumber            Adószám, pattern: [0-9]{8}
+     * @return Boolean|SimpleXMLElement     Invalid adószám esetén `false` a visszatérési érték, valid adószám estén
+     *                                      pedig a válasz XML taxpayerData része (SimpleXMLElement), mely a nevet és címadatokat tartalmazza
      */
     public function queryTaxpayer($taxNumber) {
         $requestXml = new QueryTaxpayerRequestXml($this->config, $taxNumber);
@@ -94,7 +95,12 @@ class Reporter {
 
         // 1.9.4.2 fejezet alapján (QueryTaxpayerResponse) a taxpayerValidity tag csak akkor kerül a válaszba, ha a lekérdezett adószám létezik.
         // Nem létező adószámra csak egy <funcCode>OK</funcCode> kerül visszaadásra (funcCode===OK megléte a Connector-ban ellenőrizve van).
-        return isset($responseXml->taxpayerValidity);
+        if (!isset($responseXml->taxpayerValidity)) {
+            return false;
+        }
+
+        // Az adószám valid, címadatok visszaadása
+        return $responseXml->taxpayerData;
     }
 
 
