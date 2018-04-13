@@ -13,7 +13,7 @@ Jogszabályok: https://onlineszamla-test.nav.gov.hu/jogszabalyok
 
 A használathoz a NAV oldalán megfelelő regisztrációt követően létrehozott technikai felhasználó adatainak beállítása szükséges!
 
-:warning: Jelenleg a NAV szerverén csak a következő operáció érhető el: `tokenExchange`, `manageInvoice` és `queryInvoiceStatus`, a többi még fejlesztés alatt részükről (2017.03.16.).
+:warning: Jelenleg a NAV szerverén csak a következő operáció érhető el: `tokenExchange`, `manageInvoice` és `queryInvoiceStatus`, a többi még fejlesztés alatt részükről (2018.04.13.).
 
 
 ### Inicializálás
