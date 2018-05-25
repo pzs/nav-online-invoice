@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 # Projekt: Magyar Online Számla Rendszer invoiceData XML XSD séma
 # Author: NAV Informatikai Intézet
 
-# Version: v1.0 2018/03/11
+# Version: v1.0 2018/04/19
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.nav.gov.hu/OSA/1.0/data" targetNamespace="http://schemas.nav.gov.hu/OSA/1.0/data" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:simpleType name="AnnulmentCodeType">
@@ -32,7 +32,7 @@
 			<xs:documentation xml:lang="en">Type of bank account number</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:minLength value="17"/>
+			<xs:minLength value="15"/>
 			<xs:maxLength value="34"/>
 			<xs:pattern value="[0-9]{8}[-][0-9]{8}[-][0-9]{8}|[0-9]{8}[-][0-9]{8}|[A-Z]{2}[0-9]{2}[0-9A-Za-z]{11,30}"/>
 		</xs:restriction>
@@ -95,7 +95,9 @@
 			<xs:documentation xml:lang="hu">Dátum típus</xs:documentation>
 			<xs:documentation xml:lang="en">Date type</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="xs:date"/>
+		<xs:restriction base="xs:date">
+			<xs:pattern value="\d{4}-\d{2}-\d{2}"/>
+		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="EkaerIdType">
 		<xs:annotation>
@@ -1183,8 +1185,8 @@
 			</xs:element>
 			<xs:element name="modifyWithoutMaster" type="xs:boolean" default="false">
 				<xs:annotation>
-					<xs:documentation xml:lang="hu">Annak jelzése, hogy a módosítás olyan alapszámlára hivatkozik, melyről a módosítás pillanatáig nem történt adatszolgáltatás</xs:documentation>
-					<xs:documentation xml:lang="en">Indicates whether the modification references to a not exchanged original invoice</xs:documentation>
+					<xs:documentation xml:lang="hu">Annak jelzése, hogy a módosítás olyan alapszámlára hivatkozik, amelyről nem történt és nem is fog történni adatszolgáltatás</xs:documentation>
+					<xs:documentation xml:lang="en">Indicates whether the modification references to an original invoice which is not and will not be exchanged</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
