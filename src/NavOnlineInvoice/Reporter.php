@@ -51,10 +51,11 @@ class Reporter {
      *                                          függően attól, hogy konktér számla sorszámot, vagy általános
      *                                          lekérdezési paramétereket adunk át.
      * @param  Array             $queryData     A queryType-nak megfelelően összeállított lekérdezési adatok
+     * @param  Int               $page          Oldalszám (1-től kezdve a számozást)
      * @return SimpleXMLElement  $responseXml   A teljes visszakapott XML, melyből a 'queryResults' elem releváns
      */
-    public function queryInvoiceData($queryType, $queryData) {
-        $requestXml = new QueryInvoiceDataRequestXml($this->config, $queryType, $queryData);
+    public function queryInvoiceData($queryType, $queryData, $page = 1) {
+        $requestXml = new QueryInvoiceDataRequestXml($this->config, $queryType, $queryData, $page);
         $responseXml = $this->connector->post("/queryInvoiceStatus", $requestXml);
 
         return $responseXml;

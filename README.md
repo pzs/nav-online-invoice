@@ -22,14 +22,16 @@ Technikai felhasználó (és szoftver) adatok beállítása, Reporter példány 
 
 ```php
 $apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService";
-$config = new NavOnlineInvoice\Config($apiUrl, "userData.json", "softwareData.json");
+$config = new NavOnlineInvoice\Config($apiUrl, "userData.json");
 $config->useApiSchemaValidation(); // opcionális
 
 $reporter = new NavOnlineInvoice\Reporter($config);
 
 ```
 
-Minta JSON fájlok: [userData.json](tests/testdata/userData.sample.json), [softwareData.json](tests/testdata/softwareData.json). JSON fájl helyett az értékeket tömbben is át lehet adni (lásd lent, Dokumentáció / Config osztály fejezet).
+Minta JSON fájlok: [userData.json](tests/testdata/userData.sample.json), [softwareData.json](tests/testdata/softwareData.json).
+JSON fájl helyett az értékeket tömbben is át lehet adni (lásd lent, Dokumentáció / Config osztály fejezet).
+A konstruktor 3. paraméterében a software adatokat is át lehet adni opcionálisan, ez nem kötelező a NAV részéről.
 
 
 ### Adószám ellenőrzése (`queryTaxpayer`)
@@ -207,7 +209,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 - `__construct(Config $config)`
 - `manageInvoice(InvoiceOperations $invoiceOperations)`: A számla adatszolgáltatás beküldésére szolgáló operáció. Visszatérési értékként a transactionId-t adja vissza string-ként.
-- `queryInvoiceData($queryType, $queryData)`: A számla adatszolgáltatások lekérdezésére szolgáló operáció
+- `queryInvoiceData(string $queryType, array $queryData [, int $page = 1])`: A számla adatszolgáltatások lekérdezésére szolgáló operáció
 - `queryInvoiceStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
 - `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `false` invalid adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
 - `tokenExchange()`: Token kérése manageInvoice művelethez (közvetlen használata nem szükséges, viszont lehet használni, mint teszt hívás). Visszatérési értékként a dekódolt tokent adja vissza string-ként.
@@ -229,6 +231,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 - `CurlError`: cURL hiba esetén, pl. nem tudott csatlakozni a szerverhez
 - `HttpResponseError`: Ha nem XML válasz érkezett, vagy nem sikerült azt parse-olni
+- `GeneralExceptionResponse`: NAV által visszaadott hibaüzenet, ha nem sikerült náluk technikailag valamit feldolgozni (lásd NAV-os leírás Hibakezelés fejezetét)
 - `XsdValidationError`: XSD séma validáció esetén, ha hiba történt (a requestXML-ben vagy szakmai XML-ben; a válasz XML nincs vizsgálva)
 - `GeneralErrorResponse`: Ha az XML válaszban `GeneralErrorResponse` érkezett, vagy ha a `funcCode !== 'OK'`
 
