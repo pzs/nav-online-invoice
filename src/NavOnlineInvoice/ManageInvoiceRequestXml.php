@@ -39,6 +39,9 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
 
         $operationsXml->addChild("technicalAnnulment", $this->invoiceOperations->getTechnicalAnnulment());
 
+        // NOTE: the compression is currently not supported
+        $operationsXml->addChild("compressedContent", false);
+
         // Számlák hozzáadása az XML-hez
         foreach ($this->invoiceOperations->getInvoices() as $invoice) {
             $invoiceXml = $operationsXml->addChild("invoiceOperation");

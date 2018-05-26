@@ -51,6 +51,10 @@ class Connector {
             throw new HttpResponseError($result, $httpStatusCode);
         }
 
+        if ($responseXml->getName() === "GeneralExceptionResponse") {
+            throw new GeneralExceptionResponse($responseXml);
+        }
+
         if ($responseXml->getName() === "GeneralErrorResponse") {
             throw new GeneralErrorResponse($responseXml);
         }
