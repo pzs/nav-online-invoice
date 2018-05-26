@@ -98,7 +98,7 @@ try {
 
 ### Státusz lekérdezése (`queryInvoiceStatus`)
 
-Az adatszolgáltatás operációval beküldött számla státuszának lekérdezésére szolgáló operáció. `$transactionId`-nak az előbbi metódus által visszaadott azonosítót kell megadni.
+Az adatszolgáltatás operációval beküldött számla státuszának lekérdezésére szolgáló operáció. `$transactionId`-nak a `manageInvoice` metódus által visszaadott azonosítót kell megadni.
 
 ```php
 try {
