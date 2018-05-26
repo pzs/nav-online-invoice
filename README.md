@@ -6,14 +6,12 @@ _PHP interfész a NAV Online számla adatszolgáltatásához_
 
 https://github.com/pzs/nav-online-invoice &mdash; https://packagist.org/packages/pzs/nav-online-invoice
 
-Jogszabályok: https://onlineszamla-test.nav.gov.hu/jogszabalyok
+NAV Online számla oldala: https://onlineszamla-test.nav.gov.hu/
 
 
 ## Használat
 
 A használathoz a NAV oldalán megfelelő regisztrációt követően létrehozott technikai felhasználó adatainak beállítása szükséges!
-
-:warning: Jelenleg a NAV szerverén csak a következő operáció érhető el: `tokenExchange`, `manageInvoice` és `queryInvoiceStatus`, a többi még fejlesztés alatt részükről (2018.04.13.).
 
 
 ### Inicializálás
@@ -36,7 +34,7 @@ A konstruktor 3. paraméterében a software adatokat is át lehet adni opcionál
 
 ### Adószám ellenőrzése (`queryTaxpayer`)
 
-:warning: Ez az endpoint a NAV onlineszamla test oldalán jelenleg nem elérhető.
+:warning: Ez az endpoint a NAV onlineszamla test oldalán jelenleg nem elérhető. (2018.05.25.)
 
 ```php
 try {
@@ -100,6 +98,8 @@ try {
 
 ### Státusz lekérdezése (`queryInvoiceStatus`)
 
+Az adatszolgáltatás operációval beküldött számla státuszának lekérdezésére szolgáló operáció. `$transactionId`-nak az előbbi metódus által visszaadott azonosítót kell megadni.
+
 ```php
 try {
     $transactionId = "...";
@@ -117,7 +117,10 @@ try {
 
 ### Számla adatszolgáltatások lekérdezése (`queryInvoiceData`)
 
-:warning: Ez az endpoint a NAV onlineszamla test oldalán jelenleg nem elérhető.
+Beküldött számlák lekérdezése/keresése.
+
+:warning: Ezt az interfészt még tesztelni (és szükség szerint javítani) kell.
+
 
 ```php
 try {
@@ -229,11 +232,11 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 ### Exception osztályok
 
-- `CurlError`: cURL hiba esetén, pl. nem tudott csatlakozni a szerverhez
-- `HttpResponseError`: Ha nem XML válasz érkezett, vagy nem sikerült azt parse-olni
-- `GeneralExceptionResponse`: NAV által visszaadott hibaüzenet, ha nem sikerült náluk technikailag valamit feldolgozni (lásd NAV-os leírás Hibakezelés fejezetét)
-- `XsdValidationError`: XSD séma validáció esetén, ha hiba történt (a requestXML-ben vagy szakmai XML-ben; a válasz XML nincs vizsgálva)
-- `GeneralErrorResponse`: Ha az XML válaszban `GeneralErrorResponse` érkezett, vagy ha a `funcCode !== 'OK'`
+- `XsdValidationError`: XSD séma validáció esetén, ha hiba történt (a requestXML-ben vagy szakmai XML-ben; a válasz XML nincs vizsgálva). Ez az exception a kliens oldali XML ellenőrzéskor keletkezhet még a szerverrel való kommunikáció előtt.
+- `CurlError`: cURL hiba esetén, pl. nem tudott csatlakozni a szerverhez (pl. nincs internet, nem elérhető a szerver).
+- `HttpResponseError`: Ha nem XML válasz érkezett, vagy nem sikerült azt parse-olni.
+- `GeneralExceptionResponse`: NAV által visszaadott hibaüzenet, ha nem sikerült náluk technikailag valamit feldolgozni (lásd NAV-os leírás Hibakezelés fejezetét).
+- `GeneralErrorResponse`: NAV által visszaadott hibaüzenet, ha az XML válaszban `GeneralErrorResponse` érkezett, vagy ha a `funcCode !== 'OK'`.
 
 
 ### PHP verzió és modulok
@@ -255,7 +258,7 @@ Szükséges modulok:
 
 ## TODO
 
-- Műveletek (queryTaxpayer, queryInvoiceStatus, queryInvoiceData) manuális tesztelése, amint elérhető lesz az interfész a NAV szerverén
+- Műveletek (queryTaxpayer, queryInvoiceData) manuális tesztelése, amint elérhető lesz az interfész a NAV szerverén
 - További tesztek írása, ami a NAV szerverét is meghívja teszt közben
 
 
