@@ -6,7 +6,7 @@ use Exception;
 
 class QueryInvoiceDataRequestXml extends BaseRequestXml {
 
-    private static $queryTypes = ["invoiceQuery", "queryParams"];
+    private static $queryTypes = array("invoiceQuery", "queryParams");
 
 
     function __construct($config, $queryType, $queryData, $page) {
