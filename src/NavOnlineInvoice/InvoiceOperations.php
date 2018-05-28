@@ -71,11 +71,11 @@ class InvoiceOperations {
         $idx = $this->index;
         $this->index++;
 
-        $this->invoices[] = [
+        $this->invoices[] = array(
             "index" => $idx,
             "operation" => $operation,
             "invoice" => $this->convertXml($xml)
-        ];
+        );
 
         return $idx;
     }
