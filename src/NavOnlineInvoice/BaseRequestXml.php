@@ -71,6 +71,7 @@ class BaseRequestXml {
     protected function getTimestamp() {
         $now = microtime(true);
         $milliseconds = round(($now - floor($now)) * 1000);
+        $milliseconds = min($milliseconds, 999);
 
         return gmdate("Y-m-d\TH:i:s", $now) . sprintf(".%03dZ", $milliseconds);
     }
