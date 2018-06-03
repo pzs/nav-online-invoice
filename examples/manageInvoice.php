@@ -5,11 +5,9 @@ include("config.php");
 
 try {
     $config = new NavOnlineInvoice\Config($apiUrl, $userDataFilename);
-    $config->useApiSchemaValidation();
     $reporter = new NavOnlineInvoice\Reporter($config);
 
     $invoices = new NavOnlineInvoice\InvoiceOperations();
-    $invoices->useDataSchemaValidation();
 
     $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1.xml"));
     $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice2.xml"));

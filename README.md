@@ -21,7 +21,6 @@ Technikai felhasználó (és szoftver) adatok beállítása, Reporter példány 
 ```php
 $apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService";
 $config = new NavOnlineInvoice\Config($apiUrl, "userData.json");
-$config->useApiSchemaValidation(); // opcionális
 $config->setCurlTimeout(20); // 20 másodperces cURL timeout (NAV szerver hívásnál), opcionális
 
 $reporter = new NavOnlineInvoice\Reporter($config);
@@ -31,6 +30,8 @@ $reporter = new NavOnlineInvoice\Reporter($config);
 Minta JSON fájlok: [userData.json](tests/testdata/userData.sample.json), [softwareData.json](tests/testdata/softwareData.json).
 JSON fájl helyett az értékeket tömbben is át lehet adni (lásd lent, Dokumentáció / Config osztály fejezet).
 A konstruktor 3. paraméterében a software adatokat is át lehet adni opcionálisan, ez nem kötelező a NAV részéről.
+
+:information_source: A v0.5.0-ás verziótól az API és Data séma validálás alapértelmezetten be van kapcsolva, így küldés előtt az XML-ek séma validálva lesznek.
 
 
 ### Adószám ellenőrzése (`queryTaxpayer`)
@@ -195,7 +196,7 @@ __Metódusok__
 
 - `__construct(string $baseUrl, $user [, $software = null])`
 - `setBaseUrl($baseUrl)`
-- `useApiSchemaValidation([$flag = true])`: NAV szerverrel való kommunikáció előtt a kéréseket (envelop XML) validálja az XSD-vel. A példány alapértelmezett értéke szerint a validáció nincs bekapcsolva.
+- `useApiSchemaValidation([$flag = true])`: NAV szerverrel való kommunikáció előtt a kéréseket (envelop XML) validálja az XSD-vel. A példány alapértelmezett értéke szerint a validáció be van kapcsolva.
 - `setSoftware($data)`
 - `loadSoftware($jsonFile)`
 - `setUser($data)`
@@ -223,7 +224,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 `manageInvoice` híváshoz használandó collection, melyhez a feladni kívánt számlákat lehet hozzáadni. Ez az osztály opcionálisan validálja is az átadott szakmai XML-t az XSD-vel.
 
 - `__construct()`
-- `useDataSchemaValidation([$flag = true])`: Számla adat hozzáadásakor az XML-t (szakmai XML) validálja az XSD-vel. Alapértelmezetten nincs bekapcsolva a validáció.
+- `useDataSchemaValidation([$flag = true])`: Számla adat hozzáadásakor az XML-t (szakmai XML) validálja az XSD-vel. Alapértelmezetten be van kapcsolva a validáció.
 - `setTechnicalAnnulment([$technicalAnnulment = true])`: `technicalAnnulment` flag állítása. Alapértelmezett érték false.
 - `add(SimpleXMLElement $xml [, $operation = "CREATE"])`: Számla XML hozzáadása a listához
 - `getTechnicalAnnulment()`

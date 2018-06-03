@@ -11,7 +11,7 @@ class InvoiceOperations {
     public $invoices;
     public $technicalAnnulment = false;
     protected $index;
-    protected $schemaValidation = false;
+    protected $schemaValidation = true;
 
 
     /**

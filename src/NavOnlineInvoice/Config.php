@@ -12,7 +12,7 @@ class Config {
     public $baseUrl;
     public $verifySLL = false;
 
-    public $validateApiSchema = false;
+    public $validateApiSchema = true;
 
     public $curlTimeout = null;
 
