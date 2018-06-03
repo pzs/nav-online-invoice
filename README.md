@@ -84,14 +84,9 @@ Az adatszolgáltatás metódus automatikusan lekéri a tokent is (`tokenExchange
 
 ```php
 try {
-    $invoices = new NavOnlineInvoice\InvoiceOperations();
-    $invoices->useDataSchemaValidation(); // opcionális
+    // Az $invoiceXml tartalmazza a számla (szakmai) SimpleXMLElement objektumot
 
-    $invoices->add(simplexml_load_file("invoice1.xml"));
-    // vagy
-    $invoices->add($szamlaXml);
-
-    $transactionId = $reporter->manageInvoice($invoices);
+    $transactionId = $reporter->manageInvoice($invoiceXml, "CREATE");
 
     print "Tranzakciós azonosító a státusz lekérdezéshez: " . $transactionId;
 
@@ -100,6 +95,8 @@ try {
 }
 
 ```
+
+Több számla egyszerre való feladásához lásd a [manageInvoice.php](examples/manageInvoice.php) példát.
 
 
 ### Státusz lekérdezése (`queryInvoiceStatus`)
@@ -148,25 +145,21 @@ try {
 
 ### Számla (szakmai) XML validálása küldés nélkül
 
-Ha engedélyezzük a validációt az `InvoiceOperations` példányon, akkor az `add()` metódus hívásakor az átadott XML-ek validálva lesznek. (Hiba esetén `XsdValidationError` exception lesz dobva).
-
 
 ```php
-try {
-    $invoices = new NavOnlineInvoice\InvoiceOperations();
-    $invoices->useDataSchemaValidation(); // validálás az XSD-vel
+// Az $invoiceXml tartalmazza a számla (szakmai) SimpleXMLElement objektumot
 
-    $invoices->add(simplexml_load_file("invoice1.xml")); // SimpleXMLElement példány
-    $invoices->add(simplexml_load_file("invoice2.xml"));
+$errorMsg = NavOnlineInvoice\Reporter::getInvoiceValidationError($invoiceXml);
 
-    // Ezen a ponton a fenti számla XML-ek validak
-
-} catch(Exception $ex) {
-    // A számla XML nem valid
-    print get_class($ex) . ": " . $ex->getMessage();
+if ($errorMsg) {
+    print "A számla nem valid, hibaüzenet: " . $errorMsg;
+} else {
+    print "A számla valid.";
 }
 
 ```
+
+Számla validálásának másik módját lásd a [validateInvoice.php](examples/validateInvoice.php) példában.
 
 
 ## Dokumentáció
@@ -218,7 +211,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 
 - `__construct(Config $config)`
-- `manageInvoice(InvoiceOperations $invoiceOperations)`: A számla adatszolgáltatás beküldésére szolgáló operáció. Visszatérési értékként a transactionId-t adja vissza string-ként.
+- `manageInvoice($invoiceOperationsOrXml [, $operation])`: A számla beküldésére szolgáló operáció. Visszatérési értékként a `transactionId`-t adja vissza string-ként. Paraméterben át lehet adni vagy egy darab `SimpleXMLElement` példányt, ami a számlát tartalmazza, vagy egy `InvoiceOperations` példányt, ami több számlát is tartalmazhat. Lásd a példa fájlokat.
 - `queryInvoiceData(string $queryType, array $queryData [, int $page = 1])`: A számla adatszolgáltatások lekérdezésére szolgáló operáció
 - `queryInvoiceStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
 - `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `null` nem létező adószám esetén, `false` érvénytelen adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén

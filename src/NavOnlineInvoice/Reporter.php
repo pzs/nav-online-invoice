@@ -28,10 +28,24 @@ class Reporter {
      * lehetőség számla, módosító vagy stornó számla adatszolgáltatást, illetve ezek technikai javításait a
      * NAV részére beküldeni.
      *
-     * @param  InvoiceOperations $invoiceOperations
-     * @return String            $transactionId
+     * Első paraméterben át lehet adni egy InvoiceOperations példányt, mely több számlát is tartalmazhat, vagy
+     * át lehet adni közvetlenül egy darab számla SimpleXMLElement példányt.
+     * A második paraméter ($operation) csak és kizárólag akkor játszik szerepet, ha követlenül számla XML-lel
+     * hívjuk ezt a metódust. InvoiceOperations példány esetén az operation-t ez a példány tartalmazza.
+     *
+     * @param  InvoiceOperations|SimpleXMLElement $invoiceOperationsOrXml
+     * @param  String                             $operation
+     * @return String                             $transactionId
      */
-    public function manageInvoice($invoiceOperations) {
+    public function manageInvoice($invoiceOperationsOrXml, $operation = "CREATE") {
+
+        // Ha nem InvoiceOperations példányt adtak át, akkor azzá konvertáljuk
+        if ($invoiceOperationsOrXml instanceof InvoiceOperations) {
+            $invoiceOperations = $invoiceOperationsOrXml;
+        } else {
+            $invoiceOperations = InvoiceOperations::convertFromXml($invoiceOperationsOrXml, $operation);
+        }
+
         $token = $this->tokenExchange();
 
         $requestXml = new ManageInvoiceRequestXml($this->config, $invoiceOperations, $token);

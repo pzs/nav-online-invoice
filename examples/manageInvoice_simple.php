@@ -5,12 +5,14 @@ include("config.php");
 
 try {
     $config = new NavOnlineInvoice\Config($apiUrl, $userDataFilename);
-    $config->setCurlTimeout(5); // másodperc
     $config->useApiSchemaValidation();
     $reporter = new NavOnlineInvoice\Reporter($config);
 
-    $token = $reporter->tokenExchange();
-    print "Token: " . $token;
+    $invoiceXml = simplexml_load_file(TEST_DATA_DIR . "invoice1.xml");
+
+    $transactionId = $reporter->manageInvoice($invoiceXml, "CREATE");
+
+    print "Tranzakciós azonosító a státusz lekérdezéshez: " . $transactionId;
 
 } catch(Exception $ex) {
     print get_class($ex) . ": " . $ex->getMessage();

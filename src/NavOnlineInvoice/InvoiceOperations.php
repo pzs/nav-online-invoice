@@ -94,4 +94,22 @@ class InvoiceOperations {
         return base64_encode($xml);
     }
 
+
+    /**
+     * Egy darab számla XML-t átadva visszaad egy InvoiceOperations példányt,
+     * amit a Reporter::manageInvoice metódusa fogad paraméterben
+     *
+     * @param  SimpleXMLElement $xml
+     * @param  string           $operation
+     * @return InvoiceOperations
+     */
+    public static function convertFromXml($xml, $operation) {
+        $invoiceOperations = new self();
+        $invoiceOperations->useDataSchemaValidation();
+
+        $invoiceOperations->add($xml, $operation);
+
+        return $invoiceOperations;
+    }
+
 }
