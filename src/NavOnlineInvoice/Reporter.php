@@ -135,4 +135,21 @@ class Reporter {
         return Util::aes128_decrypt($encodedToken, $this->config->user["exchangeKey"]);
     }
 
+
+    /**
+     * Paraméterben átadott adat XML-t validálja az XSD-vel és hiba esetén string-ként visszaadja a hibát.
+     * Ha nincs hiba, akkor visszatérési érték `null`.
+     *
+     * @param  SimpleXMLElement $xml   Számla XML
+     * @return null|string             Hibaüzenet, vagy `null`, ha helyes az XML
+     */
+    public static function getInvoiceValidationError($xml) {
+        try {
+            Xsd::validate($xml->asXML(), Config::getDataXsdFilename());
+        } catch(XsdValidationError $ex) {
+            return $ex->getMessage();
+        }
+        return null;
+    }
+
 }
