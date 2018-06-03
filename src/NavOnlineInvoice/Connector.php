@@ -29,7 +29,7 @@ class Connector {
         $xmlString = is_string($requestXml) ? $requestXml : $requestXml->asXML();
 
         if ($this->config->validateApiSchema) {
-            Xsd::validate($xmlString, $this->config->apiSchemaFilename);
+            Xsd::validate($xmlString, Config::getApiXsdFilename());
         }
 
         $ch = $this->getCurlHandle($url, $xmlString);

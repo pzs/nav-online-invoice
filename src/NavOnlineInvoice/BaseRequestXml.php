@@ -187,7 +187,7 @@ class BaseRequestXml {
      * Hiba esetén XsdValidationError exception-t dob.
      */
     public function validateSchema() {
-        Xsd::validate($this->asXML(), $this->config->apiSchemaFilename);
+        Xsd::validate($this->asXML(), Config::getApiXsdFilename());
     }
 
 }

@@ -13,7 +13,6 @@ class Config {
     public $verifySLL = false;
 
     public $validateApiSchema = false;
-    public $apiSchemaFilename;
 
     public $curlTimeout = null;
 
@@ -26,8 +25,6 @@ class Config {
      * @param Array|String $software    Software data array vagy json fájlnév
      */
     function __construct($baseUrl, $user, $software = null) {
-
-        $this->apiSchemaFilename = __DIR__ . "/xsd/invoiceApi.xsd";
 
         if (!$baseUrl) {
             throw new Exception("A baseUrl paraméter megadása kötelező!");
@@ -146,6 +143,16 @@ class Config {
      */
     public function setCurlTimeout($timeoutSeconds) {
         $this->curlTimeout = $timeoutSeconds;
+    }
+
+
+    public static function getDataXsdFilename() {
+        return __DIR__ . "/xsd/invoiceData.xsd";
+    }
+
+
+    public static function getApiXsdFilename() {
+        return __DIR__ . "/xsd/invoiceApi.xsd";
     }
 
 }

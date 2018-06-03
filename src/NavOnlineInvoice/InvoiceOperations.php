@@ -43,11 +43,6 @@ class InvoiceOperations {
     }
 
 
-    protected function getXsdFilename() {
-        return __DIR__ . "/xsd/invoiceData.xsd";
-    }
-
-
     /**
      * Számla ('szakmai XML') hozzáadása
      *
@@ -59,7 +54,7 @@ class InvoiceOperations {
 
         // XSD validálás
         if ($this->schemaValidation) {
-            Xsd::validate($xml->asXML(), $this->getXsdFilename());
+            Xsd::validate($xml->asXML(), Config::getDataXsdFilename());
         }
 
         // TODO: ezt esetleg átmozgatni a Reporter vagy ManageInvoiceRequestXml osztályba?
