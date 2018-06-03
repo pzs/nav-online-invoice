@@ -92,6 +92,11 @@ class Connector {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $requestBody);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
+        if ($this->config->curlTimeout) {
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $this->config->curlTimeout);
+        }
+
         return $ch;
     }
 

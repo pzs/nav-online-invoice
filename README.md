@@ -22,6 +22,7 @@ Technikai felhasználó (és szoftver) adatok beállítása, Reporter példány 
 $apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService";
 $config = new NavOnlineInvoice\Config($apiUrl, "userData.json");
 $config->useApiSchemaValidation(); // opcionális
+$config->setCurlTimeout(20); // 20 másodperces cURL timeout (NAV szerver hívásnál), opcionális
 
 $reporter = new NavOnlineInvoice\Reporter($config);
 
@@ -40,12 +41,17 @@ A konstruktor 3. paraméterében a software adatokat is át lehet adni opcionál
 try {
     $result = $reporter->queryTaxpayer("12345678");
 
-    if (!$result) {
-        print "Az adószám nem valid.";
-    } else {
+    if ($result) {
         print "Az adószám valid.\n";
-        print "Az adószámhoz tartozó név és címadatok: " . $result->taxpayerName . "\n";
-        print_r($result->taxpayerAddress);
+        print "Az adószámhoz tartozó név: " . $result->taxpayerName . "\n";
+        if (isset($result->taxpayerAddress)) {
+            print "Cím: ";
+            print_r($result->taxpayerAddress);
+        } else {
+            print "Az adószámhoz nem tartozik cím.";
+        }
+    } else {
+        print "Az adószám nem valid.";
     }
 
 } catch(Exception $ex) {
@@ -201,6 +207,7 @@ __Metódusok__
 - `loadSoftware($jsonFile)`
 - `setUser($data)`
 - `loadUser($jsonFile)`
+- `setCurlTimeout($timeoutSeconds)`: NAV szerver hívásánál (cURL hívás) timeout értéke másodpercben. Alapértelmezetten nincs timeout beállítva. Megjegyzés: manageInvoice hívásnál 2 szerver hívás is történik (token kérés és számlák beküldése), itt külön-külön kell érteni a timeout-ot.
 
 
 ### `Reporter` osztály
@@ -214,7 +221,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 - `manageInvoice(InvoiceOperations $invoiceOperations)`: A számla adatszolgáltatás beküldésére szolgáló operáció. Visszatérési értékként a transactionId-t adja vissza string-ként.
 - `queryInvoiceData(string $queryType, array $queryData [, int $page = 1])`: A számla adatszolgáltatások lekérdezésére szolgáló operáció
 - `queryInvoiceStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
-- `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `false` invalid adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
+- `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `null` nem létező adószám esetén, `false` érvénytelen adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
 - `tokenExchange()`: Token kérése manageInvoice művelethez (közvetlen használata nem szükséges, viszont lehet használni, mint teszt hívás). Visszatérési értékként a dekódolt tokent adja vissza string-ként.
 
 

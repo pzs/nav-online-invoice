@@ -15,6 +15,8 @@ class Config {
     public $validateApiSchema = false;
     public $apiSchemaFilename;
 
+    public $curlTimeout = null;
+
 
     /**
      * NavOnlineInvoice Reporter osztály számára szükséges konfigurációs objektum készítése
@@ -133,6 +135,17 @@ class Config {
         }
 
         return $data;
+    }
+
+
+    /**
+     * cURL hívásnál timeout beállítása másodpercekben.
+     * null vagy 0 esetén nincs explicit timeout beállítás
+     *
+     * @param null|int $timeoutSeconds
+     */
+    public function setCurlTimeout($timeoutSeconds) {
+        $this->curlTimeout = $timeoutSeconds;
     }
 
 }
