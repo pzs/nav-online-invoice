@@ -160,7 +160,7 @@ if ($errorMsg) {
 
 ```
 
-Számla validálásának másik módját lásd a [validateInvoice.php](examples/validateInvoice.php) példában.
+Számla validálásának másik módját lásd a [validateInvoices.php](examples/validateInvoices.php) példában.
 
 
 ## Dokumentáció
