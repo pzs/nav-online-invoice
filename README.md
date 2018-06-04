@@ -36,8 +36,6 @@ A konstruktor 3. paraméterében a software adatokat is át lehet adni opcionál
 
 ### Adószám ellenőrzése (`queryTaxpayer`)
 
-:warning: Ez az endpoint a NAV onlineszamla test oldalán jelenleg nem elérhető. (2018.05.25.)
-
 ```php
 try {
     $result = $reporter->queryTaxpayer("12345678");
