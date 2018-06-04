@@ -21,7 +21,6 @@ Technikai felhasználó (és szoftver) adatok beállítása, Reporter példány 
 ```php
 $apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService";
 $config = new NavOnlineInvoice\Config($apiUrl, "userData.json");
-$config->useApiSchemaValidation(); // opcionális
 $config->setCurlTimeout(20); // 20 másodperces cURL timeout (NAV szerver hívásnál), opcionális
 
 $reporter = new NavOnlineInvoice\Reporter($config);
@@ -32,10 +31,10 @@ Minta JSON fájlok: [userData.json](tests/testdata/userData.sample.json), [softw
 JSON fájl helyett az értékeket tömbben is át lehet adni (lásd lent, Dokumentáció / Config osztály fejezet).
 A konstruktor 3. paraméterében a software adatokat is át lehet adni opcionálisan, ez nem kötelező a NAV részéről.
 
+:information_source: A v0.5.0-ás verziótól az API és Data séma validálás alapértelmezetten be van kapcsolva, így küldés előtt az XML-ek séma validálva lesznek.
+
 
 ### Adószám ellenőrzése (`queryTaxpayer`)
-
-:warning: Ez az endpoint a NAV onlineszamla test oldalán jelenleg nem elérhető. (2018.05.25.)
 
 ```php
 try {
@@ -84,14 +83,9 @@ Az adatszolgáltatás metódus automatikusan lekéri a tokent is (`tokenExchange
 
 ```php
 try {
-    $invoices = new NavOnlineInvoice\InvoiceOperations();
-    $invoices->useDataSchemaValidation(); // opcionális
+    // Az $invoiceXml tartalmazza a számla (szakmai) SimpleXMLElement objektumot
 
-    $invoices->add(simplexml_load_file("invoice1.xml"));
-    // vagy
-    $invoices->add($szamlaXml);
-
-    $transactionId = $reporter->manageInvoice($invoices);
+    $transactionId = $reporter->manageInvoice($invoiceXml, "CREATE");
 
     print "Tranzakciós azonosító a státusz lekérdezéshez: " . $transactionId;
 
@@ -100,6 +94,8 @@ try {
 }
 
 ```
+
+Több számla egyszerre való feladásához lásd a [manageInvoice.php](examples/manageInvoice.php) példát.
 
 
 ### Státusz lekérdezése (`queryInvoiceStatus`)
@@ -148,25 +144,21 @@ try {
 
 ### Számla (szakmai) XML validálása küldés nélkül
 
-Ha engedélyezzük a validációt az `InvoiceOperations` példányon, akkor az `add()` metódus hívásakor az átadott XML-ek validálva lesznek. (Hiba esetén `XsdValidationError` exception lesz dobva).
-
 
 ```php
-try {
-    $invoices = new NavOnlineInvoice\InvoiceOperations();
-    $invoices->useDataSchemaValidation(); // validálás az XSD-vel
+// Az $invoiceXml tartalmazza a számla (szakmai) SimpleXMLElement objektumot
 
-    $invoices->add(simplexml_load_file("invoice1.xml")); // SimpleXMLElement példány
-    $invoices->add(simplexml_load_file("invoice2.xml"));
+$errorMsg = NavOnlineInvoice\Reporter::getInvoiceValidationError($invoiceXml);
 
-    // Ezen a ponton a fenti számla XML-ek validak
-
-} catch(Exception $ex) {
-    // A számla XML nem valid
-    print get_class($ex) . ": " . $ex->getMessage();
+if ($errorMsg) {
+    print "A számla nem valid, hibaüzenet: " . $errorMsg;
+} else {
+    print "A számla valid.";
 }
 
 ```
+
+Számla validálásának másik módját lásd a [validateInvoices.php](examples/validateInvoices.php) példában.
 
 
 ## Dokumentáció
@@ -202,7 +194,7 @@ __Metódusok__
 
 - `__construct(string $baseUrl, $user [, $software = null])`
 - `setBaseUrl($baseUrl)`
-- `useApiSchemaValidation([$flag = true])`: NAV szerverrel való kommunikáció előtt a kéréseket (envelop XML) validálja az XSD-vel. A példány alapértelmezett értéke szerint a validáció nincs bekapcsolva.
+- `useApiSchemaValidation([$flag = true])`: NAV szerverrel való kommunikáció előtt a kéréseket (envelop XML) validálja az XSD-vel. A példány alapértelmezett értéke szerint a validáció be van kapcsolva.
 - `setSoftware($data)`
 - `loadSoftware($jsonFile)`
 - `setUser($data)`
@@ -218,7 +210,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 
 - `__construct(Config $config)`
-- `manageInvoice(InvoiceOperations $invoiceOperations)`: A számla adatszolgáltatás beküldésére szolgáló operáció. Visszatérési értékként a transactionId-t adja vissza string-ként.
+- `manageInvoice($invoiceOperationsOrXml [, $operation])`: A számla beküldésére szolgáló operáció. Visszatérési értékként a `transactionId`-t adja vissza string-ként. Paraméterben át lehet adni vagy egy darab `SimpleXMLElement` példányt, ami a számlát tartalmazza, vagy egy `InvoiceOperations` példányt, ami több számlát is tartalmazhat. Lásd a példa fájlokat.
 - `queryInvoiceData(string $queryType, array $queryData [, int $page = 1])`: A számla adatszolgáltatások lekérdezésére szolgáló operáció
 - `queryInvoiceStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
 - `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `null` nem létező adószám esetén, `false` érvénytelen adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
@@ -230,7 +222,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 `manageInvoice` híváshoz használandó collection, melyhez a feladni kívánt számlákat lehet hozzáadni. Ez az osztály opcionálisan validálja is az átadott szakmai XML-t az XSD-vel.
 
 - `__construct()`
-- `useDataSchemaValidation([$flag = true])`: Számla adat hozzáadásakor az XML-t (szakmai XML) validálja az XSD-vel. Alapértelmezetten nincs bekapcsolva a validáció.
+- `useDataSchemaValidation([$flag = true])`: Számla adat hozzáadásakor az XML-t (szakmai XML) validálja az XSD-vel. Alapértelmezetten be van kapcsolva a validáció.
 - `setTechnicalAnnulment([$technicalAnnulment = true])`: `technicalAnnulment` flag állítása. Alapértelmezett érték false.
 - `add(SimpleXMLElement $xml [, $operation = "CREATE"])`: Számla XML hozzáadása a listához
 - `getTechnicalAnnulment()`

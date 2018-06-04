@@ -3,8 +3,9 @@
 include("config.php");
 
 
+// Az `add()` metódus hívásakor az átadott XML-ek validálva lesznek. (Hiba esetén `XsdValidationError` exception lesz dobva).
+
 $invoices = new NavOnlineInvoice\InvoiceOperations();
-$invoices->useDataSchemaValidation();
 
 
 try {

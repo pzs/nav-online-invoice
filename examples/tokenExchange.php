@@ -5,7 +5,7 @@ include("config.php");
 
 try {
     $config = new NavOnlineInvoice\Config($apiUrl, $userDataFilename);
-    $config->useApiSchemaValidation();
+    $config->setCurlTimeout(5); // másodperc
     $reporter = new NavOnlineInvoice\Reporter($config);
 
     $token = $reporter->tokenExchange();

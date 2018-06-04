@@ -3,7 +3,7 @@
 # Projekt: Magyar Online Számla Rendszer invoiceData XML XSD séma
 # Author: NAV Informatikai Intézet
 
-# Version: v1.0 2018/04/19
+# Version: v1.0 2018/05/30
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.nav.gov.hu/OSA/1.0/data" targetNamespace="http://schemas.nav.gov.hu/OSA/1.0/data" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:simpleType name="AnnulmentCodeType">
@@ -516,8 +516,7 @@
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1"/>
 			<xs:maxLength value="15"/>
-			<xs:whiteSpace value="collapse"/>
-			<xs:pattern value=".*\S.*"/>
+			<xs:pattern value=".*[^\s].*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="SimpleText50NotBlankType">
@@ -528,8 +527,17 @@
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1"/>
 			<xs:maxLength value="50"/>
-			<xs:whiteSpace value="collapse"/>
-			<xs:pattern value=".*\S.*"/>
+			<xs:pattern value=".*[^\s].*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SimpleText100NotBlankType">
+		<xs:annotation>
+			<xs:documentation>Legfeljebb 100 karaktert tartalmazó szöveg típus</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="100"/>
+			<xs:pattern value=".*[^\s].*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="SimpleText200NotBlankType">
@@ -540,8 +548,7 @@
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1"/>
 			<xs:maxLength value="200"/>
-			<xs:whiteSpace value="collapse"/>
-			<xs:pattern value=".*\S.*"/>
+			<xs:pattern value=".*[^\s].*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="SimpleText255NotBlankType">
@@ -552,8 +559,7 @@
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1"/>
 			<xs:maxLength value="255"/>
-			<xs:whiteSpace value="collapse"/>
-			<xs:pattern value=".*\S.*"/>
+			<xs:pattern value=".*[^\s].*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="SimpleText512NotBlankType">
@@ -564,8 +570,7 @@
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1"/>
 			<xs:maxLength value="512"/>
-			<xs:whiteSpace value="collapse"/>
-			<xs:pattern value=".*\S.*"/>
+			<xs:pattern value=".*[^\s].*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="SimpleText1024NotBlankType">
@@ -576,8 +581,7 @@
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1"/>
 			<xs:maxLength value="1024"/>
-			<xs:whiteSpace value="collapse"/>
-			<xs:pattern value=".*\S.*"/>
+			<xs:pattern value=".*[^\s].*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TakeoverType">
@@ -1033,7 +1037,7 @@
 					<xs:documentation xml:lang="en">Date of accounting accomplishment. In the event of a period, the last day of the period</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="currencyCode" type="CurrencyType" default="HUF">
+			<xs:element name="currencyCode" type="CurrencyType">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">A számla pénzneme az ISO 4217 szabvány szerint</xs:documentation>
 					<xs:documentation xml:lang="en">ISO 4217 currency code on the invoice</xs:documentation>
@@ -1679,14 +1683,14 @@
 			</xs:element>
 			<xs:element name="productFeeRate" type="MonetaryType">
 				<xs:annotation>
-					<xs:documentation xml:lang="hu">A visszaigényléssel érintett termékdíj díjtétele (HUF/egység)</xs:documentation>
-					<xs:documentation xml:lang="en">Product fee rate affected with refund claim (HUF / unit)</xs:documentation>
+					<xs:documentation xml:lang="hu">A termékdíj díjtétele (HUF/egység)</xs:documentation>
+					<xs:documentation xml:lang="en">Product fee rate (HUF/unit)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="productFeeAmount" type="MonetaryType">
 				<xs:annotation>
-					<xs:documentation xml:lang="hu">A visszaigényléssel érintett termékdíj összege forintban</xs:documentation>
-					<xs:documentation xml:lang="en">Amount in Hungarian forints of the product fee affected with refund claim</xs:documentation>
+					<xs:documentation xml:lang="hu">Termékdíj összege forintban</xs:documentation>
+					<xs:documentation xml:lang="en">Amount in Hungarian forints of the product fee</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>

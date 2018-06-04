@@ -3,7 +3,7 @@
 # Projekt: Magyar Online Számla Rendszer invoiceApi XML XSD séma
 # Author: NAV Informatikai Intézet
 
-# Version: v1.0 2018/04/19
+# Version: v1.0 2018/05/30
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.nav.gov.hu/OSA/1.0/api" xmlns:data="http://schemas.nav.gov.hu/OSA/1.0/data" targetNamespace="http://schemas.nav.gov.hu/OSA/1.0/api" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:import namespace="http://schemas.nav.gov.hu/OSA/1.0/data" schemaLocation="invoiceData.xsd"/>
@@ -13,16 +13,22 @@
 			<xs:documentation xml:lang="en">Business result code type</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
+			<xs:enumeration value="ERROR">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Hiba</xs:documentation>
+					<xs:documentation xml:lang="en">Error</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="WARN">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">Figyelmeztetés</xs:documentation>
 					<xs:documentation xml:lang="en">Warn</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="ERROR">
+			<xs:enumeration value="INFO">
 				<xs:annotation>
-					<xs:documentation xml:lang="hu">Hiba</xs:documentation>
-					<xs:documentation xml:lang="en">Error</xs:documentation>
+					<xs:documentation xml:lang="hu">Tájékoztatás</xs:documentation>
+					<xs:documentation xml:lang="en">Information</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -48,12 +54,6 @@
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">Sikeres művelet</xs:documentation>
 					<xs:documentation xml:lang="en">Successful operation</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="WARN">
-				<xs:annotation>
-					<xs:documentation xml:lang="hu">Figyelmeztetés</xs:documentation>
-					<xs:documentation xml:lang="en">Warn</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="ERROR">
@@ -288,16 +288,16 @@
 			<xs:documentation xml:lang="en">Technical result code type</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="ERROR">
-				<xs:annotation>
-					<xs:documentation xml:lang="hu">Hiba</xs:documentation>
-					<xs:documentation xml:lang="en">Error</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
 			<xs:enumeration value="CRITICAL">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">Kritikus hiba</xs:documentation>
 					<xs:documentation xml:lang="en">Critical error</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ERROR">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Hiba</xs:documentation>
+					<xs:documentation xml:lang="en">Error</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -330,6 +330,12 @@
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">A számla tranzakció azonosítója, ha az gépi interfészen került beküldésre</xs:documentation>
 					<xs:documentation xml:lang="en">Transaction ID of the invoice if it was exchanged via M2M interface</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="index" type="IndexType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A számla sorszáma a kérésen belül</xs:documentation>
+					<xs:documentation xml:lang="en">Sequence number of the invoice within the request</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -456,7 +462,7 @@
 					<xs:documentation xml:lang="en">Validation result</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="validationErrorCode" type="data:SimpleText50NotBlankType" minOccurs="0">
+			<xs:element name="validationErrorCode" type="data:SimpleText100NotBlankType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">Validációs hibakód</xs:documentation>
 					<xs:documentation xml:lang="en">Validation error code</xs:documentation>
@@ -483,10 +489,10 @@
 		<xs:complexContent>
 			<xs:extension base="BasicResponseType">
 				<xs:sequence>
-					<xs:element name="schemaValidationMessages" type="TechnicalValidationResultType" minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="technicalValidationMessages" type="TechnicalValidationResultType" minOccurs="0" maxOccurs="unbounded">
 						<xs:annotation>
-							<xs:documentation xml:lang="hu">Séma validációs üzenetek</xs:documentation>
-							<xs:documentation xml:lang="en">Schema validation messages</xs:documentation>
+							<xs:documentation xml:lang="hu">Technikai validációs üzenetek</xs:documentation>
+							<xs:documentation xml:lang="en">Technical validation messages</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 				</xs:sequence>
@@ -584,6 +590,12 @@
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">Az adatszolgátatás tranzakció azonosítója</xs:documentation>
 					<xs:documentation xml:lang="en">Transaction identifier of the data exchange</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="index" type="IndexType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A számla sorszáma a kérésen belül</xs:documentation>
+					<xs:documentation xml:lang="en">Sequence number of the invoice within the request</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -868,7 +880,7 @@
 			<xs:documentation xml:lang="en">Processing cursor data</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="tag" type="data:SimpleText50NotBlankType" minOccurs="0">
+			<xs:element name="tag" type="data:SimpleText1024NotBlankType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">Tag hivatkozás</xs:documentation>
 					<xs:documentation xml:lang="en">Tag reference</xs:documentation>
@@ -919,10 +931,10 @@
 					<xs:documentation xml:lang="en">Processing status of the invoice</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="schemaValidationMessages" type="TechnicalValidationResultType" minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="technicalValidationMessages" type="TechnicalValidationResultType" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
-					<xs:documentation xml:lang="hu">Séma validációs üzenetek</xs:documentation>
-					<xs:documentation xml:lang="en">Schema validation messages</xs:documentation>
+					<xs:documentation xml:lang="hu">Technikai validációs üzenetek</xs:documentation>
+					<xs:documentation xml:lang="en">Technical validation messages</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="businessValidationMessages" type="BusinessValidationResultType" minOccurs="0" maxOccurs="unbounded">
@@ -1095,10 +1107,16 @@
 			<xs:documentation xml:lang="en">Technical validation response type</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="validationResultCode" type="BusinessResultCodeType">
+			<xs:element name="validationResultCode" type="TechnicalResultCodeType">
 				<xs:annotation>
 					<xs:documentation xml:lang="hu">Validációs eredmény</xs:documentation>
 					<xs:documentation xml:lang="en">Validation result</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validationErrorCode" type="data:SimpleText100NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Validációs hibakód</xs:documentation>
+					<xs:documentation xml:lang="en">Validation error code</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="message" type="data:SimpleText1024NotBlankType" minOccurs="0">

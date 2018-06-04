@@ -11,7 +11,7 @@ class InvoiceOperations {
     public $invoices;
     public $technicalAnnulment = false;
     protected $index;
-    protected $schemaValidation = false;
+    protected $schemaValidation = true;
 
 
     /**
@@ -43,11 +43,6 @@ class InvoiceOperations {
     }
 
 
-    protected function getXsdFilename() {
-        return __DIR__ . "/xsd/invoiceData.xsd";
-    }
-
-
     /**
      * Számla ('szakmai XML') hozzáadása
      *
@@ -59,7 +54,7 @@ class InvoiceOperations {
 
         // XSD validálás
         if ($this->schemaValidation) {
-            Xsd::validate($xml->asXML(), $this->getXsdFilename());
+            Xsd::validate($xml->asXML(), Config::getDataXsdFilename());
         }
 
         // TODO: ezt esetleg átmozgatni a Reporter vagy ManageInvoiceRequestXml osztályba?
@@ -97,6 +92,24 @@ class InvoiceOperations {
     protected function convertXml($xml) {
         $xml = $xml->asXML();
         return base64_encode($xml);
+    }
+
+
+    /**
+     * Egy darab számla XML-t átadva visszaad egy InvoiceOperations példányt,
+     * amit a Reporter::manageInvoice metódusa fogad paraméterben
+     *
+     * @param  SimpleXMLElement $xml
+     * @param  string           $operation
+     * @return InvoiceOperations
+     */
+    public static function convertFromXml($xml, $operation) {
+        $invoiceOperations = new self();
+        $invoiceOperations->useDataSchemaValidation();
+
+        $invoiceOperations->add($xml, $operation);
+
+        return $invoiceOperations;
     }
 
 }

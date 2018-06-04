@@ -28,10 +28,24 @@ class Reporter {
      * lehetőség számla, módosító vagy stornó számla adatszolgáltatást, illetve ezek technikai javításait a
      * NAV részére beküldeni.
      *
-     * @param  InvoiceOperations $invoiceOperations
-     * @return String            $transactionId
+     * Első paraméterben át lehet adni egy InvoiceOperations példányt, mely több számlát is tartalmazhat, vagy
+     * át lehet adni közvetlenül egy darab számla SimpleXMLElement példányt.
+     * A második paraméter ($operation) csak és kizárólag akkor játszik szerepet, ha követlenül számla XML-lel
+     * hívjuk ezt a metódust. InvoiceOperations példány esetén az operation-t ez a példány tartalmazza.
+     *
+     * @param  InvoiceOperations|SimpleXMLElement $invoiceOperationsOrXml
+     * @param  String                             $operation
+     * @return String                             $transactionId
      */
-    public function manageInvoice($invoiceOperations) {
+    public function manageInvoice($invoiceOperationsOrXml, $operation = "CREATE") {
+
+        // Ha nem InvoiceOperations példányt adtak át, akkor azzá konvertáljuk
+        if ($invoiceOperationsOrXml instanceof InvoiceOperations) {
+            $invoiceOperations = $invoiceOperationsOrXml;
+        } else {
+            $invoiceOperations = InvoiceOperations::convertFromXml($invoiceOperationsOrXml, $operation);
+        }
+
         $token = $this->tokenExchange();
 
         $requestXml = new ManageInvoiceRequestXml($this->config, $invoiceOperations, $token);
@@ -87,8 +101,8 @@ class Reporter {
      * a megadott adószám valódiságáról és érvényességéről a NAV adatbázisa alapján adatot szolgáltatni.
      *
      * @param  String $taxNumber            Adószám, pattern: [0-9]{8}
-     * @return Boolean|SimpleXMLElement     Invalid adószám esetén `false` a visszatérési érték, valid adószám estén
-     *                                      pedig a válasz XML taxpayerData része (SimpleXMLElement), mely a nevet és címadatokat tartalmazza
+     * @return Boolean|SimpleXMLElement     Nem létező adószám esetén `null`, érvénytelen adószám esetén `false` a visszatérési érték, valid adószám estén
+     *                                      pedig a válasz XML taxpayerData része (SimpleXMLElement), mely a nevet és címadatokat tartalmazza.
      */
     public function queryTaxpayer($taxNumber) {
         $requestXml = new QueryTaxpayerRequestXml($this->config, $taxNumber);
@@ -97,10 +111,15 @@ class Reporter {
         // 1.9.4.2 fejezet alapján (QueryTaxpayerResponse) a taxpayerValidity tag csak akkor kerül a válaszba, ha a lekérdezett adószám létezik.
         // Nem létező adószámra csak egy <funcCode>OK</funcCode> kerül visszaadásra (funcCode===OK megléte a Connector-ban ellenőrizve van).
         if (!isset($responseXml->taxpayerValidity)) {
+            return null;
+        }
+
+        // taxpayerValidity értéke lehet false is, ha az adószám létezik, de nem érvényes
+        if (empty($responseXml->taxpayerValidity) or $responseXml->taxpayerValidity === "false") {
             return false;
         }
 
-        // Az adószám valid, címadatok visszaadása
+        // Az adószám valid, adózó adatainak visszaadása
         return $responseXml->taxpayerData;
     }
 
@@ -128,6 +147,23 @@ class Reporter {
 
     protected function decodeToken($encodedToken) {
         return Util::aes128_decrypt($encodedToken, $this->config->user["exchangeKey"]);
+    }
+
+
+    /**
+     * Paraméterben átadott adat XML-t validálja az XSD-vel és hiba esetén string-ként visszaadja a hibát.
+     * Ha nincs hiba, akkor visszatérési érték `null`.
+     *
+     * @param  SimpleXMLElement $xml   Számla XML
+     * @return null|string             Hibaüzenet, vagy `null`, ha helyes az XML
+     */
+    public static function getInvoiceValidationError($xml) {
+        try {
+            Xsd::validate($xml->asXML(), Config::getDataXsdFilename());
+        } catch(XsdValidationError $ex) {
+            return $ex->getMessage();
+        }
+        return null;
     }
 
 }
