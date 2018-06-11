@@ -97,6 +97,12 @@ try {
 
 Több számla egyszerre való feladásához lásd a [manageInvoice.php](examples/manageInvoice.php) példát.
 
+:information_source: _Oké, beküldtem a számlát, de mit csináljak Exception esetén?_ :interrobang:
+
+- Ha `NavOnlineInvoice\XsdValidationError` Exception-t kaptál, akkor valamelyik XML-ben lesz hiba! Lehet a szakmai (számla) XML hibás (bár ezt már számlakészítéskor is célszerű ellenőrizni), de a boríték XML is lehet hibás (pl. megadtad a software adatokat, de rossz a formátuma). Fontos megjegyezni, hogy ez az Exception még a küldés előtt jön a nav-online-invoice által generálva.
+- Ha `NavOnlineInvoice\CurlError` vagy `NavOnlineInvoice\HttpResponseError` Exception-t kaptál, akkor mindenképp próbáld újraküldeni a számlát pár perc múlva, mert lehet csak épp nincs interneted, vagy a NAV szervere nem elérhető, válaszol furcsaságokat.
+- Más egyéb Exception esetén (`NavOnlineInvoice\GeneralExceptionResponse`, `NavOnlineInvoice\GeneralErrorResponse` és `\Exception`) valószínűleg felesleges az újrapróbálkozás, naplózd és ellenőrizd a hibaüzenetet (`$ex->getMessage()`)!
+
 
 ### Státusz lekérdezése (`queryInvoiceStatus`)
 
