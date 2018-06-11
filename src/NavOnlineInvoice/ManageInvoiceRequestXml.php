@@ -12,7 +12,7 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
     /**
      * @param Config $config
      * @param InvoiceOperations $invoiceOperations
-     * @param String $token
+     * @param string $token
      */
     function __construct($config, $invoiceOperations, $token) {
         $this->invoiceOperations = $invoiceOperations;
