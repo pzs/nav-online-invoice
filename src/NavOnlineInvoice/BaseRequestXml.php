@@ -1,15 +1,13 @@
 <?php
 
 namespace NavOnlineInvoice;
-use SimpleXMLElement;
-
 
 class BaseRequestXml {
 
     protected $rootName;
     protected $config;
 	/**
-	 * @var SimpleXMLElement
+	 * @var \SimpleXMLElement
 	 */
 	protected $xml;
 
@@ -80,7 +78,7 @@ class BaseRequestXml {
 
 
     protected function createXmlObject() {
-        $this->xml = new SimpleXMLElement($this->getInitialXmlString());
+        $this->xml = new \SimpleXMLElement($this->getInitialXmlString());
     }
 
 
