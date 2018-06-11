@@ -210,7 +210,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 
 - `__construct(Config $config)`
-- `manageInvoice($invoiceOperationsOrXml [, $operation])`: A számla beküldésére szolgáló operáció. Visszatérési értékként a `transactionId`-t adja vissza string-ként. Paraméterben át lehet adni vagy egy darab `SimpleXMLElement` példányt, ami a számlát tartalmazza, vagy egy `InvoiceOperations` példányt, ami több számlát is tartalmazhat. Lásd a példa fájlokat.
+- `manageInvoice($invoiceOperationsOrXml [, $operation])`: A számla beküldésére szolgáló operáció. Visszatérési értékként a `transactionId`-t adja vissza string-ként. Paraméterben át lehet adni vagy egy darab `SimpleXMLElement` példányt, ami a számlát tartalmazza, vagy egy `InvoiceOperations` példányt, ami több számlát is tartalmazhat. A `technicalAnnulment` flag értéke automatikusan felismert és beállításra kerül az `operation` értékéből. Lásd a példa fájlokat.
 - `queryInvoiceData(string $queryType, array $queryData [, int $page = 1])`: A számla adatszolgáltatások lekérdezésére szolgáló operáció
 - `queryInvoiceStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
 - `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `null` nem létező adószám esetén, `false` érvénytelen adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
@@ -223,7 +223,6 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 - `__construct()`
 - `useDataSchemaValidation([$flag = true])`: Számla adat hozzáadásakor az XML-t (szakmai XML) validálja az XSD-vel. Alapértelmezetten be van kapcsolva a validáció.
-- `setTechnicalAnnulment([$technicalAnnulment = true])`: `technicalAnnulment` flag állítása. Alapértelmezett érték false.
 - `add(SimpleXMLElement $xml [, $operation = "CREATE"])`: Számla XML hozzáadása a listához
 - `getTechnicalAnnulment()`
 - `getInvoices()`
