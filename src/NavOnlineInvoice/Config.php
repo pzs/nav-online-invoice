@@ -14,15 +14,14 @@ class Config {
 
     public $validateApiSchema = false;
     public $apiSchemaFilename;
-
-
-    /**
-     * NavOnlineInvoice Reporter osztály számára szükséges konfigurációs objektum készítése
-     *
-     * @param String       $baseUrl     NAV API URL
-     * @param Array|String $user        User data array vagy json fájlnév
-     * @param Array|String $software    Software data array vagy json fájlnév
-     */
+	/**
+	 * NavOnlineInvoice Reporter osztály számára szükséges konfigurációs objektum készítése
+	 *
+	 * @param string       $baseUrl  NAV API URL
+	 * @param array|string $user     User data array vagy json fájlnév
+	 * @param array|string $software Software data array vagy json fájlnév
+	 * @throws \Exception
+	 */
     function __construct($baseUrl, $user, $software = null) {
 
         $this->apiSchemaFilename = __DIR__ . "/xsd/invoiceApi.xsd";
@@ -59,7 +58,7 @@ class Config {
      * Teszt: https://api-test.onlineszamla.nav.gov.hu/invoiceService
      * Éles: https://api.onlineszamla.nav.gov.hu/invoiceService
      *
-     * @param String $baseUrl  NAV eléréséhez használt környezet
+     * @param string $baseUrl  NAV eléréséhez használt környezet
      */
     public function setBaseUrl($baseUrl) {
         $this->baseUrl = $baseUrl;
@@ -78,7 +77,7 @@ class Config {
 
     /**
      *
-     * @param Array $data
+     * @param array $data
      */
     public function setSoftware($data) {
         $this->software = $data;
@@ -87,7 +86,7 @@ class Config {
 
     /**
      *
-     * @param  String $jsonFile JSON file name
+     * @param  string $jsonFile JSON file name
      */
     public function loadSoftware($jsonFile) {
         $data = $this->loadJsonFile($jsonFile);
@@ -97,7 +96,7 @@ class Config {
 
     /**
      *
-     * @param Array $data
+     * @param array $data
      */
     public function setUser($data) {
         $this->user = $data;
@@ -106,20 +105,19 @@ class Config {
 
     /**
      *
-     * @param  String $jsonFile JSON file name
+     * @param  string $jsonFile JSON file name
      */
     public function loadUser($jsonFile) {
         $data = $this->loadJsonFile($jsonFile);
         $this->setUser($data);
     }
-
-
-    /**
-     * JSON fájl betöltése
-     *
-     * @param  String $jsonFile
-     * @return Array
-     */
+	/**
+	 * JSON fájl betöltése
+	 *
+	 * @param  string $jsonFile
+	 * @return array
+	 * @throws \Exception
+	 */
     protected function loadJsonFile($jsonFile) {
         if (!file_exists($jsonFile)) {
             throw new Exception("A megadott json fájl nem létezik: $jsonFile");

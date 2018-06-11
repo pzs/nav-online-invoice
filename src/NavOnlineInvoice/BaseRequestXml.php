@@ -1,15 +1,16 @@
 <?php
 
 namespace NavOnlineInvoice;
-use SimpleXMLElement;
 
 
 class BaseRequestXml {
 
     protected $rootName;
     protected $config;
-
-    protected $xml;
+	/**
+	 * @var \SimpleXMLElement
+	 */
+	protected $xml;
 
     protected $requestId;
     protected $timestamp;
@@ -18,7 +19,7 @@ class BaseRequestXml {
     /**
      * Request XML készítése
      *
-     * @param String $rootName  Root XML elem neve
+     * @param string $rootName  Root XML elem neve
      * @param Config $config    Konfigurációt tartalmazó objektum
      */
     function __construct($rootName, $config) {
@@ -53,7 +54,7 @@ class BaseRequestXml {
      *
      * Pattern: [+a-zA-Z0-9_]{1,30}
      *
-     * @return String
+     * @return string
      */
     protected function generateRequestId() {
         $id = "RID" . microtime() . mt_rand(10000, 99999);
@@ -66,7 +67,7 @@ class BaseRequestXml {
     /**
      * A kérés kliens oldali időpontja UTC-ben, ezredmásodperccel
      *
-     * @return String
+     * @return string
      */
     protected function getTimestamp() {
         $now = microtime(true);
@@ -77,7 +78,7 @@ class BaseRequestXml {
 
 
     protected function createXmlObject() {
-        $this->xml = new SimpleXMLElement($this->getInitialXmlString());
+        $this->xml = new \SimpleXMLElement($this->getInitialXmlString());
     }
 
 
@@ -164,7 +165,7 @@ class BaseRequestXml {
     /**
      * XML objektum lekérése
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function getXML() {
         return $this->xml;
@@ -174,7 +175,7 @@ class BaseRequestXml {
     /**
      * XML adat lekérése string-ként
      *
-     * @return String
+     * @return string
      */
     public function asXML() {
         return $this->xml->asXML();
