@@ -8,8 +8,15 @@ class InvoiceOperations {
 
     const MAX_INVOICE_COUNT = 100;
 
-    public $invoices;
-    public $technicalAnnulment = false;
+    protected $invoices;
+
+    /**
+     * Az automatikusan felismert technicalAnnulment értéke az első hozzáadott számla alapján.
+     * `null` esetén még nincs számla hozzáadva
+     *
+     * @var bool|null
+     */
+    protected $detectedTechnicalAnnulment = null;
     protected $index;
     protected $schemaValidation = true;
 
@@ -34,12 +41,17 @@ class InvoiceOperations {
 
 
     /**
-     * Technical annulment flag beállítása
+     * A setTechnicalAnnulment() metódus deprecated v0.6.0-ás verziótól.
+     * A technicalAnnulment mező értéke mostantól automatikusan felismert a számlák
+     * operation értékéből, így ezt külön nem kell beállítani.
      *
+     * @deprecated
      * @param boolean $technicalAnnulment
      */
     public function setTechnicalAnnulment($technicalAnnulment = true) {
-        $this->technicalAnnulment = $technicalAnnulment;
+        trigger_error("A setTechnicalAnnulment() metódus deprecated v0.6.0-ás verziótól. "
+            . "A technicalAnnulment mező értéke mostantól automatikusan felismert a számlák "
+            . "operation értékéből, így ezt külön nem kell beállítani.", E_USER_DEPRECATED);
     }
 
 
@@ -64,6 +76,9 @@ class InvoiceOperations {
             throw new Exception("Maximum " . self::MAX_INVOICE_COUNT . " számlát lehet egyszerre elküldeni!");
         }
 
+        // Technical annulment flag beállítása és ellenőrzése
+        $this->detectTechnicalAnnulment($operation);
+
         $idx = $this->index;
         $this->index++;
 
@@ -77,8 +92,34 @@ class InvoiceOperations {
     }
 
 
+    /**
+     * A felismert technicalAnnulment értékének lekérdezése.
+     * Ha még nem adtunk hozzá számlát, akkor hibát fog dobni.
+     *
+     * @return bool       technicalAnnulment
+     * @throws  Exception
+     */
     public function getTechnicalAnnulment() {
-        return $this->technicalAnnulment;
+        if (!$this->invoices) {
+            throw new Exception("Még nincs számla hozzáadva, így a technicalAnnulment értéke nem megállapítható!");
+        }
+
+        return $this->detectedTechnicalAnnulment;
+    }
+
+
+    protected function detectTechnicalAnnulment($operation) {
+        $currentFlag = ($operation === 'ANNUL');
+
+        // Ha még nincs beállítva, akkor beállítjuk
+        if (is_null($this->detectedTechnicalAnnulment)) {
+            $this->detectedTechnicalAnnulment = $currentFlag;
+        }
+
+        // Ha a korábban beállított nem egyezik az aktuálissal, akkor hiba dobása (NAV nem fogadja el)
+        if ($this->detectedTechnicalAnnulment !== $currentFlag) {
+            throw new Exception("Az egyszerre feladott számlák nem tartalmazhatnak vegyesen ANNUL, illetve ettől eltérő operation értéket!");
+        }
     }
 
 

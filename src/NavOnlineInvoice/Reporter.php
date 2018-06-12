@@ -31,6 +31,8 @@ class Reporter {
      * A második paraméter ($operation) csak és kizárólag akkor játszik szerepet, ha követlenül számla XML-lel
      * hívjuk ezt a metódust. InvoiceOperations példány esetén az operation-t ez a példány tartalmazza.
      *
+     * A `technicalAnnulment` flag értéke automatikusan felismert és beállításra kerül az `operation` értékéből.
+     *
      * @param  InvoiceOperations|\SimpleXMLElement $invoiceOperationsOrXml
      * @param  string                             $operation
      * @return string                             $transactionId

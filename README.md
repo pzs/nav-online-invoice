@@ -100,7 +100,7 @@ Több számla egyszerre való feladásához lásd a [manageInvoice.php](examples
 :information_source: _Oké, beküldtem a számlát, de mit csináljak Exception esetén?_ :interrobang:
 
 - Ha `NavOnlineInvoice\XsdValidationError` Exception-t kaptál, akkor valamelyik XML-ben lesz hiba! Lehet a szakmai (számla) XML hibás (bár ezt már számlakészítéskor is célszerű ellenőrizni), de a boríték XML is lehet hibás (pl. megadtad a software adatokat, de rossz a formátuma). Fontos megjegyezni, hogy ez az Exception még a küldés előtt jön a nav-online-invoice által generálva.
-- Ha `NavOnlineInvoice\CurlError` vagy `NavOnlineInvoice\HttpResponseError` Exception-t kaptál, akkor mindenképp próbáld újraküldeni a számlát pár perc múlva, mert lehet csak épp nincs interneted, vagy a NAV szervere nem elérhető, válaszol furcsaságokat.
+- Ha `NavOnlineInvoice\CurlError` vagy `NavOnlineInvoice\HttpResponseError` Exception-t kaptál, akkor mindenképp próbáld újraküldeni a számlát pár perc múlva, mert lehet csak épp nincs interneted, vagy a NAV szervere nem elérhető/furcsaságokat válaszol.
 - Más egyéb Exception esetén (`NavOnlineInvoice\GeneralExceptionResponse`, `NavOnlineInvoice\GeneralErrorResponse` és `\Exception`) valószínűleg felesleges az újrapróbálkozás, naplózd és ellenőrizd a hibaüzenetet (`$ex->getMessage()`)!
 
 
@@ -216,7 +216,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 
 - `__construct(Config $config)`
-- `manageInvoice($invoiceOperationsOrXml [, $operation])`: A számla beküldésére szolgáló operáció. Visszatérési értékként a `transactionId`-t adja vissza string-ként. Paraméterben át lehet adni vagy egy darab `SimpleXMLElement` példányt, ami a számlát tartalmazza, vagy egy `InvoiceOperations` példányt, ami több számlát is tartalmazhat. Lásd a példa fájlokat.
+- `manageInvoice($invoiceOperationsOrXml [, $operation])`: A számla beküldésére szolgáló operáció. Visszatérési értékként a `transactionId`-t adja vissza string-ként. Paraméterben át lehet adni vagy egy darab `SimpleXMLElement` példányt, ami a számlát tartalmazza, vagy egy `InvoiceOperations` példányt, ami több számlát is tartalmazhat. A `technicalAnnulment` flag értéke automatikusan felismert és beállításra kerül az `operation` értékéből. Lásd a példa fájlokat.
 - `queryInvoiceData(string $queryType, array $queryData [, int $page = 1])`: A számla adatszolgáltatások lekérdezésére szolgáló operáció
 - `queryInvoiceStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
 - `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `null` nem létező adószám esetén, `false` érvénytelen adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
@@ -229,7 +229,6 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 - `__construct()`
 - `useDataSchemaValidation([$flag = true])`: Számla adat hozzáadásakor az XML-t (szakmai XML) validálja az XSD-vel. Alapértelmezetten be van kapcsolva a validáció.
-- `setTechnicalAnnulment([$technicalAnnulment = true])`: `technicalAnnulment` flag állítása. Alapértelmezett érték false.
 - `add(SimpleXMLElement $xml [, $operation = "CREATE"])`: Számla XML hozzáadása a listához
 - `getTechnicalAnnulment()`
 - `getInvoices()`
