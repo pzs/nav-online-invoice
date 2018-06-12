@@ -6,10 +6,11 @@ class BaseRequestXml {
 
     protected $rootName;
     protected $config;
-	/**
-	 * @var \SimpleXMLElement
-	 */
-	protected $xml;
+
+    /**
+     * @var \SimpleXMLElement
+     */
+    protected $xml;
 
     protected $requestId;
     protected $timestamp;

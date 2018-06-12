@@ -41,14 +41,16 @@ class InvoiceOperations {
     public function setTechnicalAnnulment($technicalAnnulment = true) {
         $this->technicalAnnulment = $technicalAnnulment;
     }
-	/**
-	 * Számla ('szakmai XML') hozzáadása
-	 *
-	 * @param \SimpleXMLElement $xml       Számla adatai (szakmai XML)
-	 * @param string            $operation Számlaművelet Enum(CREATE, MODIFY, STORNO, ANNUL)
-	 * @return int                      A beszúrt művelet sorszáma (index)
-	 * @throws \Exception
-	 */
+
+
+    /**
+     * Számla ('szakmai XML') hozzáadása
+     *
+     * @param \SimpleXMLElement $xml       Számla adatai (szakmai XML)
+     * @param string            $operation Számlaművelet Enum(CREATE, MODIFY, STORNO, ANNUL)
+     * @return int                      A beszúrt művelet sorszáma (index)
+     * @throws \Exception
+     */
     public function add(\SimpleXMLElement $xml, $operation = "CREATE") {
 
         // XSD validálás
@@ -83,11 +85,13 @@ class InvoiceOperations {
     public function getInvoices() {
         return $this->invoices;
     }
-	/**
-	 * XML objektum konvertálása base64-es szöveggé
-	 * @param \SimpleXMLElement $xml
-	 * @return string
-	 */
+
+
+    /**
+     * XML objektum konvertálása base64-es szöveggé
+     * @param \SimpleXMLElement $xml
+     * @return string
+     */
     protected function convertXml(\SimpleXMLElement $xml) {
         $xml = $xml->asXML();
         return base64_encode($xml);

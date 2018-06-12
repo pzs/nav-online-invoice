@@ -15,16 +15,18 @@ class Connector {
     function __construct($config) {
         $this->config = $config;
     }
-	/**
-	 *
-	 * @param  string                   $url
-	 * @param  string|\SimpleXMLElement $requestXml
-	 * @return \SimpleXMLElement
-	 * @throws \NavOnlineInvoice\CurlError
-	 * @throws \NavOnlineInvoice\HttpResponseError
-	 * @throws \NavOnlineInvoice\GeneralExceptionResponse
-	 * @throws \NavOnlineInvoice\GeneralErrorResponse
-	 */
+
+
+    /**
+     *
+     * @param  string                   $url
+     * @param  string|\SimpleXMLElement $requestXml
+     * @return \SimpleXMLElement
+     * @throws \NavOnlineInvoice\CurlError
+     * @throws \NavOnlineInvoice\HttpResponseError
+     * @throws \NavOnlineInvoice\GeneralExceptionResponse
+     * @throws \NavOnlineInvoice\GeneralErrorResponse
+     */
     public function post($url, $requestXml) {
 
         $url = $this->config->baseUrl . $url;

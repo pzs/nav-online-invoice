@@ -15,14 +15,16 @@ class Config {
     public $validateApiSchema = true;
 
     public $curlTimeout = null;
-	/**
-	 * NavOnlineInvoice Reporter osztály számára szükséges konfigurációs objektum készítése
-	 *
-	 * @param string       $baseUrl  NAV API URL
-	 * @param array|string $user     User data array vagy json fájlnév
-	 * @param array|string $software Software data array vagy json fájlnév
-	 * @throws \Exception
-	 */
+
+
+    /**
+     * NavOnlineInvoice Reporter osztály számára szükséges konfigurációs objektum készítése
+     *
+     * @param string       $baseUrl  NAV API URL
+     * @param array|string $user     User data array vagy json fájlnév
+     * @param array|string $software Software data array vagy json fájlnév
+     * @throws \Exception
+     */
     function __construct($baseUrl, $user, $software = null) {
 
         if (!$baseUrl) {
@@ -110,13 +112,15 @@ class Config {
         $data = $this->loadJsonFile($jsonFile);
         $this->setUser($data);
     }
-	/**
-	 * JSON fájl betöltése
-	 *
-	 * @param  string $jsonFile
-	 * @return array
-	 * @throws \Exception
-	 */
+
+
+    /**
+     * JSON fájl betöltése
+     *
+     * @param  string $jsonFile
+     * @return array
+     * @throws \Exception
+     */
     protected function loadJsonFile($jsonFile) {
         if (!file_exists($jsonFile)) {
             throw new Exception("A megadott json fájl nem létezik: $jsonFile");
