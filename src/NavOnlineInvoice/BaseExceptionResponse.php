@@ -24,7 +24,7 @@ abstract class BaseExceptionResponse extends Exception {
 
     /**
      * Return the result field of the XML in array format
-     * @return Array
+     * @return array
      */
     abstract public function getResult();
 

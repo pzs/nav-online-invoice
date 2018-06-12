@@ -9,6 +9,14 @@ class QueryInvoiceDataRequestXml extends BaseRequestXml {
     private static $queryTypes = array("invoiceQuery", "queryParams");
 
 
+    /**
+     * QueryInvoiceDataRequestXml constructor.
+     * @param $config
+     * @param $queryType
+     * @param $queryData
+     * @param $page
+     * @throws \Exception
+     */
     function __construct($config, $queryType, $queryData, $page) {
         if (!in_array($queryType, self::$queryTypes)) {
             throw new Exception("Érvénytelen queryType: $queryType");
@@ -25,7 +33,7 @@ class QueryInvoiceDataRequestXml extends BaseRequestXml {
     }
 
 
-    protected function addQueryData($xmlNode, $type, $data) {
+    protected function addQueryData(\SimpleXMLElement $xmlNode, $type, $data) {
         $node = $xmlNode->addChild($type);
 
         foreach ($data as $key => $value) {
