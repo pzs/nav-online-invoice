@@ -3,7 +3,7 @@
 # Projekt: Magyar Online Számla Rendszer invoiceData XML XSD séma
 # Author: NAV Informatikai Intézet
 
-# Version: v1.0 2018/05/30
+# Version: v1.0 2018/06/13
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.nav.gov.hu/OSA/1.0/data" targetNamespace="http://schemas.nav.gov.hu/OSA/1.0/data" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:simpleType name="AnnulmentCodeType">
@@ -45,7 +45,6 @@
 		<xs:restriction base="xs:string">
 			<xs:minLength value="4"/>
 			<xs:maxLength value="15"/>
-			<xs:whiteSpace value="collapse"/>
 			<xs:pattern value="[A-Z]{2}[0-9A-Z]{2,13}"/>
 		</xs:restriction>
 	</xs:simpleType>
