@@ -16,10 +16,10 @@ try {
             "transactionId" => "string"
         ]
     ];
-    $responseXml = $reporter->queryInvoiceData("queryParams", $queryData);
+    $queryResults = $reporter->queryInvoiceData("queryParams", $queryData);
 
-    print "Válasz XML objektum:\n";
-    var_dump($responseXml);
+    print "Query results XML elem:\n";
+    var_dump($queryResults);
 
 } catch(Exception $ex) {
     print get_class($ex) . ": " . $ex->getMessage();

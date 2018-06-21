@@ -127,25 +127,24 @@ try {
 
 Beküldött számlák lekérdezése/keresése.
 
-:warning: Ezt az interfészt még tesztelni (és szükség szerint javítani) kell.
-
-
 ```php
 try {
     $queryData = [
         "invoiceNumber" => "T20190001",
         "requestAllModification" => true
     ];
-    $responseXml = $reporter->queryInvoiceData("invoiceQuery", $queryData);
+    $queryResults = $reporter->queryInvoiceData("invoiceQuery", $queryData);
 
-    print "Válasz XML objektum:\n";
-    var_dump($responseXml);
+    print "Query results XML elem:\n";
+    var_dump($queryResults);
 
 } catch(Exception $ex) {
     print get_class($ex) . ": " . $ex->getMessage();
 }
 
 ```
+
+Lásd a másik példát is: [queryInvoiceData_queryParams.php](examples/queryInvoiceData_queryParams.php).
 
 
 ### Számla (szakmai) XML validálása küldés nélkül
@@ -217,7 +216,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 - `__construct(Config $config)`
 - `manageInvoice($invoiceOperationsOrXml [, $operation])`: A számla beküldésére szolgáló operáció. Visszatérési értékként a `transactionId`-t adja vissza string-ként. Paraméterben át lehet adni vagy egy darab `SimpleXMLElement` példányt, ami a számlát tartalmazza, vagy egy `InvoiceOperations` példányt, ami több számlát is tartalmazhat. A `technicalAnnulment` flag értéke automatikusan felismert és beállításra kerül az `operation` értékéből. Lásd a példa fájlokat.
-- `queryInvoiceData(string $queryType, array $queryData [, int $page = 1])`: A számla adatszolgáltatások lekérdezésére szolgáló operáció
+- `queryInvoiceData(string $queryType, array $queryData [, int $page = 1])`: A számla adatszolgáltatások lekérdezésére szolgáló operáció, visszatérési értéke a visszakapott XML `queryResults` része (`SimpleXMLElement` példány)
 - `queryInvoiceStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
 - `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `null` nem létező adószám esetén, `false` érvénytelen adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
 - `tokenExchange()`: Token kérése manageInvoice művelethez (közvetlen használata nem szükséges, viszont lehet használni, mint teszt hívás). Visszatérési értékként a dekódolt tokent adja vissza string-ként.
@@ -262,7 +261,6 @@ Szükséges modulok:
 
 ## TODO
 
-- Műveletek (queryTaxpayer, queryInvoiceData) manuális tesztelése, amint elérhető lesz az interfész a NAV szerverén
 - További tesztek írása, ami a NAV szerverét is meghívja teszt közben
 
 

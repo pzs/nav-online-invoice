@@ -11,10 +11,10 @@ try {
         "invoiceNumber" => "T20190001",
         "requestAllModification" => true
     ];
-    $responseXml = $reporter->queryInvoiceData("invoiceQuery", $queryData);
+    $queryResults = $reporter->queryInvoiceData("invoiceQuery", $queryData);
 
-    print "Válasz XML objektum:\n";
-    var_dump($responseXml);
+    print "Query results XML elem:\n";
+    var_dump($queryResults);
 
 } catch(Exception $ex) {
     print get_class($ex) . ": " . $ex->getMessage();
