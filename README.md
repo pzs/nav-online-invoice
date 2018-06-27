@@ -21,7 +21,7 @@ Technikai felhasználó (és szoftver) adatok beállítása, Reporter példány 
 ```php
 $apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService";
 $config = new NavOnlineInvoice\Config($apiUrl, "userData.json");
-$config->setCurlTimeout(20); // 20 másodperces cURL timeout (NAV szerver hívásnál), opcionális
+$config->setCurlTimeout(70); // 70 másodperces cURL timeout (NAV szerver hívásnál), opcionális
 
 $reporter = new NavOnlineInvoice\Reporter($config);
 
