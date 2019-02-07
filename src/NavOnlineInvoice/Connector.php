@@ -3,7 +3,7 @@
 namespace NavOnlineInvoice;
 
 
-class Connector {
+class Connector implements ConnectorInterface {
 
     protected $config;
 

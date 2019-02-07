@@ -20,6 +20,18 @@ class Reporter {
 
 
     /**
+     * Egyedi connector osztály beállítása.
+     * Alap esetben a beépített Connectort használjuk.
+     * A tesztelést is megkönnyíti, hiszen így a Connector osztály mockolható.
+     *
+     * @param ConnectorInterface $connector
+     */
+    public function setConnector(ConnectorInterface $connector) {
+        $this->connector = $connector;
+    }
+
+
+    /**
      * manageInvoice operáció (1.9.1 fejezet)
      *
      * A /manageInvoice a számla adatszolgáltatás beküldésére szolgáló operáció, ezen keresztül van
