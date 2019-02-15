@@ -57,7 +57,7 @@ class Reporter {
         } else {
             $invoiceOperations = new InvoiceOperations($this->config);
 
-            $invoiceOperations = $invoiceOperations->add($invoiceOperationsOrXml, $operation);
+            $invoiceOperations->add($invoiceOperationsOrXml, $operation);
         }
 
         $token = $this->tokenExchange();
