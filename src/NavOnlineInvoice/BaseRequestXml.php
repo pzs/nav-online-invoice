@@ -93,7 +93,7 @@ class BaseRequestXml {
 
         $header->addChild("requestId", $this->requestId);
         $header->addChild("timestamp", $this->timestamp);
-        $header->addChild("requestVersion", "1.1");
+        $header->addChild("requestVersion", $this->config->apiVersion);
         $header->addChild("headerVersion", "1.0");
     }
 
@@ -188,7 +188,7 @@ class BaseRequestXml {
      * Hiba esetén XsdValidationError exception-t dob.
      */
     public function validateSchema() {
-        Xsd::validate($this->asXML(), Config::getApiXsdFilename());
+        Xsd::validate($this->asXML(), $this->config->getApiXsdFilename());
     }
 
 }

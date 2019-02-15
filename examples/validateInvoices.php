@@ -2,10 +2,10 @@
 
 include("config.php");
 
-
+$config = new NavOnlineInvoice\Config($apiUrl, $userDataFilename);
 // Az `add()` metódus hívásakor az átadott XML-ek validálva lesznek. (Hiba esetén `XsdValidationError` exception lesz dobva).
 
-$invoices = new NavOnlineInvoice\InvoiceOperations();
+$invoices = new NavOnlineInvoice\InvoiceOperations($config);
 
 
 try {

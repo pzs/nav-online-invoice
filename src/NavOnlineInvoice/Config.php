@@ -13,8 +13,11 @@ class Config {
     public $verifySLL = false;
 
     public $validateApiSchema = true;
+    public $validateDataSchema = true;
 
     public $curlTimeout = null;
+
+    public $apiVersion = '1.0';
 
 
     /**
@@ -73,6 +76,16 @@ class Config {
      */
     public function useApiSchemaValidation($flag = true) {
         $this->validateApiSchema = $flag;
+    }
+
+
+    /**
+     * NAV szerverrel való kommunikáció előtt ellenőrizze az XML adatot az Data sémával szemben
+     *
+     * @param  boolean $flag
+     */
+    public function useDataSchemaValidation($flag = true) {
+        $this->validateDataSchema = $flag;
     }
 
 
@@ -148,13 +161,33 @@ class Config {
     }
 
 
-    public static function getDataXsdFilename() {
-        return __DIR__ . "/xsd/invoiceData.xsd";
+    /**
+     * API verzió beállítása.
+     *
+     * @param string $version
+     */
+    public function setVersion($version) {
+        $this->apiVersion = $version;
     }
 
 
-    public static function getApiXsdFilename() {
-        return __DIR__ . "/xsd/invoiceApi.xsd";
+    /**
+     * API verzió mappa visszaadása.
+     *
+     * @return string
+     */
+    public function getVersionDir() {
+        return str_replace('.', '_', $this->apiVersion);
+    }
+
+
+    public function getDataXsdFilename() {
+        return __DIR__ . '/xsd/' . $this->getVersionDir() . '/invoiceData.xsd';
+    }
+
+
+    public function getApiXsdFilename() {
+        return __DIR__ . '/xsd/' . $this->getVersionDir() . '/invoiceApi.xsd';
     }
 
 }

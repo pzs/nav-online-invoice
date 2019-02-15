@@ -18,25 +18,22 @@ class InvoiceOperations {
      */
     protected $detectedTechnicalAnnulment = null;
     protected $index;
-    protected $schemaValidation = true;
+
+    /**
+     * Config objektum.
+     *
+     * @var Config
+     */
+    protected $config;
 
 
     /**
      * Számlákat (számla műveleteket) összefogó objektum (collection) készítése
      */
-    function __construct() {
+    function __construct(Config $config) {
         $this->invoices = array();
         $this->index = 1;
-    }
-
-
-    /**
-     * Számla hozzáadásakor ellenőrizze az XML adatot a DATA sémával szemben
-     *
-     * @param  boolean $flag
-     */
-    public function useDataSchemaValidation($flag = true) {
-        $this->schemaValidation = $flag;
+        $this->config = $config;
     }
 
 
@@ -66,8 +63,8 @@ class InvoiceOperations {
     public function add(\SimpleXMLElement $xml, $operation = "CREATE") {
 
         // XSD validálás
-        if ($this->schemaValidation) {
-            Xsd::validate($xml->asXML(), Config::getDataXsdFilename());
+        if ($this->config->validateDataSchema) {
+            Xsd::validate($xml->asXML(), $this->config->getDataXsdFilename());
         }
 
         // TODO: ezt esetleg átmozgatni a Reporter vagy ManageInvoiceRequestXml osztályba?
@@ -136,24 +133,6 @@ class InvoiceOperations {
     protected function convertXml(\SimpleXMLElement $xml) {
         $xml = $xml->asXML();
         return base64_encode($xml);
-    }
-
-
-    /**
-     * Egy darab számla XML-t átadva visszaad egy InvoiceOperations példányt,
-     * amit a Reporter::manageInvoice metódusa fogad paraméterben
-     *
-     * @param  \SimpleXMLElement $xml
-     * @param  string           $operation
-     * @return InvoiceOperations
-     */
-    public static function convertFromXml($xml, $operation) {
-        $invoiceOperations = new self();
-        $invoiceOperations->useDataSchemaValidation();
-
-        $invoiceOperations->add($xml, $operation);
-
-        return $invoiceOperations;
     }
 
 }

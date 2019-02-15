@@ -55,7 +55,9 @@ class Reporter {
         if ($invoiceOperationsOrXml instanceof InvoiceOperations) {
             $invoiceOperations = $invoiceOperationsOrXml;
         } else {
-            $invoiceOperations = InvoiceOperations::convertFromXml($invoiceOperationsOrXml, $operation);
+            $invoiceOperations = new InvoiceOperations($this->config);
+
+            $invoiceOperations = $invoiceOperations->add($invoiceOperationsOrXml, $operation);
         }
 
         $token = $this->tokenExchange();
@@ -169,9 +171,9 @@ class Reporter {
      * @param  \SimpleXMLElement $xml   Számla XML
      * @return null|string             Hibaüzenet, vagy `null`, ha helyes az XML
      */
-    public static function getInvoiceValidationError($xml) {
+    public function getInvoiceValidationError($xml) {
         try {
-            Xsd::validate($xml->asXML(), Config::getDataXsdFilename());
+            Xsd::validate($xml->asXML(), $this->config->getDataXsdFilename());
         } catch(XsdValidationError $ex) {
             return $ex->getMessage();
         }

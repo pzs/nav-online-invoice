@@ -7,7 +7,7 @@ try {
     $config = new NavOnlineInvoice\Config($apiUrl, $userDataFilename);
     $reporter = new NavOnlineInvoice\Reporter($config);
 
-    $invoices = new NavOnlineInvoice\InvoiceOperations();
+    $invoices = new NavOnlineInvoice\InvoiceOperations($config);
 
     $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1.xml"));
     $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice2.xml"));

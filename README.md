@@ -154,7 +154,7 @@ Lásd a másik példát is: [queryInvoiceData_queryParams.php](examples/queryInv
 ```php
 // Az $invoiceXml tartalmazza a számla (szakmai) SimpleXMLElement objektumot
 
-$errorMsg = NavOnlineInvoice\Reporter::getInvoiceValidationError($invoiceXml);
+$errorMsg = $reporter->getInvoiceValidationError($invoiceXml);
 
 if ($errorMsg) {
     print "A számla nem valid, hibaüzenet: " . $errorMsg;
