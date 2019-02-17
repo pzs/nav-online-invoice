@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Invoice xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.nav.gov.hu/OSA/1.0/data" xs:schemaLocation="http://schemas.nav.gov.hu/OSA/1.0/data invoiceData_20180319.xsd">
+<Invoice xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.nav.gov.hu/OSA/1.0/data" xs:schemaLocation="http://schemas.nav.gov.hu/OSA/1.0/data invoiceData.xsd">
 	<invoiceExchange>
 		<invoiceHead>
 			<supplierInfo>
@@ -62,9 +62,10 @@
 						<productCodeValue>02031110</productCodeValue>
 					</productCode>
 				</productCodes>
+				<lineExpressionIndicator>true</lineExpressionIndicator>
 				<lineDescription>Hűtött házi sertés (fél)</lineDescription>
 				<quantity>1500.00</quantity>
-				<unitOfMeasure>kg</unitOfMeasure>
+				<unitOfMeasure>KILOGRAM</unitOfMeasure>
 				<unitPrice>2.00</unitPrice>
 				<lineAmountsNormal>
 					<lineNetAmount>3000.00</lineNetAmount>
@@ -83,9 +84,10 @@
 						<productCodeValue>16010091</productCodeValue>
 					</productCode>
 				</productCodes>
+				<lineExpressionIndicator>true</lineExpressionIndicator>
 				<lineDescription>Érlelt szalámi</lineDescription>
 				<quantity>1600.00</quantity>
-				<unitOfMeasure>kg</unitOfMeasure>
+				<unitOfMeasure>KILOGRAM</unitOfMeasure>
 				<unitPrice>10.00</unitPrice>
 				<lineAmountsNormal>
 					<lineNetAmount>16000.00</lineNetAmount>
@@ -104,9 +106,10 @@
 						<productCodeValue>16010010</productCodeValue>
 					</productCode>
 				</productCodes>
+				<lineExpressionIndicator>true</lineExpressionIndicator>
 				<lineDescription>Kenőmájas</lineDescription>
 				<quantity>40.00</quantity>
-				<unitOfMeasure>kg</unitOfMeasure>
+				<unitOfMeasure>KILOGRAM</unitOfMeasure>
 				<unitPrice>3.00</unitPrice>
 				<lineAmountsNormal>
 					<lineNetAmount>120.00</lineNetAmount>

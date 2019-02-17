@@ -93,7 +93,7 @@ class BaseRequestXml {
 
         $header->addChild("requestId", $this->requestId);
         $header->addChild("timestamp", $this->timestamp);
-        $header->addChild("requestVersion", "1.0");
+        $header->addChild("requestVersion", "1.1");
         $header->addChild("headerVersion", "1.0");
     }
 
