@@ -4,9 +4,13 @@
 
 _PHP interfész a NAV Online számla adatszolgáltatásához_
 
-https://github.com/pzs/nav-online-invoice &mdash; https://packagist.org/packages/pzs/nav-online-invoice
+__Letöltés:__
+- Composer: [packagist.org/packages/pzs/nav-online-invoice](https://packagist.org/packages/pzs/nav-online-invoice)
+- Legfrissebb verzió: [github.com/pzs/nav-online-invoice/releases/latest](https://github.com/pzs/nav-online-invoice/releases/latest)
+- Korábbi verziók: [github.com/pzs/nav-online-invoice/releases](https://github.com/pzs/nav-online-invoice/releases)
+- Példa fájlok: [github.com/pzs/nav-online-invoice/tree/master/examples](https://github.com/pzs/nav-online-invoice/tree/master/examples)
 
-NAV Online számla oldala: https://onlineszamla-test.nav.gov.hu/
+NAV Online számla oldala: [onlineszamla.nav.gov.hu](https://onlineszamla.nav.gov.hu/)
 
 
 ## Használat
