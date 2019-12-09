@@ -2,9 +2,8 @@
 
 include("config.php");
 
-
 try {
-    $config = new NavOnlineInvoice\Config($apiUrl, $userDataFilename);
+    $config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
     $config->setCurlTimeout(5); // másodperc
     $reporter = new NavOnlineInvoice\Reporter($config);
 

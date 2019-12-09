@@ -84,7 +84,7 @@ class BaseRequestXml {
 
 
     protected function getInitialXmlString() {
-        return '<?xml version="1.0" encoding="UTF-8"?><' . $this->rootName . ' xmlns="http://schemas.nav.gov.hu/OSA/1.0/api"></' . $this->rootName . '>';
+        return '<?xml version="1.0" encoding="UTF-8"?><' . $this->rootName . ' xmlns="http://schemas.nav.gov.hu/OSA/2.0/api"></' . $this->rootName . '>';
     }
 
 
@@ -93,7 +93,7 @@ class BaseRequestXml {
 
         $header->addChild("requestId", $this->requestId);
         $header->addChild("timestamp", $this->timestamp);
-        $header->addChild("requestVersion", "1.1");
+        $header->addChild("requestVersion", "2.0");
         $header->addChild("headerVersion", "1.0");
     }
 
@@ -101,7 +101,7 @@ class BaseRequestXml {
     protected function addUser() {
         $user = $this->xml->addChild("user");
 
-        $passwordHash = Util::sha512($this->config->user["password"]);
+        $passwordHash = Util::sha3_512($this->config->user["password"]);
         $signature = $this->getRequestSignatureHash();
 
         $user->addChild("login", $this->config->user["login"]);
@@ -134,7 +134,7 @@ class BaseRequestXml {
      */
     protected function getRequestSignatureHash() {
         $string = $this->getRequestSignatureString();
-        $hash = Util::sha512($string);
+        $hash = Util::sha3_512($string);
         return $hash;
     }
 

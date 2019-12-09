@@ -6,30 +6,16 @@ use Exception;
 
 class QueryInvoiceDataRequestXml extends BaseRequestXml {
 
-    private static $queryTypes = array("invoiceQuery", "queryParams");
-
-
     /**
      * QueryInvoiceDataRequestXml constructor.
      * @param $config
-     * @param $queryType
-     * @param $queryData
-     * @param $page
+     * @param $invoiceNumberQuery
      * @throws \Exception
      */
-    function __construct($config, $queryType, $queryData, $page) {
-        if (!in_array($queryType, self::$queryTypes)) {
-            throw new Exception("Érvénytelen queryType: $queryType");
-        }
-
-        if (!is_int($page) or $page < 1) {
-            throw new Exception("Érvénytelen oldalszám: " . $page);
-        }
-
+    function __construct($config, $invoiceNumberQuery) {
         parent::__construct("QueryInvoiceDataRequest", $config);
 
-        $this->xml->addChild("page", $page);
-        $this->addQueryData($this->xml, $queryType, $queryData);
+        $this->addQueryData($this->xml, "invoiceNumberQuery", $invoiceNumberQuery);
     }
 
 

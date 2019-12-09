@@ -4,7 +4,7 @@ include("config.php");
 
 
 try {
-    $config = new NavOnlineInvoice\Config($apiUrl, $userDataFilename);
+    $config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
     $reporter = new NavOnlineInvoice\Reporter($config);
 
     $result = $reporter->queryTaxpayer("12345678");

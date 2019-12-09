@@ -37,8 +37,6 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
     protected function addInvoiceOperations() {
         $operationsXml = $this->xml->addChild("invoiceOperations");
 
-        $operationsXml->addChild("technicalAnnulment", $this->invoiceOperations->getTechnicalAnnulment());
-
         // NOTE: the compression is currently not supported
         $operationsXml->addChild("compressedContent", false);
 
@@ -47,8 +45,8 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
             $invoiceXml = $operationsXml->addChild("invoiceOperation");
 
             $invoiceXml->addChild("index", $invoice["index"]);
-            $invoiceXml->addChild("operation", $invoice["operation"]);
-            $invoiceXml->addChild("invoice", $invoice["invoice"]);
+            $invoiceXml->addChild("invoiceOperation", $invoice["operation"]);
+            $invoiceXml->addChild("invoiceData", $invoice["invoice"]);
         }
     }
 
@@ -61,9 +59,9 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
     protected function getRequestSignatureString() {
         $string = parent::getRequestSignatureString();
 
-        // A számlák CRC32 decimális értékének hozzáfűzése
+        // A számlák hash értékének hozzáfűzése
         foreach ($this->invoiceOperations->getInvoices() as $invoice) {
-            $string .= Util::crc32($invoice["invoice"]);
+            $string .= Util::sha3_512($invoice["operation"] . $invoice["invoice"]);
         }
 
         return $string;

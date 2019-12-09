@@ -3,10 +3,10 @@
 namespace NavOnlineInvoice;
 
 
-class QueryInvoiceStatusRequestXml extends BaseRequestXml {
+class QueryTransactionStatusRequestXml extends BaseRequestXml {
 
     function __construct($config, $transactionId, $returnOriginalRequest = false) {
-        parent::__construct("QueryInvoiceStatusRequest", $config);
+        parent::__construct("QueryTransactionStatusRequest", $config);
         $this->xml->addChild("transactionId", $transactionId);
 
         if ($returnOriginalRequest) {

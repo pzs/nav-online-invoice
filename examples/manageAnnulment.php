@@ -4,13 +4,13 @@ include("config.php");
 
 
 try {
-    $config = new NavOnlineInvoice\Config($apiUrl, $userDataFilename);
+    $config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
     $reporter = new NavOnlineInvoice\Reporter($config);
 
-    $invoiceXml = simplexml_load_file(TEST_DATA_DIR . "invoice_annul.xml");
+    $annulmentXml = simplexml_load_file(TEST_DATA_DIR . "invoice_annul.xml");
 
     // Technikai érvénytelenítés
-    $transactionId = $reporter->manageInvoice($invoiceXml, "ANNUL");
+    $transactionId = $reporter->manageAnnulment($annulmentXml);
 
     print "Tranzakciós azonosító a státusz lekérdezéshez: " . $transactionId;
 

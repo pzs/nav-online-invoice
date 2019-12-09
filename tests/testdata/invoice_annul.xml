@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<InvoiceAnnulment xmlns="http://schemas.nav.gov.hu/OSA/2.0/annul">
+		<annulmentReference>22222222</annulmentReference>
+		<annulmentTimestamp>2018-06-18T09:10:45.309Z</annulmentTimestamp>
+		<annulmentCode>ERRATIC_DATA</annulmentCode>
+		<annulmentReason>create szamla annul</annulmentReason>
+</InvoiceAnnulment>
