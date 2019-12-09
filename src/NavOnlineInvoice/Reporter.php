@@ -204,6 +204,22 @@ class Reporter {
     }
 
 
+    /**
+     * Utolsó REST hívás adatainak lekérdezése naplózási és hibakeresési céllal.
+     *
+     * A visszaadott array a következő elemeket tartalmazza: requestUrl, requestBody, responseBody
+     *
+     * Megjegyzés: bizonyos műveletek (manageAnnulment és manageInvoice) kettő REST hívást is indítanak,
+     * a tokenExchange hívást, illetve magát az adatküldést. Sikeres hívás esetén csak a tényleges adatküldés
+     * eredménye érhető el, Exception esetén pedig mindig az utolsó hívás adata.
+     *
+     * @return array
+     */
+    public function getLastRequestData() {
+        return $this->connector->getLastRequestData();
+    }
+
+
     protected function decodeToken($encodedToken) {
         return Util::aes128_decrypt($encodedToken, $this->config->user["exchangeKey"]);
     }

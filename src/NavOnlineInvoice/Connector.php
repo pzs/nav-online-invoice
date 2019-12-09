@@ -7,6 +7,10 @@ class Connector {
 
     protected $config;
 
+    private $lastRequestUrl = null;
+    private $lastRequestBody = null;
+    private $lastResponseBody = null;
+
 
     /**
      *
@@ -14,6 +18,27 @@ class Connector {
      */
     function __construct($config) {
         $this->config = $config;
+    }
+
+
+    private function resetDebugInfo() {
+        $this->lastRequestUrl = null;
+        $this->lastRequestBody = null;
+        $this->lastResponseBody = null;
+    }
+
+
+    /**
+     * Utolsó REST hívás adatainak lekérdezése
+     *
+     * @return array
+     */
+    public function getLastRequestData() {
+        return array(
+            'requestUrl' => $this->lastRequestUrl,
+            'requestBody' => $this->lastRequestBody,
+            'responseBody' => $this->lastResponseBody,
+        );
     }
 
 
@@ -28,9 +53,13 @@ class Connector {
      * @throws \NavOnlineInvoice\GeneralErrorResponse
      */
     public function post($url, $requestXml) {
+        $this->resetDebugInfo();
 
         $url = $this->config->baseUrl . $url;
+        $this->lastRequestUrl = $url;
+
         $xmlString = is_string($requestXml) ? $requestXml : $requestXml->asXML();
+        $this->lastRequestBody = $xmlString;
 
         if ($this->config->validateApiSchema) {
             Xsd::validate($xmlString, Config::getApiXsdFilename());
@@ -42,6 +71,8 @@ class Connector {
         $errno = curl_errno($ch);
         $info = curl_getinfo($ch);
         $httpStatusCode = $info["http_code"];
+
+        $this->lastResponseBody = $result;
 
         curl_close($ch);
 

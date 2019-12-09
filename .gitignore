@@ -4,3 +4,4 @@
 /tests/testdata/userData.real.json
 /.idea
 /sha3-lib
+/examples/config.php

@@ -18,10 +18,12 @@ NAV Online számla oldala: [onlineszamla.nav.gov.hu](https://onlineszamla.nav.go
 <details>
 <summary>Kattints ide a leírás megjelenítéséhez!</summary>
 
+:warning: A NAV 2.0-ás interfésze teszt környezetben már elérhető, viszont éles környezetben leghamarabb 2020. február hónapban várható.
+
 A 2.0-ás `nav-online-invoice` modulra való frissítés után a következő módosításokat kell végrehajtanod:
 
 - `NavOnlineInvoice\Config` példányosításakor:
-    - apiUrl a következőre változott: `https://api-test.onlineszamla.nav.gov.hu/invoiceService/v2`, illetve "-test" rész nélkül éles működésben,
+    - apiUrl a következőre változott: `https://api-test.onlineszamla.nav.gov.hu/invoiceService/v2`, illetve "-test" rész nélkül éles környezetben,
     - software adatok megadása kötelező lett,
 - SHA3-512-es hash algoritmust kell használni, melyhez PHP 7.1.0-ás verzió, vagy újabb szükséges. Ha ennél régebbit használsz, akkor külső könyvtárat kell betölteni, melyet _nem_ tartalmaz a `nav-online-invoice` modul:
     - [n-other/php-sha3](https://github.com/n-other/php-sha3), MIT license ([packagist](https://packagist.org/packages/n-other/php-sha3)),
@@ -30,12 +32,16 @@ A 2.0-ás `nav-online-invoice` modulra való frissítés után a következő mó
 - technikai érvényesítést mostantól nem a `manageInvoice()` hívással, hanem `manageAnnulment()` hívással kell beküldened,
 - a státusz lekérdezés metódus át lett nevezve `queryInvoiceStatus()`-ról `queryTransactionStatus()`-ra,
 - a `queryInvoiceData()` metódus változott: ezzel mostantól csak egy számla adatait lehet lekérni számlaszám alapján (kiállító és vevő oldalról is), keresni pedig az új `queryInvoiceDigest()` metódussal lehet,
-- továbbá a 2.0-ás API-n új metódusok is elérhetőek, ezek fejlesztése még folyamatban van (NAV oldalról is).
+- továbbá a 2.0-ás API-n új operációk is elérhetőek lesznek, melyek fejlesztése még folyamatban van (NAV oldalról is) - _ez a leírás bővülni fog_.
 
 Ha ezekkel megvagy, akkor már csak az adatsémákat kell átírnod, melyhez segítséged a NAV-os dokumentációkban, illetve fórumokon találsz, de ha megpróbálod beküldeni a régi adat XML-t, akkor az interfész is ki fogja írni a sémavalidálási hibát. NAV-os changelog: [CHANGELOG_2.0](https://github.com/nav-gov-hu/Online-Invoice/blob/master/src/schemas/nav/gov/hu/OSA/CHANGELOG_2.0.md)
 
+Új funkció a `nav-online-invoice` modulban:
+- naplózást és hibakeresést segítő `$reporter->getLastRequestData()` metódus, lásd a [példafájlt](examples/log.php), illetve a [leírást](#rest-hívás-részletei).
+
 </details>
 
+***
 
 ## Használat
 
@@ -259,6 +265,26 @@ if ($errorMsg) {
 Számla validálásának másik módját lásd a [validateInvoices.php](examples/validateInvoices.php) példában.
 
 
+### REST hívás részletei
+
+A REST hívások naplózása és hibakeresés végett lehetőség van az utolsó REST hívás adatainak lekérésére:
+
+```php
+// Bármilyen operáció után, pl.:
+// $reporter->manageInvoice($invoiceXml, "CREATE");
+// hívható (Exception esetén is):
+
+$data = $reporter->getLastRequestData();
+
+print "<br /><br />Request URL: " . htmlspecialchars($data['requestUrl']);
+print "<br /><br />Request body: " . htmlspecialchars($data['requestBody']);
+print "<br /><br />Response body: " . htmlspecialchars($data['responseBody']);
+```
+
+A `requestBody` ezen modul összeállított XML string-et tartalmazza, a `responseBody` pedig a NAV által visszaadott üzenetet, mely az esetek többségében egy XML string.
+
+***
+
 ## Dokumentáció
 
 ### `Config` osztály
@@ -301,6 +327,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 - `queryTransactionStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
 - `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `null` nem létező adószám esetén, `false` érvénytelen adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
 - `tokenExchange()`: Token kérése manageInvoice művelethez (közvetlen használata nem szükséges, viszont lehet használni, mint teszt hívás). Visszatérési értékként a dekódolt tokent adja vissza string-ként.
+- `getLastRequestData()`: Utolsó REST hívás adatainak lekérdezése naplózási és hibakeresési céllal. A visszaadott array a következő elemeket tartalmazza: requestUrl, requestBody, responseBody. Megjegyzés: bizonyos műveletek (manageAnnulment és manageInvoice) kettő REST hívást is indítanak, a tokenExchange hívást, illetve magát az adatküldést. Sikeres hívás esetén csak a tényleges adatküldés eredménye érhető el, Exception esetén pedig mindig az utolsó hívás adata.
 
 
 ### `InvoiceOperations` osztály
