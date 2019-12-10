@@ -12,6 +12,12 @@ __Letöltés:__
 
 NAV Online számla oldala: [onlineszamla.nav.gov.hu](https://onlineszamla.nav.gov.hu/)
 
+## :mega: 2.0-ás API támogatás
+
+Amennyiben a NAV 2.0-ás API-jára meg szeretnéd kezdeni az átállást, kérlek, használd ezen modul [2.0.0-ás RC/pre-release](https://github.com/pzs/nav-online-invoice/releases) verzióját. Frissített leírást és példafájlokat megtalálod a [2.0-ás branch](https://github.com/pzs/nav-online-invoice/tree/2.0) alatt, illetve [packagist](https://packagist.org/packages/pzs/nav-online-invoice)-ről is letölthető a `v2.0.0-RC1` verzió.
+
+:information_source: Az itt következő lenti leírás az 1.1-es modulhoz tartozik.
+
 
 ## Használat
 
