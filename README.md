@@ -34,10 +34,10 @@ A 2.0-ás `nav-online-invoice` modulra való frissítés után a következő mó
 - a `queryInvoiceData()` metódus változott: ezzel mostantól csak egy számla adatait lehet lekérni számlaszám alapján (kiállító és vevő oldalról is), keresni pedig az új `queryInvoiceDigest()` metódussal lehet,
 - továbbá a 2.0-ás API-n új operációk is elérhetőek lesznek, melyek fejlesztése még folyamatban van (NAV oldalról is) - _ez a leírás bővülni fog_.
 
-Ha ezekkel megvagy, akkor már csak az adatsémákat kell átírnod, melyhez segítséged a NAV-os dokumentációkban, illetve fórumokon találsz, de ha megpróbálod beküldeni a régi adat XML-t, akkor az interfész is ki fogja írni a sémavalidálási hibát. NAV-os changelog: [CHANGELOG_2.0](https://github.com/nav-gov-hu/Online-Invoice/blob/master/src/schemas/nav/gov/hu/OSA/CHANGELOG_2.0.md)
-
 Új funkció a `nav-online-invoice` modulban:
 - naplózást és hibakeresést segítő `$reporter->getLastRequestData()` metódus, lásd a [példafájlt](examples/log.php), illetve a [leírást](#rest-hívás-részletei).
+
+Ha ezekkel megvagy, akkor már csak az adatsémákat kell átírnod, melyhez segítséged a NAV-os dokumentációkban, illetve fórumokon találsz, de ha megpróbálod beküldeni a régi adat XML-t, akkor az interfész is ki fogja írni a sémavalidálási hibát. NAV-os changelog: [CHANGELOG_2.0](https://github.com/nav-gov-hu/Online-Invoice/blob/master/src/schemas/nav/gov/hu/OSA/CHANGELOG_2.0.md)
 
 </details>
 
@@ -281,7 +281,7 @@ print "<br /><br />Request body: " . htmlspecialchars($data['requestBody']);
 print "<br /><br />Response body: " . htmlspecialchars($data['responseBody']);
 ```
 
-A `requestBody` ezen modul összeállított XML string-et tartalmazza, a `responseBody` pedig a NAV által visszaadott üzenetet, mely az esetek többségében egy XML string.
+A `requestBody` ezen modul által összeállított XML string-et tartalmazza, a `responseBody` pedig a NAV által visszaadott üzenetet, mely az esetek többségében egy XML string.
 
 ***
 
