@@ -50,6 +50,11 @@ class Util {
     }
 
 
+    public static function sha512($string) {
+        return strtoupper(hash("sha512", $string));
+    }
+
+
     public static function aes128_decrypt($string, $key) {
         return openssl_decrypt($string, "AES-128-ECB", $key);
     }
