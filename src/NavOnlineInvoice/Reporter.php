@@ -51,7 +51,7 @@ class Reporter {
 
         $token = $this->tokenExchange();
 
-        $requestXml = new ManageInvoiceRequestXml($this->config, $invoiceOperations, $token);
+        $requestXml = new ManageAnnulmentRequestXml($this->config, $invoiceOperations, $token);
         $responseXml = $this->connector->post("/manageAnnulment", $requestXml);
 
         return (string)$responseXml->transactionId;
