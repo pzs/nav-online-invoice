@@ -5,6 +5,7 @@ namespace NavOnlineInvoice;
 
 class ManageInvoiceRequestXml extends BaseRequestXml {
 
+    protected $rootName = "ManageInvoiceRequest";
     protected $invoiceOperations;
     protected $token;
 
@@ -18,7 +19,7 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
         $this->invoiceOperations = $invoiceOperations;
         $this->token = $token;
 
-        parent::__construct("ManageInvoiceRequest", $config);
+        parent::__construct($config);
     }
 
 

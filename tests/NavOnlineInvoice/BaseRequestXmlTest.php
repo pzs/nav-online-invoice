@@ -2,12 +2,17 @@
 
 use NavOnlineInvoice\BaseRequestXml;
 
+// Note
+class MyBaseRequestXml extends BaseRequestXml {
+    protected $rootName = "Test";
+}
+
 
 class BaseRequestXmlTest extends BaseTest {
 
 
     private function createTestRequestXml() {
-        return new BaseRequestXml("Test", $this->getConfig());
+        return new MyBaseRequestXml($this->getConfig());
     }
 
 

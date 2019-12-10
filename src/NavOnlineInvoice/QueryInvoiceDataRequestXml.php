@@ -6,6 +6,9 @@ use Exception;
 
 class QueryInvoiceDataRequestXml extends BaseRequestXml {
 
+    protected $rootName = "QueryInvoiceDataRequest";
+
+
     /**
      * QueryInvoiceDataRequestXml constructor.
      * @param $config
@@ -13,7 +16,7 @@ class QueryInvoiceDataRequestXml extends BaseRequestXml {
      * @throws \Exception
      */
     function __construct($config, $invoiceNumberQuery) {
-        parent::__construct("QueryInvoiceDataRequest", $config);
+        parent::__construct($config);
 
         $this->addQueryData($this->xml, "invoiceNumberQuery", $invoiceNumberQuery);
     }

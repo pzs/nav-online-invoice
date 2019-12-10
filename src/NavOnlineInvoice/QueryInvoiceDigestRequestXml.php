@@ -6,6 +6,9 @@ use Exception;
 
 class QueryInvoiceDigestRequestXml extends BaseRequestXml {
 
+    protected $rootName = "QueryInvoiceDigestRequest";
+
+
     /**
      * QueryInvoiceDigestRequestXml constructor.
      * @param $config
@@ -15,8 +18,7 @@ class QueryInvoiceDigestRequestXml extends BaseRequestXml {
      * @throws \Exception
      */
     function __construct($config, $invoiceQueryParams, $page, $direction) {
-
-        parent::__construct("QueryInvoiceDigestRequest", $config);
+        parent::__construct($config);
 
         $this->xml->addChild("page", $page);
         $this->xml->addChild("invoiceDirection", $direction);

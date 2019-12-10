@@ -1,8 +1,10 @@
 <?php
 
 namespace NavOnlineInvoice;
+use Exception;
 
-class BaseRequestXml {
+
+abstract class BaseRequestXml {
 
     protected $rootName;
     protected $config;
@@ -19,11 +21,9 @@ class BaseRequestXml {
     /**
      * Request XML készítése
      *
-     * @param string $rootName  Root XML elem neve
      * @param Config $config    Konfigurációt tartalmazó objektum
      */
-    function __construct($rootName, $config) {
-        $this->rootName = $rootName;
+    function __construct($config) {
         $this->config = $config;
 
         $this->createXml();
@@ -84,6 +84,11 @@ class BaseRequestXml {
 
 
     protected function getInitialXmlString() {
+
+        if (empty($this->rootName)) {
+            throw new Exception("rootName has to be defined!");
+        }
+
         return '<?xml version="1.0" encoding="UTF-8"?><' . $this->rootName . ' xmlns="http://schemas.nav.gov.hu/OSA/2.0/api"></' . $this->rootName . '>';
     }
 
