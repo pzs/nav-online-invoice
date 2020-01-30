@@ -10,6 +10,7 @@ class Connector {
     private $lastRequestUrl = null;
     private $lastRequestBody = null;
     private $lastResponseBody = null;
+    private $lastRequestId = null;
 
 
     /**
@@ -25,6 +26,7 @@ class Connector {
         $this->lastRequestUrl = null;
         $this->lastRequestBody = null;
         $this->lastResponseBody = null;
+        $this->lastRequestId = null;
     }
 
 
@@ -38,6 +40,7 @@ class Connector {
             'requestUrl' => $this->lastRequestUrl,
             'requestBody' => $this->lastRequestBody,
             'responseBody' => $this->lastResponseBody,
+            'lastRequestId' => $this->lastRequestId
         );
     }
 
@@ -60,6 +63,8 @@ class Connector {
 
         $xmlString = is_string($requestXml) ? $requestXml : $requestXml->asXML();
         $this->lastRequestBody = $xmlString;
+
+        $this->lastRequestId = $requestXml instanceof BaseRequestXml ? $requestXml->getRequestId() : null;
 
         if ($this->config->validateApiSchema) {
             Xsd::validate($xmlString, Config::getApiXsdFilename());
