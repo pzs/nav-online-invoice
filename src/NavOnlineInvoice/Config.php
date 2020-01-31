@@ -16,6 +16,8 @@ class Config {
 
     public $curlTimeout = null;
 
+    /** @var RequestIdGeneratorInterface */
+    public $requestIdGenerator;
 
     /**
      * NavOnlineInvoice Reporter osztály számára szükséges konfigurációs objektum készítése
@@ -52,6 +54,18 @@ class Config {
         } else {
             $this->setSoftware($software);
         }
+
+        $this->setRequestIdGenerator(new RequestIdGeneratorBasic());
+    }
+
+    function setRequestIdGenerator(RequestIdGeneratorInterface $obj)
+    {
+        $this->requestIdGenerator = $obj;
+    }
+
+    function getRequestIdGenerator()
+    {
+        return $this->requestIdGenerator;
     }
 
 
