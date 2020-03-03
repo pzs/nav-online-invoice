@@ -7,9 +7,13 @@ try {
     $config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
     $reporter = new NavOnlineInvoice\Reporter($config);
 
-    $invoiceXml = simplexml_load_file(TEST_DATA_DIR . "invoice1.xml");
+    $invoices = new NavOnlineInvoice\InvoiceOperations();
 
-    $transactionId = $reporter->manageInvoice($invoiceXml, "CREATE");
+    // Maximum 100db számla küldhető be egyszerre
+    $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1.xml"));
+    // $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice2.xml"));
+
+    $transactionId = $reporter->manageInvoice($invoices);
 
     print "Tranzakciós azonosító a státusz lekérdezéshez: " . $transactionId;
 

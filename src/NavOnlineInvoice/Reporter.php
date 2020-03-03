@@ -1,6 +1,8 @@
 <?php
 
 namespace NavOnlineInvoice;
+use Exception;
+
 
 class Reporter {
 
@@ -22,16 +24,51 @@ class Reporter {
     /**
      * manageInvoice operáció (1.9.1 fejezet)
      *
-     * A /manageInvoice a számla adatszolgáltatás beküldésére szolgáló operáció, ezen keresztül van
-     * lehetőség számla, módosító vagy stornó számla adatszolgáltatást, illetve ezek technikai javításait a
-     * NAV részére beküldeni.
+     * A /manageAnnulment operáció a technikai érvénytelenítések beküldésére szolgáló operáció.
+     * Technikai érvénytelenítés csak olyan adatszolgáltatásra küldhető, amelynek a befogadása
+     * a NAV oldalon DONE státusszal megtörtént.
      *
-     * Első paraméterben át lehet adni egy InvoiceOperations példányt, mely több számlát is tartalmazhat, vagy
-     * át lehet adni közvetlenül egy darab számla SimpleXMLElement példányt.
-     * A második paraméter ($operation) csak és kizárólag akkor játszik szerepet, ha követlenül számla XML-lel
-     * hívjuk ezt a metódust. InvoiceOperations példány esetén az operation-t ez a példány tartalmazza.
+     * Paraméterben a technikai érvénytelenítést leíró XML-t, vagy egy InvoiceOperations példányt
+     * kell átadni. Utóbbi esetben az InvoiceOperations példány több XML-t is tartalmazhat.
      *
-     * A `technicalAnnulment` flag értéke automatikusan felismert és beállításra kerül az `operation` értékéből.
+     * A metódus visszaadja a transactionId-t, mellyel lekérdezhető a tranzakció eredménye.
+     *
+     * @param  [type] $invoiceOperationsOrXml $invoiceOperationsOrXml
+     * @return [type]                         $transactionId
+     */
+    public function manageAnnulment($invoiceOperationsOrXml) {
+
+        // Ha nem InvoiceOperations példányt adtak át, akkor azzá konvertáljuk
+        if ($invoiceOperationsOrXml instanceof InvoiceOperations) {
+            $invoiceOperations = $invoiceOperationsOrXml;
+        } else {
+            $invoiceOperations = InvoiceOperations::convertFromXml($invoiceOperationsOrXml, "ANNUL");
+        }
+
+        if (!$invoiceOperations->isTechnicalAnnulment()) {
+            throw new Exception("manageAnnulment() interfészen csak technikai érvénytelenítést lehet beküldeni.");
+        }
+
+        $token = $this->tokenExchange();
+
+        $requestXml = new ManageAnnulmentRequestXml($this->config, $invoiceOperations, $token);
+        $responseXml = $this->connector->post("/manageAnnulment", $requestXml);
+
+        return (string)$responseXml->transactionId;
+    }
+
+
+    /**
+     * manageInvoice operáció (1.9.2 fejezet)
+     *
+     * A /manageInvoice a számla adatszolgáltatás beküldésére szolgáló operáció, ezen keresztül van lehetőség számla,
+     * módosító vagy stornó számla adatszolgáltatást a NAV részére beküldeni.
+     *
+     * Paraméterben a beküldendő számla XML-t kell átadni, illetve a hozzá tartozó műveletet (ManageInvocieOperationType): CREATE, MODIFY, STORNO
+     *
+     * Átadható egyszerre több számla is, ilyenkor első paraméterben InvoiceOperations példányt kell átadni (második paraméternek nincs szerepe ilyenkor).
+     *
+     * A metódus visszaadja a transactionId-t, mellyel lekérdezhető a tranzakció eredménye.
      *
      * @param  InvoiceOperations|\SimpleXMLElement $invoiceOperationsOrXml
      * @param  string                             $operation
@@ -46,6 +83,10 @@ class Reporter {
             $invoiceOperations = InvoiceOperations::convertFromXml($invoiceOperationsOrXml, $operation);
         }
 
+        if ($invoiceOperations->isTechnicalAnnulment()) {
+            throw new Exception("Technikai érvénytelenítésre a manageAnnulment() metódust kell használni a 2.0-ás API-tól kezdődően!");
+        }
+
         $token = $this->tokenExchange();
 
         $requestXml = new ManageInvoiceRequestXml($this->config, $invoiceOperations, $token);
@@ -56,46 +97,103 @@ class Reporter {
 
 
     /**
-     * queryInvoiceData operáció (1.9.2 fejezet)
+     * queryInvoiceData operáció (1.9.4 fejezet)
      *
-     * A /queryInvoiceData a számla adatszolgáltatások lekérdezésére szolgáló operáció. A lekérdezés
-     * történhet konkrét számla sorszámra, vagy lekérdezési paraméterek alapján.
+     * A /queryInvoiceData egy számlaszám alapján működő lekérdező operáció, amely a számlán szereplő kiállító és a vevő
+     * oldaláról is használható. Az operáció a megadott számlaszám teljes adattartalmát adja vissza a válaszban.
      *
-     * @param  string            $queryType     A queryType értéke lehet 'invoiceQuery' vagy 'queryParams'
-     *                                          függően attól, hogy konktér számla sorszámot, vagy általános
-     *                                          lekérdezési paramétereket adunk át.
-     * @param  array             $queryData     A queryType-nak megfelelően összeállított lekérdezési adatok
-     * @param  Int               $page          Oldalszám (1-től kezdve a számozást)
-     * @return \SimpleXMLElement  $queryResultsXml A válasz XML queryResults része
+     * @param  array             $invoiceNumberQuery     Az invoiceNumberQuery-nek megfelelően összeállított lekérdezési adatok
+     * @return \SimpleXMLElement  $invoiceDataResultXml A válasz XML invoiceDataResult része
      */
-    public function queryInvoiceData($queryType, $queryData, $page = 1) {
-        $requestXml = new QueryInvoiceDataRequestXml($this->config, $queryType, $queryData, $page);
+    public function queryInvoiceData($invoiceNumberQuery) {
+        $requestXml = new QueryInvoiceDataRequestXml($this->config, $invoiceNumberQuery);
         $responseXml = $this->connector->post("/queryInvoiceData", $requestXml);
 
-        return $responseXml->queryResults;
+        return $responseXml->invoiceDataResult;
     }
 
 
     /**
-     * queryInvoiceStatus operáció (1.9.3 fejezet)
+     * queryInvoiceDigest operáció (1.9.5 fejezet)
      *
-     * A /queryInvoiceStatus a számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének
-     * lekérdezésére szolgáló operáció.
+     * A /queryInvoiceDigest üzleti keresőparaméterek alapján működő lekérdező operáció, amely a számlán szereplő
+     * kiállító és a vevő oldaláról is használható. Az operáció a megadott keresőfeltételeknek megfelelő, lapozható
+     * számla listát ad vissza a válaszban. A válasz nem tartalmazza a számlák összes üzleti adatát, hanem csak egy
+     * kivonatot (digest-et). Amennyiben szükség van a listában szereplő valamely számla teljes adattartalmára, úgy
+     * azt a számlaszám birtokában a /queryInvoiceData operációban lehet lekérdezni.
+     *
+     * @param  array             $invoiceQueryParams     Az invoiceQueryParams-nak megfelelően összeállított lekérdezési adatok
+     * @param  Int               [$page=1]          Oldalszám (1-től kezdve a számozást)
+     * @param  string            [$direction=OUTBOUND]  A keresés iránya, a keresés elvégezhető kiállítóként és vevőként is [OUTBOUND, INBOUND]
+     * @return \SimpleXMLElement  $queryResultsXml A válasz XML invoiceDigestResult része
+     */
+    public function queryInvoiceDigest($invoiceQueryParams, $page = 1, $direction = "OUTBOUND") {
+        $requestXml = new QueryInvoiceDigestRequestXml($this->config, $invoiceQueryParams, $page, $direction);
+        $responseXml = $this->connector->post("/queryInvoiceDigest", $requestXml);
+
+        return $responseXml->invoiceDigestResult;
+    }
+
+
+    /**
+     * queryTransactionStatus operáció (1.9.7 fejezet)
+     *
+     * A /queryTransactionStatus a számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének
+     * lekérdezésére szolgáló operáció
      *
      * @param  string  $transactionId
      * @param  boolean $returnOriginalRequest
      * @return \SimpleXMLElement  $responseXml    A teljes visszakapott XML, melyből a 'processingResults' elem releváns
      */
-    public function queryInvoiceStatus($transactionId, $returnOriginalRequest = false) {
-        $requestXml = new QueryInvoiceStatusRequestXml($this->config, $transactionId, $returnOriginalRequest);
-        $responseXml = $this->connector->post("/queryInvoiceStatus", $requestXml);
+    public function queryTransactionStatus($transactionId, $returnOriginalRequest = false) {
+        $requestXml = new QueryTransactionStatusRequestXml($this->config, $transactionId, $returnOriginalRequest);
+        $responseXml = $this->connector->post("/queryTransactionStatus", $requestXml);
 
         return $responseXml;
     }
 
 
     /**
-     * queryTaxpayer operáció (1.9.4 fejezet)
+     * queryTransactionList operáció
+     *
+     * A /queryTransactionList a kérésben megadott időintervallumban, a technikai felhasználóhoz tartozó adószámhoz
+     * beküldött számlaadat-szolgáltatások listázására szolgál.
+     *
+     * @param  array   $insDate   DateTimeIntervalParamType-nak megfelelő mezők (lásd example)
+     * @param  integer $page
+     * @return \SimpleXMLElement  $transactionListResult A válasz XML transactionListResult része
+     */
+    public function queryTransactionList($insDate, $page = 1) {
+        $requestXml = new QueryTransactionListRequestXml($this->config, $insDate, $page);
+        $responseXml = $this->connector->post("/queryTransactionList", $requestXml);
+
+        return $responseXml->transactionListResult;
+    }
+
+
+    /**
+     * queryInvoiceChainDigest operáció
+     *
+     * A /queryInvoiceChainDigest egy számlaszám alapján működő lekérdező operáció, amely a számlán szereplő
+     * kiállító és a vevő oldaláról is használható. Az operáció a megadott keresőfeltételeknek megfelelő,
+     * lapozható számlalistát ad vissza a válaszban. A lista elemei a megadott alapszámlához tartozó számlalánc elemei.
+     * A válasz nem tartalmazza a számlák összes üzleti adatát, hanem csak egy kivonatot (digest-et), elsősorban a
+     * módosításra és tételsorok számára vonatkozóan
+     *
+     * @param  Array  $invoiceChainQuery
+     * @param  integer $page          Oldalszám
+     * @return \SimpleXMLElement  $invoiceChainDigestResult A válasz XML invoiceChainDigestResult része
+     */
+    public function queryInvoiceChainDigest($invoiceChainQuery, $page = 1) {
+        $requestXml = new QueryInvoiceChainDigestRequestXml($this->config, $invoiceChainQuery, $page);
+        $responseXml = $this->connector->post("/queryInvoiceChainDigest", $requestXml);
+
+        return $responseXml->invoiceChainDigestResult;
+    }
+
+
+    /**
+     * queryTaxpayer operáció (1.9.8 fejezet)
      *
      * A /queryTaxpayer belföldi adószám validáló operáció, mely a számlakiállítás folyamatába építve képes
      * a megadott adószám valódiságáról és érvényességéről a NAV adatbázisa alapján adatot szolgáltatni.
@@ -108,7 +206,7 @@ class Reporter {
         $requestXml = new QueryTaxpayerRequestXml($this->config, $taxNumber);
         $responseXml = $this->connector->post("/queryTaxpayer", $requestXml);
 
-        // 1.9.4.2 fejezet alapján (QueryTaxpayerResponse) a taxpayerValidity tag csak akkor kerül a válaszba, ha a lekérdezett adószám létezik.
+        // 1.9.8.2 fejezet alapján (QueryTaxpayerResponse) a taxpayerValidity tag csak akkor kerül a válaszba, ha a lekérdezett adószám létezik.
         // Nem létező adószámra csak egy <funcCode>OK</funcCode> kerül visszaadásra (funcCode===OK megléte a Connector-ban ellenőrizve van).
         if (!isset($responseXml->taxpayerValidity)) {
             return null;
@@ -142,6 +240,22 @@ class Reporter {
         $token = $this->decodeToken($encodedToken);
 
         return $token;
+    }
+
+
+    /**
+     * Utolsó REST hívás adatainak lekérdezése naplózási és hibakeresési céllal.
+     *
+     * A visszaadott array a következő elemeket tartalmazza: requestUrl, requestBody, responseBody
+     *
+     * Megjegyzés: bizonyos műveletek (manageAnnulment és manageInvoice) kettő REST hívást is indítanak,
+     * a tokenExchange hívást, illetve magát az adatküldést. Sikeres hívás esetén csak a tényleges adatküldés
+     * eredménye érhető el, Exception esetén pedig mindig az utolsó hívás adata.
+     *
+     * @return array
+     */
+    public function getLastRequestData() {
+        return $this->connector->getLastRequestData();
     }
 
 

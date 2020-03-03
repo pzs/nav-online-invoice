@@ -4,17 +4,17 @@ include("config.php");
 
 
 try {
-    $config = new NavOnlineInvoice\Config($apiUrl, $userDataFilename);
+    $config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
     $reporter = new NavOnlineInvoice\Reporter($config);
 
-    $queryData = [
+    $invoiceNumberQuery = [
         "invoiceNumber" => "T20190001",
-        "requestAllModification" => true
+        "invoiceDirection" => "OUTBOUND",
     ];
-    $queryResults = $reporter->queryInvoiceData("invoiceQuery", $queryData);
+    $invoiceDataResult = $reporter->queryInvoiceData($invoiceNumberQuery);
 
     print "Query results XML elem:\n";
-    var_dump($queryResults);
+    var_dump($invoiceDataResult);
 
 } catch(Exception $ex) {
     print get_class($ex) . ": " . $ex->getMessage();

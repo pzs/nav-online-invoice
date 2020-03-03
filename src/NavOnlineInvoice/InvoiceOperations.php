@@ -41,21 +41,6 @@ class InvoiceOperations {
 
 
     /**
-     * A setTechnicalAnnulment() metódus deprecated v0.6.0-ás verziótól.
-     * A technicalAnnulment mező értéke mostantól automatikusan felismert a számlák
-     * operation értékéből, így ezt külön nem kell beállítani.
-     *
-     * @deprecated
-     * @param boolean $technicalAnnulment
-     */
-    public function setTechnicalAnnulment($technicalAnnulment = true) {
-        trigger_error("A setTechnicalAnnulment() metódus deprecated v0.6.0-ás verziótól. "
-            . "A technicalAnnulment mező értéke mostantól automatikusan felismert a számlák "
-            . "operation értékéből, így ezt külön nem kell beállítani.", E_USER_DEPRECATED);
-    }
-
-
-    /**
      * Számla ('szakmai XML') hozzáadása
      *
      * @param \SimpleXMLElement $xml       Számla adatai (szakmai XML)
@@ -67,7 +52,8 @@ class InvoiceOperations {
 
         // XSD validálás
         if ($this->schemaValidation) {
-            Xsd::validate($xml->asXML(), Config::getDataXsdFilename());
+            $xsdFile = $operation === "ANNUL" ? Config::getAnnulmentXsdFilename() : Config::getDataXsdFilename();
+            Xsd::validate($xml->asXML(), $xsdFile);
         }
 
         // TODO: ezt esetleg átmozgatni a Reporter vagy ManageInvoiceRequestXml osztályba?
@@ -99,7 +85,7 @@ class InvoiceOperations {
      * @return bool       technicalAnnulment
      * @throws  Exception
      */
-    public function getTechnicalAnnulment() {
+    public function isTechnicalAnnulment() {
         if (!$this->invoices) {
             throw new Exception("Még nincs számla hozzáadva, így a technicalAnnulment értéke nem megállapítható!");
         }

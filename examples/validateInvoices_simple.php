@@ -13,4 +13,3 @@ if ($errorMsg) {
 } else {
     print "A számla valid.";
 }
-

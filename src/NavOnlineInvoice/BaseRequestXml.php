@@ -1,8 +1,10 @@
 <?php
 
 namespace NavOnlineInvoice;
+use Exception;
 
-class BaseRequestXml {
+
+abstract class BaseRequestXml {
 
     protected $rootName;
     protected $config;
@@ -19,11 +21,9 @@ class BaseRequestXml {
     /**
      * Request XML készítése
      *
-     * @param string $rootName  Root XML elem neve
      * @param Config $config    Konfigurációt tartalmazó objektum
      */
-    function __construct($rootName, $config) {
-        $this->rootName = $rootName;
+    function __construct($config) {
         $this->config = $config;
 
         $this->createXml();
@@ -31,36 +31,13 @@ class BaseRequestXml {
 
 
     protected function createXml() {
-        $this->requestId = $this->generateRequestId();
+        $this->requestId = $this->config->getRequestIdGenerator()->generate();
         $this->timestamp = $this->getTimestamp();
 
         $this->createXmlObject();
         $this->addHeader();
         $this->addUser();
         $this->addSoftware();
-    }
-
-
-    /**
-     * Egyedi request ID generálása
-     *
-     * NAV specifikáció:
-     * A requestId a kérés azonosítója. Értéke bármi lehet, ami a pattern szerint érvényes és az
-     * egyediséget nem sérti. A requestId-nak - az adott adózó vonatkozásában - kérésenként
-     * egyedinek kell lennie. Az egyediségbe csak a sikeresen feldolgozott kérések számítanak bele, a
-     * sikertelen vagy a szerver által elutasított kérések azonosítói nem, azok az első sikeres
-     * tranzakcióig (HTTP 200-as válaszig) újra felhasználhatóak. A tag értéke beleszámít a
-     * requestSignature értékébe.
-     *
-     * Pattern: [+a-zA-Z0-9_]{1,30}
-     *
-     * @return string
-     */
-    protected function generateRequestId() {
-        $id = "RID" . microtime() . mt_rand(10000, 99999);
-        $id = preg_replace("/[^A-Z0-9]/", "", $id);
-        $id = substr($id, 0, 30);
-        return $id;
     }
 
 
@@ -84,7 +61,12 @@ class BaseRequestXml {
 
 
     protected function getInitialXmlString() {
-        return '<?xml version="1.0" encoding="UTF-8"?><' . $this->rootName . ' xmlns="http://schemas.nav.gov.hu/OSA/1.0/api"></' . $this->rootName . '>';
+
+        if (empty($this->rootName)) {
+            throw new Exception("rootName has to be defined!");
+        }
+
+        return '<?xml version="1.0" encoding="UTF-8"?><' . $this->rootName . ' xmlns="http://schemas.nav.gov.hu/OSA/2.0/api"></' . $this->rootName . '>';
     }
 
 
@@ -93,7 +75,7 @@ class BaseRequestXml {
 
         $header->addChild("requestId", $this->requestId);
         $header->addChild("timestamp", $this->timestamp);
-        $header->addChild("requestVersion", "1.1");
+        $header->addChild("requestVersion", "2.0");
         $header->addChild("headerVersion", "1.0");
     }
 
@@ -134,7 +116,7 @@ class BaseRequestXml {
      */
     protected function getRequestSignatureHash() {
         $string = $this->getRequestSignatureString();
-        $hash = Util::sha512($string);
+        $hash = Util::sha3_512($string);
         return $hash;
     }
 
@@ -189,6 +171,11 @@ class BaseRequestXml {
      */
     public function validateSchema() {
         Xsd::validate($this->asXML(), Config::getApiXsdFilename());
+    }
+
+
+    public function getRequestId() {
+        return $this->requestId;
     }
 
 }

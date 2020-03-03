@@ -1,4 +1,10 @@
 {
-    "softwareId": "SOFTWAREID12345678",
-    "softwareName": "softwareName"
+    "softwareId": "123456789123456789",
+    "softwareName": "string",
+    "softwareOperation": "ONLINE_SERVICE",
+    "softwareMainVersion": "string",
+    "softwareDevName": "string",
+    "softwareDevContact": "string",
+    "softwareDevCountryCode": "HU",
+    "softwareDevTaxNumber": "string"
 }

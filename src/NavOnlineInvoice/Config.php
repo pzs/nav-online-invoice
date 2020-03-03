@@ -16,6 +16,8 @@ class Config {
 
     public $curlTimeout = null;
 
+    /** @var RequestIdGeneratorInterface */
+    public $requestIdGenerator;
 
     /**
      * NavOnlineInvoice Reporter osztály számára szükséges konfigurációs objektum készítése
@@ -25,10 +27,14 @@ class Config {
      * @param array|string $software Software data array vagy json fájlnév
      * @throws \Exception
      */
-    function __construct($baseUrl, $user, $software = null) {
+    function __construct($baseUrl, $user, $software) {
 
         if (!$baseUrl) {
             throw new Exception("A baseUrl paraméter megadása kötelező!");
+        }
+
+        if (!$software) {
+            throw new Exception("A 2.0-ás API-tól a Software adatok megadása kötelező!");
         }
 
         $this->setBaseUrl($baseUrl);
@@ -43,21 +49,31 @@ class Config {
             $this->setUser($user);
         }
 
-        if ($software) {
-            if (is_string($software)) {
-                $this->loadSoftware($software);
-            } else {
-                $this->setSoftware($software);
-            }
+        if (is_string($software)) {
+            $this->loadSoftware($software);
+        } else {
+            $this->setSoftware($software);
         }
+
+        $this->setRequestIdGenerator(new RequestIdGeneratorBasic());
+    }
+
+
+    function setRequestIdGenerator(RequestIdGeneratorInterface $obj) {
+        $this->requestIdGenerator = $obj;
+    }
+
+
+    function getRequestIdGenerator() {
+        return $this->requestIdGenerator;
     }
 
 
     /**
      * NAV online számla API eléréséhez használt URL
      *
-     * Teszt: https://api-test.onlineszamla.nav.gov.hu/invoiceService
-     * Éles: https://api.onlineszamla.nav.gov.hu/invoiceService
+     * Teszt: https://api-test.onlineszamla.nav.gov.hu/invoiceService/v2
+     * Éles: https://api.onlineszamla.nav.gov.hu/invoiceService/v2
      *
      * @param string $baseUrl  NAV eléréséhez használt környezet
      */
@@ -150,6 +166,11 @@ class Config {
 
     public static function getDataXsdFilename() {
         return __DIR__ . "/xsd/invoiceData.xsd";
+    }
+
+
+    public static function getAnnulmentXsdFilename() {
+        return __DIR__ . "/xsd/invoiceAnnulment.xsd";
     }
 
 

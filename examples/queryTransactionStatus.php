@@ -4,11 +4,11 @@ include("config.php");
 
 
 try {
-    $config = new NavOnlineInvoice\Config($apiUrl, $userDataFilename);
+    $config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
     $reporter = new NavOnlineInvoice\Reporter($config);
 
     $transactionId = "abc123";
-    $statusXml = $reporter->queryInvoiceStatus($transactionId);
+    $statusXml = $reporter->queryTransactionStatus($transactionId);
 
     print "Válasz XML objektum:\n";
     var_dump($statusXml);

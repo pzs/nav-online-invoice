@@ -1,14 +1,14 @@
 <?php
 
-use NavOnlineInvoice\QueryInvoiceStatusRequestXml;
+use NavOnlineInvoice\QueryTransactionStatusRequestXml;
 
 
-class QueryInvoiceStatusRequestXmlTest extends BaseTest {
+class QueryTransactionStatusRequestXmlTest extends BaseTest {
 
     private function createRequestXmlObject() {
         $transactionId = "abc123";
         $returnOriginalRequest = true;
-        return new QueryInvoiceStatusRequestXml($this->getConfig(), $transactionId, $returnOriginalRequest);
+        return new QueryTransactionStatusRequestXml($this->getConfig(), $transactionId, $returnOriginalRequest);
     }
 
 
@@ -18,7 +18,7 @@ class QueryInvoiceStatusRequestXmlTest extends BaseTest {
 
         $this->assertEquals("abc123", $xmlObj->transactionId);
         $this->assertEquals("1", $xmlObj->returnOriginalRequest);
-        $this->assertEquals("QueryInvoiceStatusRequest", $xmlObj->getName());
+        $this->assertEquals("QueryTransactionStatusRequest", $xmlObj->getName());
     }
 
 
