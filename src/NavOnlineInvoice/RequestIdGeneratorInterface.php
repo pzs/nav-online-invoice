@@ -2,7 +2,6 @@
 
 namespace NavOnlineInvoice;
 
-interface RequestIdGeneratorInterface
-{
+interface RequestIdGeneratorInterface {
     function generate();
 }

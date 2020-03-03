@@ -58,13 +58,13 @@ class Config {
         $this->setRequestIdGenerator(new RequestIdGeneratorBasic());
     }
 
-    function setRequestIdGenerator(RequestIdGeneratorInterface $obj)
-    {
+
+    function setRequestIdGenerator(RequestIdGeneratorInterface $obj) {
         $this->requestIdGenerator = $obj;
     }
 
-    function getRequestIdGenerator()
-    {
+
+    function getRequestIdGenerator() {
         return $this->requestIdGenerator;
     }
 

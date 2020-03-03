@@ -40,7 +40,7 @@ class Connector {
             'requestUrl' => $this->lastRequestUrl,
             'requestBody' => $this->lastRequestBody,
             'responseBody' => $this->lastResponseBody,
-            'lastRequestId' => $this->lastRequestId
+            'lastRequestId' => $this->lastRequestId,
         );
     }
 

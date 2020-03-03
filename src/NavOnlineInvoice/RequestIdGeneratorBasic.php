@@ -2,8 +2,8 @@
 
 namespace NavOnlineInvoice;
 
-class RequestIdGeneratorBasic implements RequestIdGeneratorInterface
-{
+class RequestIdGeneratorBasic implements RequestIdGeneratorInterface {
+
     /**
      * Egyedi request ID generálása
      *

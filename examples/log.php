@@ -22,3 +22,4 @@ $data = $reporter->getLastRequestData();
 print "<br /><br /><b>Request URL:</b> " . htmlspecialchars($data['requestUrl']);
 print "<br /><br /><b>Request body:</b> " . htmlspecialchars($data['requestBody']);
 print "<br /><br /><b>Response body:</b> " . htmlspecialchars($data['responseBody']);
+print "<br /><br /><b>Request ID:</b> " . htmlspecialchars($data['lastRequestId']);

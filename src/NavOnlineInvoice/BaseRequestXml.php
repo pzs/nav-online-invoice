@@ -173,8 +173,8 @@ abstract class BaseRequestXml {
         Xsd::validate($this->asXML(), Config::getApiXsdFilename());
     }
 
-    public function getRequestId()
-    {
+
+    public function getRequestId() {
         return $this->requestId;
     }
 

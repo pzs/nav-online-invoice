@@ -279,6 +279,7 @@ $data = $reporter->getLastRequestData();
 print "<br /><br />Request URL: " . htmlspecialchars($data['requestUrl']);
 print "<br /><br />Request body: " . htmlspecialchars($data['requestBody']);
 print "<br /><br />Response body: " . htmlspecialchars($data['responseBody']);
+print "<br /><br />Request ID: " . htmlspecialchars($data['lastRequestId']);
 ```
 
 A `requestBody` ezen modul által összeállított XML string-et tartalmazza, a `responseBody` pedig a NAV által visszaadott üzenetet, mely az esetek többségében egy XML string.
@@ -310,6 +311,7 @@ __Metódusok__
 - `setUser($data)`
 - `loadUser($jsonFile)`
 - `setCurlTimeout($timeoutSeconds)`: NAV szerver hívásánál (cURL hívás) timeout értéke másodpercben. Alapértelmezetten nincs timeout beállítva. Megjegyzés: manageInvoice hívásnál 2 szerver hívás is történik (token kérés és számlák beküldése), itt külön-külön kell érteni a timeout-ot.
+- `setRequestIdGenerator(RequestIdGeneratorInterface $obj)`: opcionálisan egyedi request id generátor állítható be.
 
 
 ### `Reporter` osztály
@@ -327,7 +329,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 - `queryTransactionStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
 - `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `null` nem létező adószám esetén, `false` érvénytelen adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
 - `tokenExchange()`: Token kérése manageInvoice művelethez (közvetlen használata nem szükséges, viszont lehet használni, mint teszt hívás). Visszatérési értékként a dekódolt tokent adja vissza string-ként.
-- `getLastRequestData()`: Utolsó REST hívás adatainak lekérdezése naplózási és hibakeresési céllal. A visszaadott array a következő elemeket tartalmazza: requestUrl, requestBody, responseBody. Megjegyzés: bizonyos műveletek (manageAnnulment és manageInvoice) kettő REST hívást is indítanak, a tokenExchange hívást, illetve magát az adatküldést. Sikeres hívás esetén csak a tényleges adatküldés eredménye érhető el, Exception esetén pedig mindig az utolsó hívás adata.
+- `getLastRequestData()`: Utolsó REST hívás adatainak lekérdezése naplózási és hibakeresési céllal. A visszaadott array a következő elemeket tartalmazza: requestUrl, requestBody, responseBody és lastRequestId. Megjegyzés: bizonyos műveletek (manageAnnulment és manageInvoice) kettő REST hívást is indítanak, a tokenExchange hívást, illetve magát az adatküldést. Sikeres hívás esetén csak a tényleges adatküldés eredménye érhető el, Exception esetén pedig mindig az utolsó hívás adata.
 
 
 ### `InvoiceOperations` osztály
@@ -380,6 +382,6 @@ Szükséges modulok:
 
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2018-2019 github.com/pzs
+Copyright (c) 2018-2020 github.com/pzs
 
 https://github.com/pzs/nav-online-invoice
