@@ -272,6 +272,33 @@ try {
 ```
 
 
+### Számlalánc lekérése (`queryInvoiceChainDigest`)
+
+A `queryInvoiceChainDigest` egy számlaszám alapján működő lekérdező operáció, amely a számlán szereplő kiállító és a vevő oldaláról is használható. Az operáció a megadott keresőfeltételeknek megfelelő, lapozható számlalistát ad vissza a válaszban. A lista elemei a megadott alapszámlához tartozó számlalánc elemei. A válasz nem tartalmazza a számlák összes üzleti adatát, hanem csak egy kivonatot (digest-et), elsősorban a módosításra és tételsorok számára vonatkozóan.
+
+```php
+try {
+    $config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
+    $reporter = new NavOnlineInvoice\Reporter($config);
+
+    $invoiceChainQuery = [
+        "invoiceNumber" => "SZML-123",
+        "invoiceDirection" => "OUTBOUND", // OUTBOUND or INBOUND
+        "taxNumber" => "12345678", // optional
+    ];
+    $page = 1;
+
+    $invoiceChainDigestResult = $reporter->queryInvoiceChainDigest($invoiceChainQuery, $page);
+
+    print "Result:\n";
+    print_r($invoiceChainDigestResult);
+
+} catch(Exception $ex) {
+    print get_class($ex) . ": " . $ex->getMessage();
+}
+```
+
+
 ### Számla (szakmai) XML validálása küldés nélkül
 
 
@@ -354,6 +381,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 - `queryInvoiceDigest($invoiceQueryParams, $page = 1, $direction = "OUTBOUND")`: Lekérdező operáció, mely kiállító és vevő oldalról is használható. Paraméterben az invoiceQueryParams-nak megfelelően összeállított lekérdezési adatokat kell átadni (SimpleXMLElement), az oldalszámot és a keresés irányát (OUTBOUND, INBOUND). A válasz XML invoiceDigestResult része.
 - `queryTransactionStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
 - `queryTransactionList($insDate [, $page = 1])`: A kérésben megadott időintervallumban, a technikai felhasználóhoz tartozó adószámhoz beküldött számlaadat-szolgáltatások listázására szolgál
+- `queryInvoiceChainDigest($invoiceChainQuery [, $page = 1])`
 - `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `null` nem létező adószám esetén, `false` érvénytelen adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
 - `tokenExchange()`: Token kérése manageInvoice művelethez (közvetlen használata nem szükséges, viszont lehet használni, mint teszt hívás). Visszatérési értékként a dekódolt tokent adja vissza string-ként.
 - `getLastRequestData()`: Utolsó REST hívás adatainak lekérdezése naplózási és hibakeresési céllal. A visszaadott array a következő elemeket tartalmazza: requestUrl, requestBody, responseBody és lastRequestId. Megjegyzés: bizonyos műveletek (manageAnnulment és manageInvoice) kettő REST hívást is indítanak, a tokenExchange hívást, illetve magát az adatküldést. Sikeres hívás esetén csak a tényleges adatküldés eredménye érhető el, Exception esetén pedig mindig az utolsó hívás adata.

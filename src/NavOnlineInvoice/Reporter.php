@@ -172,6 +172,27 @@ class Reporter {
 
 
     /**
+     * queryInvoiceChainDigest operáció
+     *
+     * A /queryInvoiceChainDigest egy számlaszám alapján működő lekérdező operáció, amely a számlán szereplő
+     * kiállító és a vevő oldaláról is használható. Az operáció a megadott keresőfeltételeknek megfelelő,
+     * lapozható számlalistát ad vissza a válaszban. A lista elemei a megadott alapszámlához tartozó számlalánc elemei.
+     * A válasz nem tartalmazza a számlák összes üzleti adatát, hanem csak egy kivonatot (digest-et), elsősorban a
+     * módosításra és tételsorok számára vonatkozóan
+     *
+     * @param  Array  $invoiceChainQuery
+     * @param  integer $page          Oldalszám
+     * @return \SimpleXMLElement  $invoiceChainDigestResult A válasz XML invoiceChainDigestResult része
+     */
+    public function queryInvoiceChainDigest($invoiceChainQuery, $page = 1) {
+        $requestXml = new QueryInvoiceChainDigestRequestXml($this->config, $invoiceChainQuery, $page);
+        $responseXml = $this->connector->post("/queryInvoiceChainDigest", $requestXml);
+
+        return $responseXml->invoiceChainDigestResult;
+    }
+
+
+    /**
      * queryTaxpayer operáció (1.9.8 fejezet)
      *
      * A /queryTaxpayer belföldi adószám validáló operáció, mely a számlakiállítás folyamatába építve képes
