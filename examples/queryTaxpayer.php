@@ -11,13 +11,14 @@ try {
 
     if ($result) {
         print "Az adószám valid.\n";
-        print "Az adószámhoz tartozó név: " . $result->taxpayerName . "\n";
-        if (isset($result->taxpayerAddress)) {
-            print "Cím: ";
-            print_r($result->taxpayerAddress);
-        } else {
-            print "Az adószámhoz nem tartozik cím.";
-        }
+        print "Az adószámhoz tartozó név: $result->taxpayerName\n";
+
+        print "További lehetséges információk az adózóról:\n";
+        print_r($result->taxpayerShortName);
+        print_r($result->taxNumberDetail);
+        print_r($result->vatGroupMembership);
+        print_r($result->taxpayerAddressList);
+
     } else {
         print "Az adószám nem valid.";
     }
