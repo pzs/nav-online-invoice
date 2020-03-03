@@ -154,6 +154,24 @@ class Reporter {
 
 
     /**
+     * queryTransactionList operáció
+     *
+     * A /queryTransactionList a kérésben megadott időintervallumban, a technikai felhasználóhoz tartozó adószámhoz
+     * beküldött számlaadat-szolgáltatások listázására szolgál.
+     *
+     * @param  array   $insDate   DateTimeIntervalParamType-nak megfelelő mezők (lásd example)
+     * @param  integer $page
+     * @return \SimpleXMLElement  $transactionListResult A válasz XML transactionListResult része
+     */
+    public function queryTransactionList($insDate, $page = 1) {
+        $requestXml = new QueryTransactionListRequestXml($this->config, $insDate, $page);
+        $responseXml = $this->connector->post("/queryTransactionList", $requestXml);
+
+        return $responseXml->transactionListResult;
+    }
+
+
+    /**
      * queryTaxpayer operáció (1.9.8 fejezet)
      *
      * A /queryTaxpayer belföldi adószám validáló operáció, mely a számlakiállítás folyamatába építve képes

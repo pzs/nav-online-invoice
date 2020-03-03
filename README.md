@@ -246,6 +246,32 @@ try {
 ```
 
 
+### Tranzakciók lekérése (`queryTransactionList`)
+
+A kérésben megadott időintervallumban, a technikai felhasználóhoz tartozó adószámhoz beküldött számlaadat-szolgáltatások listázására szolgál.
+
+```php
+try {
+    $config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
+    $reporter = new NavOnlineInvoice\Reporter($config);
+
+    $insDate = [
+        "dateTimeFrom" => "2020-03-01T06:00:00Z",
+        "dateTimeTo" => "2020-03-05T18:00:00Z",
+    ];
+    $page = 1;
+
+    $transactionListResult = $reporter->queryTransactionList($insDate, $page);
+
+    print "Result:\n";
+    print_r($transactionListResult);
+
+} catch(Exception $ex) {
+    print get_class($ex) . ": " . $ex->getMessage();
+}
+```
+
+
 ### Számla (szakmai) XML validálása küldés nélkül
 
 
@@ -327,6 +353,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 - `queryInvoiceData($invoiceNumberQuery)`: Számla lekérdezése számlaszám alapján, mely kiállító és vevő oldalról is használható. Paraméterben az invoiceNumberQuery-nek megfelelően összeállított lekérdezési adatokat kell átadni (`SimpleXMLElement` példány). Visszatérési értéke a visszakapott XML `invoiceDataResult` része (`SimpleXMLElement` példány)
 - `queryInvoiceDigest($invoiceQueryParams, $page = 1, $direction = "OUTBOUND")`: Lekérdező operáció, mely kiállító és vevő oldalról is használható. Paraméterben az invoiceQueryParams-nak megfelelően összeállított lekérdezési adatokat kell átadni (SimpleXMLElement), az oldalszámot és a keresés irányát (OUTBOUND, INBOUND). A válasz XML invoiceDigestResult része.
 - `queryTransactionStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
+- `queryTransactionList($insDate [, $page = 1])`: A kérésben megadott időintervallumban, a technikai felhasználóhoz tartozó adószámhoz beküldött számlaadat-szolgáltatások listázására szolgál
 - `queryTaxpayer(string $taxNumber)`: Belföldi adószám validáló és címadat lekérdező operáció. Visszatérési éréke lehet `null` nem létező adószám esetén, `false` érvénytelen adószám esetén, vagy TaxpayerDataType XML elem név és címadatokkal valid adószám esetén
 - `tokenExchange()`: Token kérése manageInvoice művelethez (közvetlen használata nem szükséges, viszont lehet használni, mint teszt hívás). Visszatérési értékként a dekódolt tokent adja vissza string-ként.
 - `getLastRequestData()`: Utolsó REST hívás adatainak lekérdezése naplózási és hibakeresési céllal. A visszaadott array a következő elemeket tartalmazza: requestUrl, requestBody, responseBody és lastRequestId. Megjegyzés: bizonyos műveletek (manageAnnulment és manageInvoice) kettő REST hívást is indítanak, a tokenExchange hívást, illetve magát az adatküldést. Sikeres hívás esetén csak a tényleges adatküldés eredménye érhető el, Exception esetén pedig mindig az utolsó hívás adata.

@@ -18,20 +18,7 @@ class QueryInvoiceDataRequestXml extends BaseRequestXml {
     function __construct($config, $invoiceNumberQuery) {
         parent::__construct($config);
 
-        $this->addQueryData($this->xml, "invoiceNumberQuery", $invoiceNumberQuery);
-    }
-
-
-    protected function addQueryData(\SimpleXMLElement $xmlNode, $type, $data) {
-        $node = $xmlNode->addChild($type);
-
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                $this->addQueryData($node, $key, $value);
-            } else {
-                $node->addChild($key, $value);
-            }
-        }
+        XmlUtil::addChildArray($this->xml, "invoiceNumberQuery", $invoiceNumberQuery);
     }
 
 }
