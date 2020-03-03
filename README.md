@@ -18,9 +18,12 @@ NAV Online számla oldala: [onlineszamla.nav.gov.hu](https://onlineszamla.nav.go
 <details>
 <summary>Kattints ide a leírás megjelenítéséhez!</summary>
 
-:warning: A NAV 2.0-ás interfésze teszt környezetben már elérhető, viszont éles környezetben leghamarabb 2020. február hónapban várható.
+:information_source: A NAV 2.0-ás API teszt és éles környezetben is elérhető már.
+
+:warning: 2020. április 1-jétől kizárólag a 2.0-ás API lesz alkalmazható az éles környezetben ([forrás](https://onlineszamla.nav.gov.hu/home))
 
 A 2.0-ás `nav-online-invoice` modulra való frissítés után a következő módosításokat kell végrehajtanod:
+
 
 - `NavOnlineInvoice\Config` példányosításakor:
     - apiUrl a következőre változott: `https://api-test.onlineszamla.nav.gov.hu/invoiceService/v2`, illetve "-test" rész nélkül éles környezetben,
@@ -32,12 +35,13 @@ A 2.0-ás `nav-online-invoice` modulra való frissítés után a következő mó
 - technikai érvényesítést mostantól nem a `manageInvoice()` hívással, hanem `manageAnnulment()` hívással kell beküldened,
 - a státusz lekérdezés metódus át lett nevezve `queryInvoiceStatus()`-ról `queryTransactionStatus()`-ra,
 - a `queryInvoiceData()` metódus változott: ezzel mostantól csak egy számla adatait lehet lekérni számlaszám alapján (kiállító és vevő oldalról is), keresni pedig az új `queryInvoiceDigest()` metódussal lehet,
-- továbbá a 2.0-ás API-n új operációk is elérhetőek lesznek, melyek fejlesztése még folyamatban van (NAV oldalról is) - _ez a leírás bővülni fog_.
+- a `queryTaxpayer()` metódus visszatérési értékében a címadatokat más formában adja vissza a NAV, illetve kibővül más információkkal is,
+- továbbá a 2.0-ás API-n új operációk is elérhetőek lettek: `queryTransactionList` és `queryInvoiceChainDigest`, lásd a leírást és példákat.
 
 Új funkció a `nav-online-invoice` modulban:
 - naplózást és hibakeresést segítő `$reporter->getLastRequestData()` metódus, lásd a [példafájlt](examples/log.php), illetve a [leírást](#rest-hívás-részletei).
 
-Ha ezekkel megvagy, akkor már csak az adatsémákat kell átírnod, melyhez segítséged a NAV-os dokumentációkban, illetve fórumokon találsz, de ha megpróbálod beküldeni a régi adat XML-t, akkor az interfész is ki fogja írni a sémavalidálási hibát. NAV-os changelog: [CHANGELOG_2.0](https://github.com/nav-gov-hu/Online-Invoice/blob/master/src/schemas/nav/gov/hu/OSA/CHANGELOG_2.0.md)
+Ha ezekkel megvagy, akkor már csak az adatsémákat kell átírnod, melyhez segítséget a NAV-os dokumentációkban, illetve fórumokon találsz, de ha megpróbálod beküldeni a régi adat XML-t, akkor az interfész is ki fogja írni a sémavalidálási hibát. NAV-os changelog: [CHANGELOG_2.0](https://github.com/nav-gov-hu/Online-Invoice/blob/master/src/schemas/nav/gov/hu/OSA/CHANGELOG_2.0.md)
 
 </details>
 
