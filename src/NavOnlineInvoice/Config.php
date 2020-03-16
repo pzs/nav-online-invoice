@@ -16,6 +16,9 @@ class Config {
 
     public $curlTimeout = null;
 
+    // `queryTaxpayer` válasz XML-jében a 'ns2' automatikus eltávolítása
+    public $removeNamespaces = true;
+
     /** @var RequestIdGeneratorInterface */
     public $requestIdGenerator;
 

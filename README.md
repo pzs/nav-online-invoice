@@ -93,6 +93,8 @@ $reporter = new NavOnlineInvoice\Reporter($config);
 
 ### Adószám ellenőrzése (`queryTaxpayer`)
 
+Megjegyzés: a modul automatikusan eltávolítja az `ns2` namespace-t a válasz XML-ből (lásd [#20](https://github.com/pzs/nav-online-invoice/issues/20)), így kényelmesebben használható az XML válasz. Ez a működés szükség szerint kikapcsolható a `$config->removeNamespaces` `false`-ra állításával.
+
 ```php
 try {
     $result = $reporter->queryTaxpayer("12345678");
