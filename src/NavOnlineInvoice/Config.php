@@ -10,7 +10,7 @@ class Config {
     public $software;
 
     public $baseUrl;
-    public $verifySLL = false;
+    public $verifySSL = false;
 
     public $validateApiSchema = true;
 
