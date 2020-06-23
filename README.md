@@ -65,6 +65,7 @@ Technikai felhasználó és szoftver adatok beállítása, Reporter példány l�
 $userData = array(
     "login" => "username",
     "password" => "password",
+    "passwordHash" => "...",    // Opcionális, a jelszó már SHA512 hashelt változata. Amennyiben létezik ezt, az authentikáció már ezzel történik
     "taxNumber" => "12345678",
     "signKey" => "sign-key",
     "exchangeKey" => "exchange-key",
