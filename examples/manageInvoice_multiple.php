@@ -13,6 +13,7 @@ try {
     $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1.xml"));
     // $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice2.xml"));
 
+    // Számlák beküldése:
     $transactionId = $reporter->manageInvoice($invoices);
 
     print "Tranzakciós azonosító a státusz lekérdezéshez: " . $transactionId;

@@ -1,6 +1,6 @@
 # NAV Online Invoice reporter
 
-> A PHP interface for Online Invoice Data Reporting System of Hungarian Tax Office (NAV)
+> PHP interface for Online Invoice Data Reporting System of Hungarian Tax Office (NAV)
 
 _PHP interfész a NAV Online számla adatszolgáltatásához_
 
@@ -23,7 +23,7 @@ A modul ezen verzió a NAV 2.0-ás API-ját támogatja.
 
 :information_source: A NAV 2.0-ás API teszt és éles környezetben is elérhető már.
 
-:warning: 2020. április 1-jétől kizárólag a 2.0-ás API lesz alkalmazható az éles környezetben ([forrás](https://onlineszamla.nav.gov.hu/home))
+:warning: 2020. július 1-jétől kizárólag a 2.0-ás API lesz alkalmazható az éles környezetben ([forrás](https://onlineszamla.nav.gov.hu/))
 
 A 2.0-ás `nav-online-invoice` modulra való frissítés után a következő módosításokat kell végrehajtanod:
 
@@ -65,7 +65,7 @@ Technikai felhasználó és szoftver adatok beállítása, Reporter példány l�
 $userData = array(
     "login" => "username",
     "password" => "password",
-//  "passwordHash" => "...",    // Opcionális, a jelszó már SHA512 hashelt változata. Amennyiben létezik ez a változó, akkor az authentikáció során ezt használja
+    // "passwordHash" => "...", // Opcionális, a jelszó már SHA512 hashelt változata. Amennyiben létezik ez a változó, akkor az authentikáció során ezt használja
     "taxNumber" => "12345678",
     "signKey" => "sign-key",
     "exchangeKey" => "exchange-key",
@@ -244,7 +244,9 @@ try {
         ],
     ];
 
-    $invoiceDigestResult = $reporter->queryInvoiceDigest($invoiceQueryParams, 1, "OUTBOUND");
+    $page = 1;
+
+    $invoiceDigestResult = $reporter->queryInvoiceDigest($invoiceQueryParams, $page, "OUTBOUND");
 
     print "Query results XML elem:\n";
     var_dump($invoiceDigestResult);

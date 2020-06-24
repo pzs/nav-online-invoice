@@ -9,6 +9,7 @@ try {
 
     $invoiceXml = simplexml_load_file(TEST_DATA_DIR . "invoice1.xml");
 
+    // Számla beküldése:
     $transactionId = $reporter->manageInvoice($invoiceXml, "CREATE");
 
     print "Tranzakciós azonosító a státusz lekérdezéshez: " . $transactionId;

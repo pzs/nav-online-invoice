@@ -16,7 +16,9 @@ try {
         ],
     ];
 
-    $invoiceDigestResult = $reporter->queryInvoiceDigest($invoiceQueryParams, 1, "OUTBOUND");
+    $page = 1;
+
+    $invoiceDigestResult = $reporter->queryInvoiceDigest($invoiceQueryParams, $page, "OUTBOUND");
 
     print "Query results XML elem:\n";
     var_dump($invoiceDigestResult);

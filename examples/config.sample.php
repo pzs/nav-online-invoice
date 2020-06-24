@@ -14,6 +14,7 @@ $apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService/v2";
 $userData = array(
     "login" => "username",
     "password" => "password",
+    // "passwordHash" => "...", // Opcionálisan, jelszó helyett a jelszó hash is átadható
     "taxNumber" => "12345678",
     "signKey" => "sign-key",
     "exchangeKey" => "exchange-key",
