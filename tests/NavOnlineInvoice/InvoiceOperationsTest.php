@@ -14,12 +14,10 @@ class InvoiceOperationsTest extends BaseTest {
     }
 
 
-    /**
-     * @expectedException     NavOnlineInvoice\XsdValidationError
-     */
     public function testValidation2() {
         $invoices = new NavOnlineInvoice\InvoiceOperations();
 
+        $this->expectException(NavOnlineInvoice\XsdValidationError::class);
         $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1_invalid.xml"));
     }
 
