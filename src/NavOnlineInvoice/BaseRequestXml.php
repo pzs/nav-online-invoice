@@ -83,7 +83,7 @@ abstract class BaseRequestXml {
     protected function addUser() {
         $user = $this->xml->addChild("user");
 
-        $passwordHash = Util::sha512($this->config->user["password"]);
+        $passwordHash = isset($this->config->user["passwordHash"]) ? $this->config->user["passwordHash"] : Util::sha512($this->config->user["password"]);
         $signature = $this->getRequestSignatureHash();
 
         $user->addChild("login", $this->config->user["login"]);
