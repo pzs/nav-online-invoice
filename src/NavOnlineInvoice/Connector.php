@@ -122,7 +122,9 @@ class Connector {
             "Accept: application/xml"
         );
 
-        if (!$this->config->verifySSL) {
+        $verifySSL = isset($this->config->verifySLL) ? $this->config->verifySLL : $this->config->verifySSL;
+
+        if (!$verifySSL) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         }

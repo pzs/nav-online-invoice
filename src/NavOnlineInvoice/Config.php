@@ -10,6 +10,7 @@ class Config {
     public $software;
 
     public $baseUrl;
+    public $verifySLL = null; // DEPRECATED and will be removed from v3.0, since it's a typo
     public $verifySSL = false;
 
     public $validateApiSchema = true;
