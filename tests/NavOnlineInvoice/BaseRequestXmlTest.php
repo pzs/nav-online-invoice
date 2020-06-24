@@ -25,7 +25,7 @@ class BaseRequestXmlTest extends BaseTest {
 
         $xmlString = $requestXml->asXML();
 
-        $this->assertInternalType("string", $xmlString);
+        $this->assertIsString($xmlString);
         $this->assertSame(0, strpos($xmlString, '<?xml version="1.0" encoding="UTF-8"?>'));
     }
 
