@@ -213,7 +213,7 @@ class Reporter {
         }
 
         // taxpayerValidity értéke lehet false is, ha az adószám létezik, de nem érvényes
-        if (empty($responseXml->taxpayerValidity) or $responseXml->taxpayerValidity === "false") {
+        if (empty($responseXml->taxpayerValidity) or (string)($responseXml->taxpayerValidity) === "false") {
             return false;
         }
 
