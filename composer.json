@@ -6,5 +6,12 @@
         "psr-0" : {
             "NavOnlineInvoice" : "src"
         }
+    },
+    "require": {
+      "ext-curl": "*",
+      "ext-simplexml": "*",
+      "ext-openssl": "*",
+      "ext-dom": "*",
+      "ext-libxml": "*"
     }
 }
