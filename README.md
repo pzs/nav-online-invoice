@@ -209,7 +209,7 @@ try {
 
 ### Számla lekérdezése (`queryInvoiceData`)
 
-Számla lekérdezése számlaszám alapján, mely kiállító és vevő oldalról is használható.
+Számla lekérdezése számlaszám alapján, mely kiállító és vevő oldalról is használható. Második paraméterben `true`-t átadva a metódus a dekódolt számla XML-t adja vissza `invoiceDataResult` helyett.
 
 ```php
 try {
@@ -217,10 +217,26 @@ try {
         "invoiceNumber" => "T20190001",
         "invoiceDirection" => "OUTBOUND",
     ];
+
+    // Lekérdezés
     $invoiceDataResult = $reporter->queryInvoiceData($invoiceNumberQuery);
 
     print "Query results XML elem:\n";
     var_dump($invoiceDataResult);
+
+    // Számla kézi dekódolása
+    $invoice = NavOnlineInvoice\InvoiceOperations::convertToXml($invoiceDataResult->invoiceData, $invoiceDataResult->compressedContentIndicator);
+
+    // Számla:
+    var_dump($invoice);
+
+    // *** VAGY ***
+
+    // Lekérdezés és számla automatikus dekódolása
+    $invoice = $reporter->queryInvoiceData($invoiceNumberQuery, true); // 2. paraméter jelzi az automatikus dekódolást
+
+    // Számla:
+    var_dump($invoice);
 
 } catch(Exception $ex) {
     print get_class($ex) . ": " . $ex->getMessage();
@@ -389,7 +405,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 - `__construct(Config $config)`
 - `manageInvoice($invoiceOperationsOrXml [, $operation])`: A számla beküldésére szolgáló operáció. Visszatérési értékként a `transactionId`-t adja vissza string-ként. Paraméterben a beküldendő számla XML-t kell átadni, illetve a hozzá tartozó műveletet (ManageInvocieOperationType): CREATE, MODIFY, STORNO. Átadható egyszerre több számla is, ilyenkor első paraméterben InvoiceOperations példányt kell átadni (második paraméternek nincs szerepe ilyenkor).
 - `manageAnnulment($invoiceOperationsOrXml)`: Technikai érvénytelenítés beküldésére szolgáló operáció. Paraméterben a technikai érvénytelenítést leíró XML-t, vagy egy InvoiceOperations példányt kell átadni. Utóbbi esetben az InvoiceOperations példány több XML-t is tartalmazhat. A metódus visszaadja a transactionId-t, mellyel lekérdezhető a tranzakció eredménye.
-- `queryInvoiceData($invoiceNumberQuery)`: Számla lekérdezése számlaszám alapján, mely kiállító és vevő oldalról is használható. Paraméterben az invoiceNumberQuery-nek megfelelően összeállított lekérdezési adatokat kell átadni (`SimpleXMLElement` példány). Visszatérési értéke a visszakapott XML `invoiceDataResult` része (`SimpleXMLElement` példány)
+- `queryInvoiceData($invoiceNumberQuery [, $returnDecodedInvoiceData = false])`: Számla lekérdezése számlaszám alapján, mely kiállító és vevő oldalról is használható. Paraméterben az invoiceNumberQuery-nek megfelelően összeállított lekérdezési adatokat kell átadni (`SimpleXMLElement` példány). Visszatérési értéke a visszakapott XML `invoiceDataResult` része (`SimpleXMLElement` példány), vagy a számla XML, ha 2. paraméterben `true`-t adtunk át.
 - `queryInvoiceDigest($invoiceQueryParams, $page = 1, $direction = "OUTBOUND")`: Lekérdező operáció, mely kiállító és vevő oldalról is használható. Paraméterben az invoiceQueryParams-nak megfelelően összeállított lekérdezési adatokat kell átadni (SimpleXMLElement), az oldalszámot és a keresés irányát (OUTBOUND, INBOUND). A válasz XML invoiceDigestResult része.
 - `queryTransactionStatus(string $transactionId [, $returnOriginalRequest = false])`: A számla adatszolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
 - `queryTransactionList($insDate [, $page = 1])`: A kérésben megadott időintervallumban, a technikai felhasználóhoz tartozó adószámhoz beküldött számlaadat-szolgáltatások listázására szolgál

@@ -158,4 +158,24 @@ class InvoiceOperations {
         return $invoiceOperations;
     }
 
+
+    /**
+     * Számla dekódolása (base64 és opcionálisan gzip)
+     *
+     * @param  string  $base64data
+     * @param  boolean $isCompressed
+     * @return \SimpleXMLElement
+     */
+    public static function convertToXml($base64data, $isCompressed = false) {
+        $isCompressed = ($isCompressed === true or (string)$isCompressed === 'true');
+
+        $data = base64_decode($base64data);
+
+        if ($isCompressed) {
+            $data = gzdecode($data);
+        }
+
+        return simplexml_load_string($data);
+    }
+
 }
