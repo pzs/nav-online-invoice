@@ -403,7 +403,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 `manageInvoice` és `manageAnnulment` híváshoz használandó collection, melyhez a feladni kívánt számlákat lehet hozzáadni. Ez az osztály validálja is az átadott szakmai XML-t az XSD-vel.
 
-- `__construct()`
+- `__construct($compression = false)`: compression: gzip tömörítés engedélyezése, részletek: NAV dokumentáció, 1.6.5 Tömörítés és méretkorlát
 - `useDataSchemaValidation([$flag = true])`: Számla adat hozzáadásakor az XML-t (szakmai XML) validálja az XSD-vel. Alapértelmezetten be van kapcsolva a validáció.
 - `add(SimpleXMLElement $xml [, $operation = "CREATE"])`: Számla XML hozzáadása a listához
 - `isTechnicalAnnulment()`

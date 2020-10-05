@@ -7,8 +7,10 @@ use Exception;
 class InvoiceOperations {
 
     const MAX_INVOICE_COUNT = 100;
+    const COMPRESSION_LEVEL = 1;
 
     protected $invoices;
+    protected $compression;
 
     /**
      * Az automatikusan felismert technicalAnnulment értéke az első hozzáadott számla alapján.
@@ -23,10 +25,13 @@ class InvoiceOperations {
 
     /**
      * Számlákat (számla műveleteket) összefogó objektum (collection) készítése
+     *
+     * @param boolean $compression    gzip tömörítés alkalmazása, részletek: NAV dokumentáció, 1.6.5 Tömörítés és méretkorlát
      */
-    function __construct() {
+    function __construct($compression = false) {
         $this->invoices = array();
         $this->index = 1;
+        $this->compression = $compression;
     }
 
 
@@ -114,6 +119,11 @@ class InvoiceOperations {
     }
 
 
+    public function isCompressed() {
+        return $this->compression;
+    }
+
+
     /**
      * XML objektum konvertálása base64-es szöveggé
      * @param \SimpleXMLElement $xml
@@ -121,6 +131,11 @@ class InvoiceOperations {
      */
     protected function convertXml(\SimpleXMLElement $xml) {
         $xml = $xml->asXML();
+
+        if ($this->compression) {
+            $xml = gzencode($xml, self::COMPRESSION_LEVEL);
+        }
+
         return base64_encode($xml);
     }
 
@@ -131,10 +146,11 @@ class InvoiceOperations {
      *
      * @param  \SimpleXMLElement $xml
      * @param  string           $operation
+     * @param  boolean $compression    gzip tömörítés alkalmazása, részletek: NAV dokumentáció, 1.6.5 Tömörítés és méretkorlát
      * @return InvoiceOperations
      */
-    public static function convertFromXml($xml, $operation) {
-        $invoiceOperations = new self();
+    public static function convertFromXml($xml, $operation, $compression = false) {
+        $invoiceOperations = new self($compression);
         $invoiceOperations->useDataSchemaValidation();
 
         $invoiceOperations->add($xml, $operation);
