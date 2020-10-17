@@ -19,6 +19,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          tools: phpunit:7.5.20
+          tools: composer
+      - name: Install dependency
+        run: composer install
       - name: Run tests
-        run: phpunit
+        run: ./vendor/bin/phpunit
