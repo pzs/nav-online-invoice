@@ -2,7 +2,7 @@
 
 include("config.php");
 
-$config = new NavOnlineInvoice\Config(NavOnlineInvoice\Config::TEST_URL, $userData, $softwareData);
+$config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
 $reporter = new NavOnlineInvoice\Reporter($config);
 
 

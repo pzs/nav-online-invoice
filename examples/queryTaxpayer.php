@@ -23,6 +23,15 @@ try {
         print "Az adószám nem valid.";
     }
 
+    // infoDate
+    // A queryTaxpayer válaszában szerepel még egy infoDate mező, viszont ez a
+    // taxpayerData mellett van, ennek kiolvasását a teljes XML-ből tudjuk megtenni:
+
+    $responseXml = $reporter->getLastResponseXml();
+
+    print $responseXml->infoDate;
+
+
 } catch(Exception $ex) {
     print get_class($ex) . ": " . $ex->getMessage();
 }
