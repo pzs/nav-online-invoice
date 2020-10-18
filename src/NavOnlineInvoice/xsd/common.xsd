@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+# Project: NAV NTCA Common XML séma
+# Author: NAV Informatikai Intézet
+
+# Version: v1.0 2020/07/31
+-->
+<xs:schema xmlns="http://schemas.nav.gov.hu/NTCA/1.0/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://schemas.nav.gov.hu/NTCA/1.0/common" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Atomi típusok / Atomic types-->
+	<xs:simpleType name="AtomicStringType100">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 100 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 100 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType1024">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 1024 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 1024 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="1024"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType128">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 128 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 128 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="128"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType15">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 15 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 15 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType16">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 16 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 16 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType2">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 2 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 2 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType200">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 200 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 200 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="200"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType2048">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 2048 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 2048 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="2048"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType255">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 255 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 255 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType256">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 256 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 256 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType32">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 32 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 32 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType4">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 4 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 4 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType4000">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 4000 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 4000 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType50">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 50 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 50 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType512">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 512 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 512 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="512"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType64">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 64 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 64 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="64"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AtomicStringType8">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Atomi string típus 8 hosszra</xs:documentation>
+			<xs:documentation xml:lang="en">Atomic string type for 8 length</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GenericDateType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Általános UTC dátum</xs:documentation>
+			<xs:documentation xml:lang="en">Generic UTC date</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:date">
+			<xs:pattern value="\d{4}-\d{2}-\d{2}Z"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GenericDecimalType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Általános lebegőpontos érték</xs:documentation>
+			<xs:documentation xml:lang="en">Generic float point value</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal"/>
+	</xs:simpleType>
+	<xs:simpleType name="GenericTimestampType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Általános UTC időbélyeg</xs:documentation>
+			<xs:documentation xml:lang="en">Generic UTC timestamp</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime">
+			<xs:pattern value="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?Z"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SHA256Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">SHA256 kód megadására szolgáló típus</xs:documentation>
+			<xs:documentation xml:lang="en">Field type for holding an SHA256 code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType64">
+			<xs:pattern value="[0-9A-F]{64}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SHA512Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">SHA512 kód megadására szolgáló típus</xs:documentation>
+			<xs:documentation xml:lang="en">Field type for holding an SHA512 code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType128">
+			<xs:pattern value="[0-9A-F]{128}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SimpleText100NotBlankType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Legfeljebb 100 karaktert tartalmazó szöveg típus</xs:documentation>
+			<xs:documentation xml:lang="en">String of maximum 100 characters</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType100">
+			<xs:pattern value=".*[^\s].*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SimpleText1024NotBlankType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Legfeljebb 1024 karaktert tartalmazó szöveg típus</xs:documentation>
+			<xs:documentation xml:lang="en">String of maximum 1024 characters</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType1024">
+			<xs:pattern value=".*[^\s].*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SimpleText15NotBlankType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Legfeljebb 15 karaktert tartalmazó szöveg típus</xs:documentation>
+			<xs:documentation xml:lang="en">String of maximum 15 characters</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType15">
+			<xs:pattern value=".*[^\s].*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SimpleText200NotBlankType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Legfeljebb 200 karaktert tartalmazó szöveg típus</xs:documentation>
+			<xs:documentation xml:lang="en">String of maximum 200 characters</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType200">
+			<xs:pattern value=".*[^\s].*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SimpleText255NotBlankType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Legfeljebb 255 karaktert tartalmazó szöveg típus</xs:documentation>
+			<xs:documentation xml:lang="en">String of maximum 255 characters</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType255">
+			<xs:pattern value=".*[^\s].*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SimpleText50NotBlankType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Legfeljebb 50 karaktert tartalmazó szöveg típus</xs:documentation>
+			<xs:documentation xml:lang="en">String of maximum 50 characters</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType50">
+			<xs:pattern value=".*[^\s].*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SimpleText512NotBlankType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Legfeljebb 512 karaktert tartalmazó szöveg típus</xs:documentation>
+			<xs:documentation xml:lang="en">String of maximum 512 characters</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType512">
+			<xs:pattern value=".*[^\s].*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Üzleti katalógus elemek / Business catalog elements-->
+	<xs:simpleType name="BankAccountNumberType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Bankszámla megadására szolgáló típus</xs:documentation>
+			<xs:documentation xml:lang="en">Type of bank account number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType50">
+			<xs:minLength value="15"/>
+			<xs:maxLength value="34"/>
+			<xs:pattern value="[0-9]{8}[-][0-9]{8}[-][0-9]{8}|[0-9]{8}[-][0-9]{8}|[A-Z]{2}[0-9]{2}[0-9A-Za-z]{11,30}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CommunityVatNumberType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Közösségi adószám típus</xs:documentation>
+			<xs:documentation xml:lang="en">Community VAT registration number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType15">
+			<xs:minLength value="4"/>
+			<xs:maxLength value="15"/>
+			<xs:pattern value="[A-Z]{2}[0-9A-Z]{2,13}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CountryCodeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Országkód típus ISO 3166 alpha-2 szabvány szerint</xs:documentation>
+			<xs:documentation xml:lang="en">Country code type (ISO 3166 alpha-2)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType2">
+			<xs:length value="2"/>
+			<xs:pattern value="[A-Z]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CountyCodeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Megyekód</xs:documentation>
+			<xs:documentation xml:lang="en">County code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType2">
+			<xs:length value="2"/>
+			<xs:pattern value="[0-9]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CurrencyType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Pénznem típus (ISO 4217 szabvány szerinti 3 hosszú pénznem kód)</xs:documentation>
+			<xs:documentation xml:lang="en">Currency type (three digit ISO 4217 currency code)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType4">
+			<xs:length value="3"/>
+			<xs:pattern value="[A-Z]{3}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PlateNumberType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Kereskedelmi gépjármű forgalmi rendszáma (csak betűk és számok)</xs:documentation>
+			<xs:documentation xml:lang="en">Registration number of commercial motor vehicle (letters and numbers only)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType32">
+			<xs:minLength value="2"/>
+			<xs:maxLength value="30"/>
+			<xs:pattern value="[A-Z0-9ÖŐÜŰ]{2,30}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PostalCodeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Irányítószám típus</xs:documentation>
+			<xs:documentation xml:lang="en">ZIP code type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType15">
+			<xs:minLength value="3"/>
+			<xs:maxLength value="10"/>
+			<xs:pattern value="[A-Z0-9][A-Z0-9\s\-]{1,8}[A-Z0-9]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxpayerIdType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Az adószám nyolc jegyű törzsszám része</xs:documentation>
+			<xs:documentation xml:lang="en">The 8-digit core number section of the tax number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType8">
+			<xs:length value="8"/>
+			<xs:pattern value="[0-9]{8}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VatCodeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">ÁFA kód</xs:documentation>
+			<xs:documentation xml:lang="en">VAT code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType2">
+			<xs:length value="1"/>
+			<xs:pattern value="[1-5]{1}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Közös API típusok / Common API types-->
+	<xs:simpleType name="BusinessResultCodeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Üzleti eredmény kód típus</xs:documentation>
+			<xs:documentation xml:lang="en">Business result code type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType8">
+			<xs:enumeration value="ERROR">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Hiba</xs:documentation>
+					<xs:documentation xml:lang="en">Error</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WARN">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Figyelmeztetés</xs:documentation>
+					<xs:documentation xml:lang="en">Warn</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="INFO">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Tájékoztatás</xs:documentation>
+					<xs:documentation xml:lang="en">Information</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EntityIdType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Generált azonosító típus</xs:documentation>
+			<xs:documentation xml:lang="en">Generated ID type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType32">
+			<xs:maxLength value="30"/>
+			<xs:minLength value="1"/>
+			<xs:pattern value="[+a-zA-Z0-9_]{1,30}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FunctionCodeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Funkciókód típus</xs:documentation>
+			<xs:documentation xml:lang="en">Function code type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType8">
+			<xs:enumeration value="OK">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Sikeres művelet</xs:documentation>
+					<xs:documentation xml:lang="en">Successful operation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ERROR">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Hiba</xs:documentation>
+					<xs:documentation xml:lang="en">Error</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LoginType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Felhasználónév típus</xs:documentation>
+			<xs:documentation xml:lang="en">Login type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType15">
+			<xs:minLength value="6"/>
+			<xs:maxLength value="15"/>
+			<xs:pattern value="[a-zA-Z0-9]{6,15}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PageType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Lapozó paraméter típus</xs:documentation>
+			<xs:documentation xml:lang="en">Page parameter type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TechnicalResultCodeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Technikai eredmény kód típus</xs:documentation>
+			<xs:documentation xml:lang="en">Technical result code type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="AtomicStringType8">
+			<xs:enumeration value="CRITICAL">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Kritikus hiba</xs:documentation>
+					<xs:documentation xml:lang="en">Critical error</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ERROR">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Hiba</xs:documentation>
+					<xs:documentation xml:lang="en">Error</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BasicHeaderType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">A kérés tranzakcionális adatai</xs:documentation>
+			<xs:documentation xml:lang="en">Transactional data of the request</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="requestId" type="EntityIdType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A kérés/válasz azonosítója, minden üzenetváltásnál - adószámonként - egyedi</xs:documentation>
+					<xs:documentation xml:lang="en">Identifier of the request/response, unique with the taxnumber in every data exchange transaction</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="timestamp" type="GenericTimestampType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A kérés/válasz keletkezésének UTC ideje</xs:documentation>
+					<xs:documentation xml:lang="en">UTC time of the request/response</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="requestVersion" type="AtomicStringType15">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A kérés/válasz verziószáma, hogy a hívó melyik interfész verzió szerint küld adatot és várja a választ</xs:documentation>
+					<xs:documentation xml:lang="en">Request version number, indicating which datastructure the client sends data in, and in which the response is expected</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="headerVersion" type="AtomicStringType15" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A header verziószáma</xs:documentation>
+					<xs:documentation xml:lang="en">Header version number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BasicRequestType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Alap kérés adatok</xs:documentation>
+			<xs:documentation xml:lang="en">Basic request data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="header" type="BasicHeaderType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A kérés tranzakcionális adatai</xs:documentation>
+					<xs:documentation xml:lang="en">Transactional data of the request</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="user" type="UserHeaderType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A kérés authentikációs adatai</xs:documentation>
+					<xs:documentation xml:lang="en">Authentication data of the request</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BasicResponseType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Alap válasz adatok</xs:documentation>
+			<xs:documentation xml:lang="en">Basic response data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="header" type="BasicHeaderType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A válasz tranzakcionális adatai</xs:documentation>
+					<xs:documentation xml:lang="en">Transactional data of the response</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="result" type="BasicResultType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Alap válaszeredmény adatok</xs:documentation>
+					<xs:documentation xml:lang="en">Basic result data</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BasicResultType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Alap válaszeredmény adatok</xs:documentation>
+			<xs:documentation xml:lang="en">Basic result data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="funcCode" type="FunctionCodeType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Feldolgozási eredmény</xs:documentation>
+					<xs:documentation xml:lang="en">Processing result</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="errorCode" type="SimpleText50NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A feldolgozási hibakód</xs:documentation>
+					<xs:documentation xml:lang="en">Processing error code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="message" type="SimpleText1024NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Feldolgozási üzenet</xs:documentation>
+					<xs:documentation xml:lang="en">Processing message</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="notifications" type="NotificationsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Egyéb értesítések</xs:documentation>
+					<xs:documentation xml:lang="en">Miscellaneous notifications</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CryptoType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Kriptográfiai metódust leíró típus</xs:documentation>
+			<xs:documentation xml:lang="en">Denoting type of cryptographic method</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="SimpleText512NotBlankType">
+				<xs:attribute name="cryptoType" type="SimpleText50NotBlankType" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="GeneralErrorHeaderResponseType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Általános hibatípus minden REST operációra</xs:documentation>
+			<xs:documentation xml:lang="en">Generic fault type for every REST operation</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BasicResponseType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NotificationsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Egyéb értesítések</xs:documentation>
+			<xs:documentation xml:lang="en">Miscellaneous notifications</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="notification" type="NotificationType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Értesítés</xs:documentation>
+					<xs:documentation xml:lang="en">Notification</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NotificationType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Értesítés</xs:documentation>
+			<xs:documentation xml:lang="en">Notification</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="notificationCode" type="SimpleText100NotBlankType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Értesítés kód</xs:documentation>
+					<xs:documentation xml:lang="en">Notification code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="notificationText" type="SimpleText1024NotBlankType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Értesítés szöveg</xs:documentation>
+					<xs:documentation xml:lang="en">Notification text</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TechnicalValidationResultType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Technikai validációs választípus</xs:documentation>
+			<xs:documentation xml:lang="en">Technical validation response type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="validationResultCode" type="TechnicalResultCodeType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Validációs eredmény</xs:documentation>
+					<xs:documentation xml:lang="en">Validation result</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validationErrorCode" type="SimpleText100NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Validációs hibakód</xs:documentation>
+					<xs:documentation xml:lang="en">Validation error code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="message" type="SimpleText1024NotBlankType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">Feldolgozási üzenet</xs:documentation>
+					<xs:documentation xml:lang="en">Processing message</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserHeaderType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">A kérés authentikációs adatai</xs:documentation>
+			<xs:documentation xml:lang="en">Authentication data of the request</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="login" type="LoginType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A technikai felhasználó login neve</xs:documentation>
+					<xs:documentation xml:lang="en">Login name of the technical user</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="passwordHash" type="CryptoType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A technikai felhasználó jelszavának hash értéke</xs:documentation>
+					<xs:documentation xml:lang="en">Hash value of the technical user's password</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxNumber" type="TaxpayerIdType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A rendszerben regisztrált adózó adószáma, aki nevében a technikai felhasználó tevékenykedik</xs:documentation>
+					<xs:documentation xml:lang="en">The taxpayer's tax number, whose name the technical user operates in</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="requestSignature" type="CryptoType">
+				<xs:annotation>
+					<xs:documentation xml:lang="hu">A kérés aláírásának hash értéke</xs:documentation>
+					<xs:documentation xml:lang="en">Hash value of the request's signature</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Általános API hiba válaszok / Generic API error responses-->
+	<xs:element name="GeneralErrorHeaderResponse">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Az összes REST operációra vonatkozó hibaválasz generikus elementje</xs:documentation>
+			<xs:documentation xml:lang="en">General error response of every REST operation</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="GeneralErrorHeaderResponseType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GeneralExceptionResponse">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Az összes REST operációra vonatkozó kivétel válasz generikus elementje</xs:documentation>
+			<xs:documentation xml:lang="en">General exception response of every REST operation</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="BasicResultType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
