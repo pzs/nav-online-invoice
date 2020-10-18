@@ -228,14 +228,8 @@ class Reporter {
             return false;
         }
 
-        if ($this->config->removeNamespaces) {
-            $taxpayerData = XmlUtil::removeNamespaces($responseXml->taxpayerData);
-        } else {
-            $taxpayerData = $responseXml->taxpayerData;
-        }
-
         // Az adószám valid, adózó adatainak visszaadása
-        return $taxpayerData;
+        return $responseXml->taxpayerData;
     }
 
 
