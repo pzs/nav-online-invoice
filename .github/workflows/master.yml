@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.1','7.2','7.3','7.4']
+        php-versions: ['7.0','7.1','7.2','7.3','7.4']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -19,6 +19,11 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          tools: phpunit:7.5.20
+          tools: composer
+      - name: Install dependency
+        run: composer install
+      - if: matrix.php-versions == '7.0'
+        name: Install n-other/php-sha3 on PHP 7.0
+        run: composer require n-other/php-sha3:dev-master
       - name: Run tests
-        run: phpunit
+        run: ./vendor/bin/phpunit
