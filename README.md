@@ -14,7 +14,7 @@ NAV Online számla oldala: [onlineszamla.nav.gov.hu](https://onlineszamla.nav.go
 
 ## :fire: v3.0-ás API támogatás :fire:
 
-A modul ezen verzió a NAV v3.0-ás API-ját támogatja. v2.0-ás API támogatáshoz használd a korábbi, [v2.0.4](https://github.com/pzs/nav-online-invoice/tree/v2.0.4) verziót.
+A modul ezen verziója a NAV v3.0-ás API-ját támogatja. v2.0-ás API támogatáshoz használd a korábbi, [v2.0.4](https://github.com/pzs/nav-online-invoice/tree/v2.0.4) verziót.
 
 ## :information_source: Frissítés v3.0-ás API-ra
 
@@ -30,7 +30,7 @@ v3.0-ás `nav-online-invoice` modulra történő frissítés után - a modult é
 - Változások:
     - A boríték XML-ből a namespace-eket automatikusan törli a modul, erről (és segédletről a namespace-ekhez) itt találsz leírást: [XML namespace-ek](docs/xml_namespaces.md).
     - Elektronikus számlázásról (`electronicInvoiceHash` és `completenessIndicator`) lásd a [manageInvoice_electronic_invoice.php](examples/manageInvoice_electronic_invoice.php) példafájlt és az [Elektronikus számlázás támogatása](docs/electronic_invoice.md) leírást.
-    - Config osztályban az `$verifySSL` értéke alapértelmezetten `true` lett, így ha bármi rosszul beállított certificate miatt nem kapcsolódna a modul a NAV-hoz, `$config->verifySSL = false;`-ra állításával ki tudod kapcsolni a `cURL`-ben az SSL ellenőrzést.
+    - Config osztályban a `$verifySSL` értéke alapértelmezetten `true` lett, így ha bármi rosszul beállított certificate miatt nem kapcsolódna a modul a NAV-hoz, `$config->verifySSL = false;`-ra állításával ki tudod kapcsolni a `cURL`-ben az SSL ellenőrzést.
     - `$reporter->getLastRequestData()`-en belül a `lastRequestId` át lett nevezve `requestId`-ra.
 
 - Új funkció a `nav-online-invoice` modulban:
@@ -45,9 +45,6 @@ Ha ezekkel megvagy, akkor már csak az adatsémákat kell átírnod, melyhez seg
 ## Használat
 
 A használathoz a NAV oldalán megfelelő regisztrációt követően létrehozott technikai felhasználó adatainak beállítása szükséges!
-
-:information_source: Ez a verziójú `nav-online-invoice` modul csak az új, v2.0-ás NAV-os interfésszel tud kommunikálni. Ha még a hamarosan kivezetésre kerülő v1.1-es NAV interfészt használod, akkor a [korábbi verziót](https://github.com/pzs/nav-online-invoice/releases/tag/v1.1.0) töltsd le.
-
 
 ### Inicializálás
 
@@ -86,7 +83,7 @@ $reporter = new NavOnlineInvoice\Reporter($config);
 
 ### Adószám ellenőrzése (`queryTaxpayer`)
 
-Megjegyzés: a modul automatikusan eltávolítja az `ns2` namespace-t a válasz XML-ből (lásd [#20](https://github.com/pzs/nav-online-invoice/issues/20)), így kényelmesebben használható az XML válasz. Ez a működés szükség szerint kikapcsolható a `$config->removeNamespaces` `false`-ra állításával.
+A modul automatikusan eltávolítja a namespace-eket a válasz XML-ből (lásd [XML namespace-ek](docs/xml_namespaces.md)), így kényelmesebben használható az XML válasz.
 
 ```php
 try {

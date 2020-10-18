@@ -2,10 +2,10 @@
 
 include("config.php");
 
-// Példa elektronikus számlázásra
+// Példa elektronikus számlázásnál történő adatbeküldésre
 
 try {
-    $config = new NavOnlineInvoice\Config(NavOnlineInvoice\Config::TEST_URL, $userData, $softwareData);
+    $config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
     $reporter = new NavOnlineInvoice\Reporter($config);
 
     $invoices = new NavOnlineInvoice\InvoiceOperations();
