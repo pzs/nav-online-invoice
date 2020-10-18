@@ -6,8 +6,8 @@
 # Version: v3.0 2020/07/31
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.nav.gov.hu/OSA/3.0/data" xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common" xmlns:base="http://schemas.nav.gov.hu/OSA/3.0/base" targetNamespace="http://schemas.nav.gov.hu/OSA/3.0/data" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xs:import namespace="http://schemas.nav.gov.hu/NTCA/1.0/common"/>
-	<xs:import namespace="http://schemas.nav.gov.hu/OSA/3.0/base"/>
+	<xs:import namespace="http://schemas.nav.gov.hu/NTCA/1.0/common" schemaLocation="common.xsd"/>
+	<xs:import namespace="http://schemas.nav.gov.hu/OSA/3.0/base" schemaLocation="invoiceBase.xsd"/>
 	<xs:simpleType name="DataNameType">
 		<xs:annotation>
 			<xs:documentation xml:lang="hu">Az adatmező egyedi azonosító típusa</xs:documentation>
