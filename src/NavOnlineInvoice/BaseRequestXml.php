@@ -17,6 +17,9 @@ abstract class BaseRequestXml {
     protected $requestId;
     protected $timestamp;
 
+    const API_NS = "http://schemas.nav.gov.hu/OSA/3.0/api";
+    const COMMON_NS = "http://schemas.nav.gov.hu/NTCA/1.0/common";
+
 
     /**
      * Request XML készítése
@@ -65,31 +68,30 @@ abstract class BaseRequestXml {
         if (empty($this->rootName)) {
             throw new Exception("rootName has to be defined!");
         }
-
-        return '<?xml version="1.0" encoding="UTF-8"?><' . $this->rootName . ' xmlns="http://schemas.nav.gov.hu/OSA/2.0/api"></' . $this->rootName . '>';
+        return '<?xml version="1.0" encoding="UTF-8"?><' . $this->rootName . ' xmlns:common="' . self::COMMON_NS . '" xmlns="' . self::API_NS . '"></' . $this->rootName . '>';
     }
 
 
     protected function addHeader() {
-        $header = $this->xml->addChild("header");
+        $header = $this->xml->addChild("header", null, self::COMMON_NS);
 
         $header->addChild("requestId", $this->requestId);
         $header->addChild("timestamp", $this->timestamp);
-        $header->addChild("requestVersion", "2.0");
+        $header->addChild("requestVersion", "3.0");
         $header->addChild("headerVersion", "1.0");
     }
 
 
     protected function addUser() {
-        $user = $this->xml->addChild("user");
+        $user = $this->xml->addChild("user", null, self::COMMON_NS);
 
         $passwordHash = isset($this->config->user["passwordHash"]) ? $this->config->user["passwordHash"] : Util::sha512($this->config->user["password"]);
         $signature = $this->getRequestSignatureHash();
 
         $user->addChild("login", $this->config->user["login"]);
-        $user->addChild("passwordHash", $passwordHash);
+        $user->addChild("passwordHash", $passwordHash)->addAttribute("cryptoType", "SHA2-512");
         $user->addChild("taxNumber", $this->config->user["taxNumber"]);
-        $user->addChild("requestSignature", $signature);
+        $user->addChild("requestSignature", $signature)->addAttribute("cryptoType", "SHA3-512");
     }
 
 

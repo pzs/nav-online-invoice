@@ -38,7 +38,7 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
     protected function addInvoiceOperations() {
         $operationsXml = $this->xml->addChild("invoiceOperations");
 
-        $operationsXml->addChild("compressedContent", $this->invoiceOperations->isCompressed());
+        $operationsXml->addChild("compressedContent", $this->invoiceOperations->isCompressed() ? "true" : "false");
 
         // Számlák hozzáadása az XML-hez
         foreach ($this->invoiceOperations->getInvoices() as $invoice) {
@@ -47,6 +47,10 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
             $invoiceXml->addChild("index", $invoice["index"]);
             $invoiceXml->addChild("invoiceOperation", $invoice["operation"]);
             $invoiceXml->addChild("invoiceData", $invoice["invoice"]);
+
+            if ($invoice['electronicInvoiceHash']) {
+                $invoiceXml->addChild("electronicInvoiceHash", $invoice['electronicInvoiceHash'])->addAttribute("cryptoType", "SHA3-512");
+            }
         }
     }
 
