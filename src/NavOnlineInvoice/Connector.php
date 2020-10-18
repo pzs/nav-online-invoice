@@ -11,6 +11,7 @@ class Connector {
     private $lastRequestBody = null;
     private $lastResponseBody = null;
     private $lastRequestId = null;
+    private $lastResponseXml = null;
 
 
     /**
@@ -27,6 +28,7 @@ class Connector {
         $this->lastRequestBody = null;
         $this->lastResponseBody = null;
         $this->lastRequestId = null;
+        $this->lastResponseXml = null;
     }
 
 
@@ -40,8 +42,14 @@ class Connector {
             'requestUrl' => $this->lastRequestUrl,
             'requestBody' => $this->lastRequestBody,
             'responseBody' => $this->lastResponseBody,
-            'lastRequestId' => $this->lastRequestId,
+            'requestId' => $this->lastRequestId,
+            'responseXml' => $this->lastResponseXml,
         );
+    }
+
+
+    public function getLastResponseXml() {
+        return $this->lastResponseXml;
     }
 
 
@@ -86,6 +94,8 @@ class Connector {
         }
 
         $responseXml = $this->parseResponse($result);
+
+        $this->lastResponseXml = $responseXml;
 
         if (!$responseXml) {
             throw new HttpResponseError($result, $httpStatusCode);
@@ -144,12 +154,14 @@ class Connector {
     }
 
 
-    private function parseResponse($result) {
-        if (substr($result, 0, 5) !== "<?xml") {
+    private function parseResponse($xmlString) {
+        if (substr($xmlString, 0, 5) !== "<?xml") {
             return null;
         }
 
-        return simplexml_load_string($result);
+        $xmlString = XmlUtil::removeNamespacesFromXmlString($xmlString);
+
+        return simplexml_load_string($xmlString);
     }
 
 }

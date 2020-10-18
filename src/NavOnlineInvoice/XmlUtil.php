@@ -27,11 +27,22 @@ class XmlUtil {
     public static function removeNamespaces(\SimpleXMLElement $xmlNode) {
         $xmlString = $xmlNode->asXML();
 
-        $cleanedXmlString = preg_replace('/(<\/|<)[a-z0-9]+:([a-z0-9]+[ =>])/i', '$1$2', $xmlString);
+        $cleanedXmlString = self::removeNamespacesFromXmlString($xmlString);
 
         $cleanedXmlNode = simplexml_load_string($cleanedXmlString);
 
         return $cleanedXmlNode;
+    }
+
+
+    /**
+     * Remove namespaces from XML string
+     *
+     * @param  string $xmlString
+     * @return string $xmlString
+     */
+    public static function removeNamespacesFromXmlString($xmlString) {
+        return preg_replace('/(<\/|<)[a-z0-9]+:([a-z0-9]+[ =>])/i', '$1$2', $xmlString);
     }
 
 }

@@ -6,6 +6,9 @@ use Exception;
 
 class Config {
 
+    const TEST_URL = 'https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3';
+    const PROD_URL = 'https://api.onlineszamla.nav.gov.hu/invoiceService/v3';
+
     public $user;
     public $software;
 
@@ -76,8 +79,8 @@ class Config {
     /**
      * NAV online számla API eléréséhez használt URL
      *
-     * Teszt: https://api-test.onlineszamla.nav.gov.hu/invoiceService/v2
-     * Éles: https://api.onlineszamla.nav.gov.hu/invoiceService/v2
+     * Teszt: https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3
+     * Éles: https://api.onlineszamla.nav.gov.hu/invoiceService/v3
      *
      * @param string $baseUrl  NAV eléréséhez használt környezet
      */

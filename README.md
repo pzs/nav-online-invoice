@@ -29,7 +29,7 @@ A 2.0-ás `nav-online-invoice` modulra való frissítés után a következő mó
 
 
 - `NavOnlineInvoice\Config` példányosításakor:
-    - apiUrl a következőre változott: `https://api-test.onlineszamla.nav.gov.hu/invoiceService/v2`, illetve "-test" rész nélkül éles környezetben,
+    - apiUrl a következőre változott: `https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3`, illetve "-test" rész nélkül éles környezetben,
     - software adatok megadása kötelező lett,
 - SHA3-512-es hash algoritmust kell használni, melyhez PHP 7.1.0-ás verzió, vagy újabb szükséges. Ha ennél régebbit használsz, akkor külső könyvtárat kell betölteni, melyet _nem_ tartalmaz a `nav-online-invoice` modul:
     - [n-other/php-sha3](https://github.com/n-other/php-sha3), MIT license ([packagist](https://packagist.org/packages/n-other/php-sha3)),
@@ -82,7 +82,7 @@ $softwareData = array(
     "softwareDevTaxNumber" => "string",
 );
 
-$apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService/v2";
+$apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3";
 
 $config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
 $config->setCurlTimeout(70); // 70 másodperces cURL timeout (NAV szerver hívásnál), opcionális
@@ -374,8 +374,8 @@ A `requestBody` ezen modul által összeállított XML string-et tartalmazza, a 
 `Config` példány létrehozásakor a paraméterek megadása kötelező:
 
 - `$baseUrl` tipikusan a következő:
-    - teszt környezetben: `https://api-test.onlineszamla.nav.gov.hu/invoiceService/v2`
-    - éles környezetben: `https://api.onlineszamla.nav.gov.hu/invoiceService/v2`
+    - teszt környezetben: `https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3`
+    - éles környezetben: `https://api.onlineszamla.nav.gov.hu/invoiceService/v3`
 - `$user` array tartalmazza a NAV oldalán létrehozott technikai felhasználó adatait.
 - `$software` array tartalmazza a számlázó szoftver adatait. 2.0-ás verziótól ennek megadása kötelező, formátumát pedig a NAV által kiadott XSD biztosítja.
 

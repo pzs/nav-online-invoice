@@ -9,7 +9,7 @@ define("TEST_DATA_DIR", __DIR__ . "/../tests/testdata/");
 // include_once(__DIR__ . "/../sha3-lib/desktopdSHA3.php");
 
 
-$apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService/v2";
+$apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3";
 
 $userData = array(
     "login" => "username",

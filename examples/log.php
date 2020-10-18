@@ -2,7 +2,7 @@
 
 include("config.php");
 
-$config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
+$config = new NavOnlineInvoice\Config(NavOnlineInvoice\Config::TEST_URL, $userData, $softwareData);
 $reporter = new NavOnlineInvoice\Reporter($config);
 
 
@@ -22,4 +22,4 @@ $data = $reporter->getLastRequestData();
 print "<br /><br /><b>Request URL:</b> " . htmlspecialchars($data['requestUrl']);
 print "<br /><br /><b>Request body:</b> " . htmlspecialchars($data['requestBody']);
 print "<br /><br /><b>Response body:</b> " . htmlspecialchars($data['responseBody']);
-print "<br /><br /><b>Request ID:</b> " . htmlspecialchars($data['lastRequestId']);
+print "<br /><br /><b>Request ID:</b> " . htmlspecialchars($data['requestId']);
