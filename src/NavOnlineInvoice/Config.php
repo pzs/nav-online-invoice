@@ -6,6 +6,9 @@ use Exception;
 
 class Config {
 
+    const TEST_URL = 'https://api-test.onlineszamla.nav.gov.hu/invoiceService/v2';
+    const PROD_URL = 'https://api.onlineszamla.nav.gov.hu/invoiceService/v2';
+
     public $user;
     public $software;
 
