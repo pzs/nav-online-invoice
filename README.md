@@ -14,7 +14,7 @@ NAV Online számla oldala: [onlineszamla.nav.gov.hu](https://onlineszamla.nav.go
 
 ## :fire: v3.0-ás API támogatás :fire:
 
-A modul ezen verziója a NAV v3.0-ás API-ját támogatja. v2.0-ás API támogatáshoz használd a korábbi, [v2.0.4](https://github.com/pzs/nav-online-invoice/tree/v2.0.4) verziót.
+A modul ezen verziója a NAV v3.0-ás API-ját támogatja. v2.0-ás API támogatáshoz használd a korábbi, [v2.x](https://github.com/pzs/nav-online-invoice/tree/2.x) verziót.
 
 ## :information_source: Frissítés v3.0-ás API-ra
 
