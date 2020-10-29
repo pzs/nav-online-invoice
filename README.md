@@ -455,6 +455,12 @@ Szükséges modulok:
 - További tesztek írása, ami a NAV szerverét is meghívja teszt közben
 
 
+## További modulok NAV API-hoz
+
+- NodeJS: https://github.com/angro-kft/nav-connector
+- Scala (JVM): https://github.com/enlivensystems/invoicing-hungarian
+
+
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)
