@@ -8,7 +8,9 @@ class Connector {
     protected $config;
 
     private $lastRequestUrl = null;
+    private $lastRequestHeader = null;
     private $lastRequestBody = null;
+    private $lastResponseHeader = null;
     private $lastResponseBody = null;
     private $lastRequestId = null;
 
@@ -24,7 +26,9 @@ class Connector {
 
     private function resetDebugInfo() {
         $this->lastRequestUrl = null;
+        $this->lastRequestHeader = null;
         $this->lastRequestBody = null;
+        $this->lastResponseHeader = null;
         $this->lastResponseBody = null;
         $this->lastRequestId = null;
     }
@@ -38,7 +42,9 @@ class Connector {
     public function getLastRequestData() {
         return array(
             'requestUrl' => $this->lastRequestUrl,
+            'requestHeader' => $this->lastRequestHeader,
             'requestBody' => $this->lastRequestBody,
+            'responseHeader' => $this->lastResponseHeader,
             'responseBody' => $this->lastResponseBody,
             'lastRequestId' => $this->lastRequestId,
         );
@@ -72,11 +78,16 @@ class Connector {
 
         $ch = $this->getCurlHandle($url, $xmlString);
 
-        $result = curl_exec($ch);
+        $response = curl_exec($ch);
         $errno = curl_errno($ch);
         $info = curl_getinfo($ch);
+        $header = substr($response, 0, $info["header_size"]);
+        $result = substr($response, $info["header_size"]);
+
         $httpStatusCode = $info["http_code"];
 
+        $this->lastRequestHeader = $info["request_header"];
+        $this->lastResponseHeader = $header;
         $this->lastResponseBody = $result;
 
         curl_close($ch);
@@ -118,9 +129,18 @@ class Connector {
         $ch = curl_init($url);
 
         $headers = array(
-            "Content-Type: application/xml;charset=\"UTF-8\"",
-            "Accept: application/xml"
+            "Content-Type: application/xml;charset=UTF-8",
+            "Accept: application/xml",
         );
+
+        $curl_version = curl_version();
+
+        if (version_compare($curl_version['version'], '7.69') < 0) {
+            $headers[] = "Expect:";
+            //ha eredeti értékét megtartjuk, akkor NAV üres body-t add vissza nagy méretű válaszok esetén
+            //@see https://daniel.haxx.se/blog/2020/02/27/expect-tweaks-in-curl/
+            //(cURL <7.69)
+        }
 
         $verifySSL = isset($this->config->verifySLL) ? $this->config->verifySLL : $this->config->verifySSL;
 
@@ -134,6 +154,9 @@ class Connector {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $requestBody);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 
         if ($this->config->curlTimeout) {
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
