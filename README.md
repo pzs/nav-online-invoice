@@ -8,7 +8,7 @@ __Letöltés:__
 - Composer: [packagist.org/packages/pzs/nav-online-invoice](https://packagist.org/packages/pzs/nav-online-invoice)
 - Legfrissebb verziók:
     - 3.0-ás API: [v3.0.0-RC1](https://github.com/pzs/nav-online-invoice/releases/tag/v3.0.0-RC1)
-    - 2.0-ás API: [v2.0.5](https://github.com/pzs/nav-online-invoice/releases/tag/v2.0.5)
+    - 2.0-ás API: [v2.0.6](https://github.com/pzs/nav-online-invoice/releases/tag/v2.0.6)
 - Korábbi verziók: [github.com/pzs/nav-online-invoice/releases](https://github.com/pzs/nav-online-invoice/releases)
 - Példa fájlok: [github.com/pzs/nav-online-invoice/tree/master/examples](https://github.com/pzs/nav-online-invoice/tree/master/examples)
 
