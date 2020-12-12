@@ -3,7 +3,7 @@
 # Project: NAV NTCA Common XML séma
 # Author: NAV Informatikai Intézet
 
-# Version: v1.0 2020/07/31
+# Version: v1.0 2020/11/23
 -->
 <xs:schema xmlns="http://schemas.nav.gov.hu/NTCA/1.0/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://schemas.nav.gov.hu/NTCA/1.0/common" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!--Atomi típusok / Atomic types-->
@@ -447,13 +447,22 @@
 			<xs:pattern value="[a-zA-Z0-9]{6,15}"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="PageType">
+	<xs:simpleType name="RequestPageType">
 		<xs:annotation>
-			<xs:documentation xml:lang="hu">Lapozó paraméter típus</xs:documentation>
-			<xs:documentation xml:lang="en">Page parameter type</xs:documentation>
+			<xs:documentation xml:lang="hu">Lapozó paraméter típus kérések számára</xs:documentation>
+			<xs:documentation xml:lang="en">Page parameter type for requests</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:int">
 			<xs:minInclusive value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ResponsePageType">
+		<xs:annotation>
+			<xs:documentation xml:lang="hu">Lapozó paraméter típus válaszok számára</xs:documentation>
+			<xs:documentation xml:lang="en">Page parameter type for responses</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TechnicalResultCodeType">
