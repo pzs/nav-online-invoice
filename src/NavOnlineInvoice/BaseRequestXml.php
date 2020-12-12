@@ -89,7 +89,7 @@ abstract class BaseRequestXml {
         $signature = $this->getRequestSignatureHash();
 
         $user->addChild("login", $this->config->user["login"]);
-        $user->addChild("passwordHash", $passwordHash)->addAttribute("cryptoType", "SHA2-512");
+        $user->addChild("passwordHash", $passwordHash)->addAttribute("cryptoType", "SHA-512");
         $user->addChild("taxNumber", $this->config->user["taxNumber"]);
         $user->addChild("requestSignature", $signature)->addAttribute("cryptoType", "SHA3-512");
     }

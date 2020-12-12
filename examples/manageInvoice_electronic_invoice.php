@@ -13,7 +13,7 @@ try {
     // Számla, ahol completenessIndicator=true. Ilyenkor a nav-invoice-modul automatikusan számolja a hash-t,
     // így azt nem kell átadni a 3. paraméterben. A számolt hash hozzáadás után lekérhető.
 
-    $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1.xml"));
+    $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1_complete.xml"));
 
     $electronicInvoiceHash = $invoices->getLastInvoiceHash();
     var_dump($electronicInvoiceHash);
