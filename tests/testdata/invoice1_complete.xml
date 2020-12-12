@@ -3,7 +3,7 @@
 xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common" xmlns:base="http://schemas.nav.gov.hu/OSA/3.0/base" >
 	<invoiceNumber>ZZZ000001</invoiceNumber>
 	<invoiceIssueDate>2021-05-15</invoiceIssueDate>
-	<completenessIndicator>false</completenessIndicator>
+	<completenessIndicator>true</completenessIndicator>
 	<invoiceMain>
 		<invoice>
 			<invoiceHead>
@@ -223,7 +223,7 @@ xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common" xmlns:base="http://sche
 							<lineGrossAmountNormalHUF>3175000</lineGrossAmountNormalHUF>
 						</lineGrossAmountData>
 					</lineAmountsNormal>
-				</line>								
+				</line>
 			</invoiceLines>
 			<invoiceSummary>
 				<summaryNormal>
