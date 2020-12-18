@@ -1,3 +1,4 @@
 /tests export-ignore
 /.gitignore export-ignore
 /phpunit.xml export-ignore
+/.github export-ignore
