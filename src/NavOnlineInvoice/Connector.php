@@ -94,7 +94,7 @@ class Connector {
 
         $httpStatusCode = $info["http_code"];
 
-        $this->lastRequestHeader = $info["request_header"];
+        $this->lastRequestHeader = isset($info["request_header"]) ? $info["request_header"] : null;
         $this->lastResponseHeader = $header;
         $this->lastResponseBody = $result;
 
