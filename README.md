@@ -78,6 +78,9 @@ $apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3";
 $config = new NavOnlineInvoice\Config($apiUrl, $userData, $softwareData);
 $config->setCurlTimeout(70); // 70 másodperces cURL timeout (NAV szerver hívásnál), opcionális
 
+// "Connection error. CURL error code: 60" hiba esetén add hozzá a következő sort:
+// $config->verifySSL = false;
+
 $reporter = new NavOnlineInvoice\Reporter($config);
 
 ```
