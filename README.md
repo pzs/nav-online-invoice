@@ -7,12 +7,9 @@ _PHP interfész a NAV Online számla adatszolgáltatásához_
 __Letöltés:__
 - Composer: [packagist.org/packages/pzs/nav-online-invoice](https://packagist.org/packages/pzs/nav-online-invoice)
 - Legfrissebb verziók:
-    - 3.0-ás API: [v3.0.0](https://github.com/pzs/nav-online-invoice/releases/tag/v3.0.0)
-    - 2.0-ás API: [v2.0.6](https://github.com/pzs/nav-online-invoice/releases/tag/v2.0.6)
-- Korábbi verziók: [github.com/pzs/nav-online-invoice/releases](https://github.com/pzs/nav-online-invoice/releases)
+    - 3.0-ás API: [v3.0.0](https://github.com/pzs/nav-online-invoice/releases/tag/v3.0.0) ([zip](https://github.com/pzs/nav-online-invoice/archive/v3.0.0.zip))
+    - 2.0-ás API: [v2.0.6](https://github.com/pzs/nav-online-invoice/releases/tag/v2.0.6) ([zip](https://github.com/pzs/nav-online-invoice/archive/v2.0.6.zip))
 - Példa fájlok: [github.com/pzs/nav-online-invoice/tree/master/examples](https://github.com/pzs/nav-online-invoice/tree/master/examples)
-
-NAV Online számla oldala: [onlineszamla.nav.gov.hu](https://onlineszamla.nav.gov.hu/)
 
 ## :fire: v3.0-ás API támogatás :fire:
 
@@ -32,7 +29,7 @@ v3.0-ás `nav-online-invoice` modulra történő frissítés után - a modult é
 - Változások:
     - A boríték XML-ből a namespace-eket automatikusan törli a modul, erről (és segédletről a namespace-ekhez) itt találsz leírást: [XML namespace-ek](docs/xml_namespaces.md).
     - Elektronikus számlázásról (`electronicInvoiceHash` és `completenessIndicator`) lásd a [manageInvoice_electronic_invoice.php](examples/manageInvoice_electronic_invoice.php) példafájlt és az [Elektronikus számlázás támogatása](docs/electronic_invoice.md) leírást.
-    - Config osztályban a `$verifySSL` értéke alapértelmezetten `true` lett, így ha bármi rosszul beállított certificate miatt nem kapcsolódna a modul a NAV-hoz, `$config->verifySSL = false;`-ra állításával ki tudod kapcsolni a `cURL`-ben az SSL ellenőrzést.
+    - :warning: Config osztályban a `$verifySSL` értéke alapértelmezetten `true` lett, így ha bármi rosszul beállított certificate miatt nem kapcsolódna a modul a NAV-hoz ("Connection error. CURL error code: 60" hibát kapnál), `$config->verifySSL = false;`-ra állításával ki tudod kapcsolni a `cURL`-ben az SSL ellenőrzést.
     - `$reporter->getLastRequestData()`-en belül a `lastRequestId` át lett nevezve `requestId`-ra.
 
 - Új funkció a `nav-online-invoice` modulban:
@@ -43,6 +40,35 @@ Ha ezekkel megvagy, akkor már csak az adatsémákat kell átírnod, melyhez seg
 </details>
 
 ***
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Tartalom
+
+- [Használat](#haszn%C3%A1lat)
+  - [Inicializálás](#inicializ%C3%A1l%C3%A1s)
+  - [Adószám ellenőrzése (`queryTaxpayer`)](#ad%C3%B3sz%C3%A1m-ellen%C5%91rz%C3%A9se-querytaxpayer)
+  - [Token kérése (`tokenExchange`)](#token-k%C3%A9r%C3%A9se-tokenexchange)
+  - [Adatszolgáltatás (`manageInvoice`)](#adatszolg%C3%A1ltat%C3%A1s-manageinvoice)
+  - [Technikai érvénytelenítés (`manageAnnulment`)](#technikai-%C3%A9rv%C3%A9nytelen%C3%ADt%C3%A9s-manageannulment)
+  - [Státusz lekérdezése (`queryTransactionStatus`)](#st%C3%A1tusz-lek%C3%A9rdez%C3%A9se-querytransactionstatus)
+  - [Számla lekérdezése (`queryInvoiceData`)](#sz%C3%A1mla-lek%C3%A9rdez%C3%A9se-queryinvoicedata)
+  - [Számla keresése (`queryInvoiceDigest`)](#sz%C3%A1mla-keres%C3%A9se-queryinvoicedigest)
+  - [Tranzakciók lekérése (`queryTransactionList`)](#tranzakci%C3%B3k-lek%C3%A9r%C3%A9se-querytransactionlist)
+  - [Számlalánc lekérése (`queryInvoiceChainDigest`)](#sz%C3%A1mlal%C3%A1nc-lek%C3%A9r%C3%A9se-queryinvoicechaindigest)
+  - [Számla (szakmai) XML validálása küldés nélkül](#sz%C3%A1mla-szakmai-xml-valid%C3%A1l%C3%A1sa-k%C3%BCld%C3%A9s-n%C3%A9lk%C3%BCl)
+  - [REST hívás részletei](#rest-h%C3%ADv%C3%A1s-r%C3%A9szletei)
+- [Dokumentáció](#dokument%C3%A1ci%C3%B3)
+  - [`Config` osztály](#config-oszt%C3%A1ly)
+  - [`Reporter` osztály](#reporter-oszt%C3%A1ly)
+  - [`InvoiceOperations` osztály](#invoiceoperations-oszt%C3%A1ly)
+  - [Exception osztályok](#exception-oszt%C3%A1lyok)
+  - [PHP verzió és modulok](#php-verzi%C3%B3-%C3%A9s-modulok)
+  - [Linkek](#linkek)
+- [További modulok NAV API-hoz](#tov%C3%A1bbi-modulok-nav-api-hoz)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Használat
 
@@ -453,11 +479,6 @@ Szükséges modulok:
 - https://github.com/nav-gov-hu/Online-Invoice, kiemelve a [CHANGELOG_2.0](https://github.com/nav-gov-hu/Online-Invoice/blob/master/src/schemas/nav/gov/hu/OSA/CHANGELOG_2.0.md) leírást
 
 
-## TODO
-
-- További tesztek írása, ami a NAV szerverét is meghívja teszt közben
-
-
 ## További modulok NAV API-hoz
 
 - NodeJS: https://github.com/angro-kft/nav-connector
@@ -468,6 +489,6 @@ Szükséges modulok:
 
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2018-2020 github.com/pzs
+Copyright (c) 2018-2021 github.com/pzs
 
 https://github.com/pzs/nav-online-invoice
