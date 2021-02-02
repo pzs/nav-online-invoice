@@ -5,19 +5,48 @@ namespace NavOnlineInvoice;
 
 class XmlUtil {
 
+    /**
+     * Add elements from array to XML node
+     *
+     * @param \SimpleXMLElement $xmlNode
+     * @param string            $name
+     * @param array             $data
+     */
     public static function addChildArray(\SimpleXMLElement $xmlNode, $name, $data) {
-        $node = $xmlNode->addChild($name);
+        $isSeqArray = self::isSequentialArray($data);
+        $node = $isSeqArray ? $xmlNode : $xmlNode->addChild($name);
 
         foreach ($data as $key => $value) {
+
+            $childName = $isSeqArray ? $name : $key;
+
             if (is_array($value)) {
-                self::addChildArray($node, $key, $value);
+                self::addChildArray($node, $childName, $value);
             } else {
-                // NOTE: addChild($key, $value) does not escape the "&" sign,
+                // NOTE: addChild($childName, $value) does not escape the "&" sign,
                 // see: https://stackoverflow.com/questions/552957/rationale-behind-simplexmlelements-handling-of-text-values-in-addchild-and-adda
                 // and: https://github.com/pzs/nav-online-invoice/issues/34
-                $node->{$key} = $value;
+                // NOTE 2: This solution escape the "&" sing and allows multiple children with the same tag name, works from PHP 5.2
+                $node->addChild($childName)[0] = $value;
             }
         }
+    }
+
+
+    /**
+     * Returns true, if it's a sequantial array (keys are numeric)
+     *
+     * Source: https://stackoverflow.com/a/173479
+     *
+     * @param  array   $arr
+     * @return boolean
+     */
+    private static function isSequentialArray(array $arr) {
+        if (array() === $arr) {
+            return true;
+        }
+
+        return array_keys($arr) === range(0, count($arr) - 1);
     }
 
 
