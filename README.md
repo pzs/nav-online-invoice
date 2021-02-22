@@ -276,8 +276,25 @@ try {
     $invoiceQueryParams = [
         "mandatoryQueryParams" => [
             "invoiceIssueDate" => [
-                "dateFrom" => "2019-01-01",
-                "dateTo" => "2019-01-28",
+                "dateFrom" => "2021-01-01",
+                "dateTo" => "2021-01-11",
+            ],
+        ],
+        "relationalQueryParams" => [
+            "invoiceDelivery" => [
+                "queryOperator" => "GTE",
+                "queryValue" => "2021-01-01",
+            ],
+            // Több feltétel esetén ugyanazon elemhez tömbben adjuk át a gyerek elemeket
+            "paymentDate" => [
+                [
+                    "queryOperator" => "GTE",
+                    "queryValue" => "2021-01-01",
+                ],
+                [
+                    "queryOperator" => "LTE",
+                    "queryValue" => "2021-01-28",
+                ],
             ],
         ],
     ];
