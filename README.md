@@ -6,38 +6,14 @@ _PHP interfész a NAV Online számla adatszolgáltatásához_
 
 __Letöltés:__
 - Composer: [packagist.org/packages/pzs/nav-online-invoice](https://packagist.org/packages/pzs/nav-online-invoice)
-- Legfrissebb verziók:
-    - 3.0-ás API: [v3.0.1](https://github.com/pzs/nav-online-invoice/releases/tag/v3.0.1) ([zip](https://github.com/pzs/nav-online-invoice/archive/v3.0.1.zip))
-    - 2.0-ás API: [v2.0.6](https://github.com/pzs/nav-online-invoice/releases/tag/v2.0.6) ([zip](https://github.com/pzs/nav-online-invoice/archive/v2.0.6.zip))
+- Legfrissebb verzió: [v3.0.1](https://github.com/pzs/nav-online-invoice/releases/tag/v3.0.1) ([zip](https://github.com/pzs/nav-online-invoice/archive/v3.0.1.zip))
 - Példa fájlok: [github.com/pzs/nav-online-invoice/tree/master/examples](https://github.com/pzs/nav-online-invoice/tree/master/examples)
 
-## :fire: v3.0-ás API támogatás :fire:
+## v3.0-ás API támogatás
 
-A modul ezen verziója a NAV v3.0-ás API-ját támogatja. v2.0-ás API támogatáshoz használd a korábbi, [v2.x](https://github.com/pzs/nav-online-invoice/tree/2.x) verziót.
+A modul ezen verziója a NAV v3.0-ás API-ját támogatja. v2.0-ás API támogatáshoz használd a korábbi, [v2.0.6](https://github.com/pzs/nav-online-invoice/releases/tag/v2.0.6) verziót.
+Leírást a v3-as modulra való átálláshoz [itt](https://github.com/pzs/nav-online-invoice/releases/tag/v3.0.0) találsz.
 
-## :information_source: Frissítés v3.0-ás API-ra
-
-<details>
-<summary>Kattints ide a leírás megjelenítéséhez!</summary>
-
-v3.0-ás `nav-online-invoice` modulra történő frissítés után - a modult érintően - csak az URL-t kell átírnod `v3`-asra, más teendőd nincs, de ajánlott elolvasni az itt lévő változásokat:
-
-- `NavOnlineInvoice\Config` példányosításakor:
-    - apiUrl a következőre változott: `https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3`, illetve "-test" rész nélkül éles környezetben,
-    - Esetleg használhatod a beépített `NavOnlineInvoice\Config::TEST_URL` és `NavOnlineInvoice\Config::PROD_URL` változókat, így a jövőben nem kell bajlódni az URL átírásával,
-
-- Változások:
-    - A boríték XML-ből a namespace-eket automatikusan törli a modul, erről (és segédletről a namespace-ekhez) itt találsz leírást: [XML namespace-ek](docs/xml_namespaces.md).
-    - Elektronikus számlázásról (`electronicInvoiceHash` és `completenessIndicator`) lásd a [manageInvoice_electronic_invoice.php](examples/manageInvoice_electronic_invoice.php) példafájlt és az [Elektronikus számlázás támogatása](docs/electronic_invoice.md) leírást.
-    - :warning: Config osztályban a `$verifySSL` értéke alapértelmezetten `true` lett, így ha bármi rosszul beállított certificate miatt nem kapcsolódna a modul a NAV-hoz ("Connection error. CURL error code: 60" hibát kapnál), `$config->verifySSL = false;`-ra állításával ki tudod kapcsolni a `cURL`-ben az SSL ellenőrzést.
-    - `$reporter->getLastRequestData()`-en belül a `lastRequestId` át lett nevezve `requestId`-ra.
-
-- Új funkció a `nav-online-invoice` modulban:
-    - `$reporter->getLastResponseXml()` metódus, mely visszaadja az utolsó válasz XML-t (ez a namespace nélküli változat, lásd [XML namespace-ek](docs/xml_namespaces.md)).
-
-Ha ezekkel megvagy, akkor már csak az adatsémákat kell átírnod, melyhez segítséget a NAV-os dokumentációkban, illetve fórumokon találsz, de ha megpróbálod beküldeni a régi adat XML-t, akkor az interfész is ki fogja írni a sémavalidálási hibát. NAV-os changelog: [CHANGELOG_3.0](https://github.com/nav-gov-hu/Online-Invoice/blob/master/src/schemas/nav/gov/hu/OSA/CHANGELOG_3.0.md)
-
-</details>
 
 ***
 
