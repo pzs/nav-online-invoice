@@ -228,6 +228,8 @@ try {
 
 ```
 
+> Az adatszolgáltatás addig nem tekinthető teljesítettnek, amíg a kliens az aszinkronfeldolgozás sikerességéről meg nem győződött és az adott számlához tartozó nyugtaüzenetet meg nem kapta. _(NAV dokumentáció, [#54](https://github.com/pzs/nav-online-invoice/issues/54))_
+
 
 ### Számla lekérdezése (`queryInvoiceData`)
 
