@@ -54,7 +54,7 @@ abstract class BaseRequestXml {
         $milliseconds = round(($now - floor($now)) * 1000);
         $milliseconds = min($milliseconds, 999);
 
-        return gmdate("Y-m-d\TH:i:s", $now) . sprintf(".%03dZ", $milliseconds);
+        return gmdate("Y-m-d\TH:i:s", (int) $now) . sprintf(".%03dZ", $milliseconds);
     }
 
 
