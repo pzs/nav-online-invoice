@@ -6,7 +6,7 @@ _PHP interfész a NAV Online számla adatszolgáltatásához_
 
 __Letöltés:__
 - Composer: [packagist.org/packages/pzs/nav-online-invoice](https://packagist.org/packages/pzs/nav-online-invoice)
-- Legfrissebb verzió: [v3.0.1](https://github.com/pzs/nav-online-invoice/releases/tag/v3.0.1) ([zip](https://github.com/pzs/nav-online-invoice/archive/v3.0.1.zip))
+- Legfrissebb verzió: [v3.0.2](https://github.com/pzs/nav-online-invoice/releases/tag/v3.0.2) ([zip](https://github.com/pzs/nav-online-invoice/archive/v3.0.2.zip))
 - Példa fájlok: [github.com/pzs/nav-online-invoice/tree/master/examples](https://github.com/pzs/nav-online-invoice/tree/master/examples)
 
 ## v3.0-ás API támogatás
