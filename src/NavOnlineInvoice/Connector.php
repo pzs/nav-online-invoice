@@ -152,9 +152,42 @@ class Connector {
             //(cURL <7.69)
         }
 
+        // Nem használunk hitelesítést
         if (!$this->config->verifySSL) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        // String esetén tanúsítványt használunk, pl.: `$config->verifySSL = __DIR__."/certs/certs.cert";`
+        } else if (is_string($this->config->verifySSL)) {
+
+            // Letöltjük a legfrissebb gyökértanúsítvány-listát
+            if ( !is_file($this->config->verifySSL)
+            || (is_file($this->config->verifySSL) && @filemtime($this->config->verifySSL) < strtotime("-7 days"))
+            ) {
+                $cacert_url = "https://curl.se/ca/cacert.pem"; # 2021-02-04 óta a `curl.haxx.se` helyett: `curl.se`
+                $cacert_ch  = curl_init();
+                curl_setopt($cacert_ch, CURLOPT_URL, $cacert_url);
+                curl_setopt($cacert_ch, CURLOPT_FOLLOWLOCATION, 1);
+                curl_setopt($cacert_ch, CURLOPT_MAXREDIRS, 10);
+                curl_setopt($cacert_ch, CURLOPT_TIMEOUT, $this->config->curlTimeout);
+                curl_setopt($cacert_ch, CURLOPT_SSL_VERIFYHOST, 0); # Megbízunk a `curl.se` oldalban. cU
+                curl_setopt($cacert_ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($cacert_ch, CURLOPT_RETURNTRANSFER, 1);
+                $cacert = curl_exec($cacert_ch);
+                if ($cacert) {
+                  curl_close($cacert_ch);
+                  file_put_contents($this->config->verifySSL, $cacert);
+                } else {
+                  $curl_error = curl_err($cacert_ch);
+                  curl_close($cacert_ch);
+                  throw new CurlError("{$cacert_url}: {$errno}");
+                }
+            }
+
+            // Gyökértanúsítvány(ok) használata
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_CAINFO, realpath($this->config->verifySSL));
         }
 
         curl_setopt($ch, CURLOPT_POST, true);
