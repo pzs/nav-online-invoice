@@ -12,9 +12,10 @@
       "ext-simplexml": "*",
       "ext-openssl": "*",
       "ext-dom": "*",
-      "ext-libxml": "*"
+      "ext-libxml": "*",
+      "php": "^8.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6"
+        "phpunit/phpunit": "^11"
     }
 }
