@@ -104,9 +104,10 @@ class Reporter {
      *
      * @param  array             $invoiceNumberQuery     Az invoiceNumberQuery-nek megfelelően összeállított lekérdezési adatok
      * @param  boolean           $returnDecodedInvoiceData  invoiceDataResult helyett a dekódolt számla XML-t adja vissza a metódus
-     * @return \SimpleXMLElement  $invoiceDataResultXml A válasz XML invoiceDataResult része vagy a dekódolt számla XML
+     * @return \SimpleXMLElement|null  $invoiceDataResultXml A válasz XML invoiceDataResult része vagy a dekódolt számla XML
      */
-    public function queryInvoiceData($invoiceNumberQuery, $returnDecodedInvoiceData = false) {
+    public function queryInvoiceData($invoiceNumberQuery, $returnDecodedInvoiceData = false) 
+    {
         $requestXml = new QueryInvoiceDataRequestXml($this->config, $invoiceNumberQuery);
         $responseXml = $this->connector->post("/queryInvoiceData", $requestXml);
 
@@ -223,7 +224,7 @@ class Reporter {
         // 1.9.8.2 fejezet alapján (QueryTaxpayerResponse) a taxpayerValidity tag csak akkor kerül a válaszba, ha a lekérdezett adószám létezik.
         // Nem létező adószámra csak egy <funcCode>OK</funcCode> kerül visszaadásra (funcCode===OK megléte a Connector-ban ellenőrizve van).
         if (!isset($responseXml->taxpayerValidity)) {
-            return null;
+            return false;
         }
 
         // taxpayerValidity értéke lehet false is, ha az adószám létezik, de nem érvényes

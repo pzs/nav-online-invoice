@@ -136,9 +136,9 @@ class InvoiceOperations {
      * Utoljára hozzáadott számla electronicInvoiceHash értékét adja vissza.
      * Ez lehet paraméterben átadott, vagy completenessIndicator=true esetén a modul által számolt hash.
      *
-     * @return string
      */
-    public function getLastInvoiceHash() {
+    public function getLastInvoiceHash(): ?string
+    {
         if (!$this->invoices) {
             return null;
         }
