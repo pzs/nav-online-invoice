@@ -69,7 +69,8 @@ class Connector {
      * @throws \NavOnlineInvoice\GeneralExceptionResponse
      * @throws \NavOnlineInvoice\GeneralErrorResponse
      */
-    public function post($url, $requestXml) {
+    public function post($url, $requestXml): string|\SimpleXMLElement
+    {
         $this->resetDebugInfo();
 
         $url = $this->config->baseUrl . $url;

@@ -49,8 +49,8 @@ class InvoiceOperations {
      * Számla ('szakmai XML') hozzáadása
      *
      * @param \SimpleXMLElement $xml       Számla adatai (szakmai XML)
-     * @param string            [$operation = "CREATE"] Számlaművelet Enum(CREATE, MODIFY, STORNO, ANNUL)
-     * @param string            [$electronicInvoiceHash = null] Számla SHA3-512 hash értéke elektronikus számla esetén. Ha completenessIndicator=true, akkor itt null-t kell átadni.
+     * @param string            $operation Számlaművelet Enum(CREATE, MODIFY, STORNO, ANNUL)
+     * @param string            $electronicInvoiceHash Számla SHA3-512 hash értéke elektronikus számla esetén. Ha completenessIndicator=true, akkor itt null-t kell átadni.
      * @return int                      A beszúrt művelet sorszáma (index)
      * @throws \Exception
      */

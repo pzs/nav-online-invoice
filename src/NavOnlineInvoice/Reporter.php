@@ -33,8 +33,8 @@ class Reporter {
      *
      * A metódus visszaadja a transactionId-t, mellyel lekérdezhető a tranzakció eredménye.
      *
-     * @param  [type] $invoiceOperationsOrXml $invoiceOperationsOrXml
-     * @return [type]                         $transactionId
+     * @param  \SimpleXMLElement|InvoiceOperations $invoiceOperationsOrXml $invoiceOperationsOrXml
+     * @return  mixed                        $transactionId @todo check is string type
      */
     public function manageAnnulment($invoiceOperationsOrXml) {
 
@@ -103,7 +103,7 @@ class Reporter {
      * oldaláról is használható. Az operáció a megadott számlaszám teljes adattartalmát adja vissza a válaszban.
      *
      * @param  array             $invoiceNumberQuery     Az invoiceNumberQuery-nek megfelelően összeállított lekérdezési adatok
-     * @param  boolean           [$returnDecodedInvoiceData = false]  invoiceDataResult helyett a dekódolt számla XML-t adja vissza a metódus
+     * @param  boolean           $returnDecodedInvoiceData  invoiceDataResult helyett a dekódolt számla XML-t adja vissza a metódus
      * @return \SimpleXMLElement  $invoiceDataResultXml A válasz XML invoiceDataResult része vagy a dekódolt számla XML
      */
     public function queryInvoiceData($invoiceNumberQuery, $returnDecodedInvoiceData = false) {
@@ -115,6 +115,9 @@ class Reporter {
         if ($returnDecodedInvoiceData) {
             if (empty($result->invoiceData)) {
                 return null;
+            }
+            if(!isset($result->compressedContentIndicator)) {
+                throw new \InvalidArgumentException('Result dont have compressedContentIndicator in /queryInvoiceData!');
             }
             $isCompressed = $result->compressedContentIndicator;
             return InvoiceOperations::convertToXml($result->invoiceData, $isCompressed);
@@ -134,8 +137,8 @@ class Reporter {
      * azt a számlaszám birtokában a /queryInvoiceData operációban lehet lekérdezni.
      *
      * @param  array             $invoiceQueryParams     Az invoiceQueryParams-nak megfelelően összeállított lekérdezési adatok
-     * @param  Int               [$page=1]          Oldalszám (1-től kezdve a számozást)
-     * @param  string            [$direction=OUTBOUND]  A keresés iránya, a keresés elvégezhető kiállítóként és vevőként is [OUTBOUND, INBOUND]
+     * @param  Int               $page          Oldalszám (1-től kezdve a számozást)
+     * @param  string            $direction=  A keresés iránya, a keresés elvégezhető kiállítóként és vevőként is [OUTBOUND, INBOUND]
      * @return \SimpleXMLElement  $queryResultsXml A válasz XML invoiceDigestResult része
      */
     public function queryInvoiceDigest($invoiceQueryParams, $page = 1, $direction = "OUTBOUND") {
@@ -228,6 +231,9 @@ class Reporter {
             return false;
         }
 
+        if(!isset($responseXml->taxpayerData)) {
+            throw new \InvalidArgumentException('No taxpayer data provided in result /queryTaxpayer.');
+        }
         // Az adószám valid, adózó adatainak visszaadása
         return $responseXml->taxpayerData;
     }
