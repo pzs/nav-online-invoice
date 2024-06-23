@@ -17,10 +17,7 @@ class Util {
 
 
     private static function desktopdSHA3_512($string) {
-        $sponge = \desktopd\SHA3\Sponge::init(\desktopd\SHA3\Sponge::SHA3_512);
-        $sponge->absorb($string);
-
-        return strtoupper(bin2hex($sponge->squeeze()));
+        return strtoupper(hash('sha3-512', $string));
     }
 
 
