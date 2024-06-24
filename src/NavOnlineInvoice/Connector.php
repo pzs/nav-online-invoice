@@ -2,6 +2,7 @@
 
 namespace NavOnlineInvoice;
 
+use RuntimeException;
 
 class Connector {
 
@@ -62,14 +63,14 @@ class Connector {
     /**
      *
      * @param  string                   $url
-     * @param  string|\SimpleXMLElement $requestXml
+     * @param  string|\SimpleXMLElement|BaseRequestXml $requestXml
      * @return \SimpleXMLElement
      * @throws \NavOnlineInvoice\CurlError
      * @throws \NavOnlineInvoice\HttpResponseError
      * @throws \NavOnlineInvoice\GeneralExceptionResponse
      * @throws \NavOnlineInvoice\GeneralErrorResponse
      */
-    public function post($url, $requestXml): string|\SimpleXMLElement
+    public function post(string $url, string|\SimpleXMLElement|BaseRequestXml $requestXml): string|\SimpleXMLElement
     {
         $this->resetDebugInfo();
 
@@ -86,7 +87,7 @@ class Connector {
         }
 
         $ch = $this->getCurlHandle($url, $xmlString);
-
+        
         $response = curl_exec($ch);
         $errno = curl_errno($ch);
         $info = curl_getinfo($ch);
@@ -94,8 +95,8 @@ class Connector {
         $result = substr($response, $info["header_size"]);
 
         $httpStatusCode = $info["http_code"];
-
-        $this->lastRequestHeader = isset($info["request_header"]) ? $info["request_header"] : null;
+        //ignoring this line because give error the request_header not exits
+        $this->lastRequestHeader = $info["request_header"] ?? null; // @phpstan-ignore-line
         $this->lastResponseHeader = $header;
         $this->lastResponseBody = $result;
 
@@ -136,7 +137,8 @@ class Connector {
     }
 
 
-    private function getCurlHandle($url, $requestBody) {
+    private function getCurlHandle(?string $url, mixed $requestBody): \CurlHandle
+    {
         $ch = curl_init($url);
 
         $headers = array(
@@ -170,6 +172,9 @@ class Connector {
         if ($this->config->curlTimeout) {
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
             curl_setopt($ch, CURLOPT_TIMEOUT, $this->config->curlTimeout);
+        }
+        if($ch === false) {
+            throw new RuntimeException('Cant initialize curl connection!');
         }
 
         return $ch;

@@ -198,11 +198,11 @@ class InvoiceOperations {
      * Számla dekódolása (base64 és opcionálisan gzip)
      *
      * @param  string  $base64data
-     * @param  boolean $isCompressed
+     * @param  bool $isCompressed
      * @return \SimpleXMLElement
      */
-    public static function convertToXml($base64data, $isCompressed = false) {
-        $isCompressed = ($isCompressed === true or (string)$isCompressed === 'true');
+    public static function convertToXml($base64data, bool $isCompressed = false) {
+        $isCompressed = $isCompressed === true;
 
         $data = base64_decode($base64data);
 
