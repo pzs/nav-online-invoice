@@ -3,14 +3,17 @@
 use NavOnlineInvoice\TokenExchangeRequestXml;
 
 
-class TokenExchangeRequestXmlTest extends BaseTest {
+class TokenExchangeRequestXmlTest extends BaseTest
+{
 
-    private function createRequestXmlObject() {
+    private function createRequestXmlObject(): TokenExchangeRequestXml
+    {
         return new TokenExchangeRequestXml($this->getConfig());
     }
 
 
-    public function testResponseXml() {
+    public function testResponseXml(): void
+    {
         $requestXml = $this->createRequestXmlObject();
         $xmlObj = $requestXml->getXML();
 
@@ -18,11 +21,11 @@ class TokenExchangeRequestXmlTest extends BaseTest {
     }
 
 
-    public function testSchame() {
+    public function testSchame(): void
+    {
         $requestXml = $this->createRequestXmlObject();
 
         $requestXml->validateSchema();
         $this->addToAssertionCount(1);
     }
-
 }

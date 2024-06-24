@@ -1,10 +1,12 @@
 <?php
 
 namespace NavOnlineInvoice;
+
 use DOMDocument;
 
 
-class Xsd {
+class Xsd
+{
 
     /**
      * A megadott XML-t (string) ellenőrzi a megadott XSD sémával.
@@ -14,7 +16,8 @@ class Xsd {
      * @param  string $xsdFilename
      * @throws XsdValidationError
      */
-    public static function validate($xmlString, $xsdFilename) {
+    public static function validate($xmlString, $xsdFilename): void
+    {
         $doc = new DOMDocument();
         $doc->loadXML($xmlString);
 
@@ -32,5 +35,4 @@ class Xsd {
 
         libxml_use_internal_errors($prevValue);
     }
-
 }

@@ -5,9 +5,9 @@ namespace NavOnlineInvoice;
 
 class QueryTransactionStatusRequestXml extends BaseRequestXml {
 
-    protected $rootName = "QueryTransactionStatusRequest";
+    protected string $rootName = "QueryTransactionStatusRequest";
 
-    function __construct($config, $transactionId, $returnOriginalRequest = false) {
+    function __construct(Config $config, ?string $transactionId, ?string $returnOriginalRequest = null) {
         parent::__construct($config);
 
         $this->xml->addChild("transactionId", $transactionId);

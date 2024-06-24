@@ -2,10 +2,12 @@
 
 namespace NavOnlineInvoice;
 
-class GeneralExceptionResponse extends BaseExceptionResponse {
+class GeneralExceptionResponse extends BaseExceptionResponse
+{
 
-    public function getResult() {
+    /** @return array<mixed> */
+    public function getResult(): array
+    {
         return (array)$this->xml;
     }
-
 }

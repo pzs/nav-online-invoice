@@ -1,11 +1,15 @@
 <?php
 
+use NavOnlineInvoice\Config;
 
-class BaseTest extends PHPUnit_Framework_TestCase {
 
-    private $config;
+class BaseTest extends PHPUnit_Framework_TestCase
+{
 
-    public function getConfig() {
+    private ?Config $config = null;
+
+    public function getConfig(): Config
+    {
         if (!$this->config) {
             $this->config = $this->createConfig();
         }
@@ -14,9 +18,10 @@ class BaseTest extends PHPUnit_Framework_TestCase {
     }
 
 
-    private function createConfig() {
+    private function createConfig(): Config
+    {
         $apiUrl = "https://api-test.onlineszamla.nav.gov.hu/invoiceService";
-        return new NavOnlineInvoice\Config($apiUrl, TEST_DATA_DIR . "userData.sample.json", TEST_DATA_DIR . "softwareData.json");
-    }
 
+        return new Config($apiUrl, TEST_DATA_DIR . "userData.sample.json", TEST_DATA_DIR . "softwareData.json");
+    }
 }

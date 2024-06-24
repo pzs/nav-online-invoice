@@ -3,9 +3,11 @@
 use NavOnlineInvoice\BaseRequestXml;
 
 
-class InvoiceOperationsTest extends BaseTest {
+class InvoiceOperationsTest extends BaseTest
+{
 
-    public function testValidation1() {
+    public function testValidation1(): void
+    {
         $invoices = new NavOnlineInvoice\InvoiceOperations();
         $invoices->useDataSchemaValidation();
 
@@ -14,7 +16,8 @@ class InvoiceOperationsTest extends BaseTest {
     }
 
 
-    public function testValidation2() {
+    public function testValidation2(): void
+    {
         $invoices = new NavOnlineInvoice\InvoiceOperations();
 
         $this->expectException(NavOnlineInvoice\XsdValidationError::class);
@@ -22,12 +25,12 @@ class InvoiceOperationsTest extends BaseTest {
     }
 
 
-    public function testValidation3() {
+    public function testValidation3(): void
+    {
         $invoices = new NavOnlineInvoice\InvoiceOperations();
         $invoices->useDataSchemaValidation(false);
 
         $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1_invalid.xml"));
         $this->addToAssertionCount(1);
     }
-
 }

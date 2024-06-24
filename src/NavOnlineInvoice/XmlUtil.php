@@ -3,21 +3,22 @@
 namespace NavOnlineInvoice;
 
 
-class XmlUtil {
+class XmlUtil
+{
 
     /**
      * Add elements from array to XML node
      *
      * @param \SimpleXMLElement $xmlNode
      * @param string            $name
-     * @param array             $data
+     * @param array<mixed>         $data
      */
-    public static function addChildArray(\SimpleXMLElement $xmlNode, $name, $data) {
+    public static function addChildArray(\SimpleXMLElement $xmlNode, string $name, array $data): void
+    {
         $isSeqArray = self::isSequentialArray($data);
         $node = $isSeqArray ? $xmlNode : $xmlNode->addChild($name);
 
         foreach ($data as $key => $value) {
-
             $childName = $isSeqArray ? $name : $key;
 
             if (is_array($value)) {
@@ -38,10 +39,11 @@ class XmlUtil {
      *
      * Source: https://stackoverflow.com/a/173479
      *
-     * @param  array   $arr
-     * @return boolean
+     * @param  array<mixed>   $arr
+     * @return bool
      */
-    private static function isSequentialArray(array $arr) {
+    private static function isSequentialArray(array $arr): bool
+    {
         if (array() === $arr) {
             return true;
         }
@@ -56,7 +58,8 @@ class XmlUtil {
      * @param  \SimpleXMLElement $xmlNode
      * @return \SimpleXMLElement $xmlNode
      */
-    public static function removeNamespaces(\SimpleXMLElement $xmlNode) {
+    public static function removeNamespaces(\SimpleXMLElement $xmlNode)
+    {
         $xmlString = $xmlNode->asXML();
 
         $cleanedXmlString = self::removeNamespacesFromXmlString($xmlString);
@@ -73,8 +76,8 @@ class XmlUtil {
      * @param  string $xmlString
      * @return string $xmlString
      */
-    public static function removeNamespacesFromXmlString($xmlString) {
+    public static function removeNamespacesFromXmlString($xmlString)
+    {
         return preg_replace('/(<\/|<)[a-z0-9]+:([a-z0-9]+[ =>])/i', '$1$2', $xmlString);
     }
-
 }

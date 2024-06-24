@@ -1,25 +1,22 @@
 <?php
 
 namespace NavOnlineInvoice;
+
 use Exception;
 
 
-class CurlError extends Exception {
+class CurlError extends Exception
+{
 
-    protected $errno;
-
-
-    function __construct($errno) {
-        $this->errno = $errno;
-
+    function __construct(protected int $errno)
+    {
         $message = "Connection error. CURL error code: $errno";
-
         parent::__construct($message);
     }
 
 
-    public function getErrno() {
+    public function getErrno(): int
+    {
         return $this->errno;
     }
-
 }

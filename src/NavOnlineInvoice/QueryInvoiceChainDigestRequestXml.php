@@ -2,18 +2,19 @@
 
 namespace NavOnlineInvoice;
 
+use NavOnlineInvoice\Config;
+
 
 class QueryInvoiceChainDigestRequestXml extends BaseRequestXml {
 
-    protected $rootName = "QueryInvoiceChainDigestRequest";
-
+    protected string $rootName = "QueryInvoiceChainDigestRequest";
 
     /**
-     * QueryInvoiceChainDigestRequestXml constructor.
-     * @param $config
-     * @param $page
+     * @param Config $config
+     * @param array<mixed> $invoiceChainQuery
+     * @param string|null $page
      */
-    function __construct($config, $invoiceChainQuery, $page) {
+    public function __construct(Config $config, array $invoiceChainQuery, ?string $page) {
         parent::__construct($config);
 
         $this->xml->addChild("page", $page);

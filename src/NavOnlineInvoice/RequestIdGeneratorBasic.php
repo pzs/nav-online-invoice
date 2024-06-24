@@ -2,7 +2,8 @@
 
 namespace NavOnlineInvoice;
 
-class RequestIdGeneratorBasic implements RequestIdGeneratorInterface {
+class RequestIdGeneratorBasic implements RequestIdGeneratorInterface
+{
 
     /**
      * Egyedi request ID generálása
@@ -19,11 +20,12 @@ class RequestIdGeneratorBasic implements RequestIdGeneratorInterface {
      *
      * @return string
      */
-    function generate() {
+    public function generate(): string
+    {
         $id = "RID" . microtime() . mt_rand(10000, 99999);
         $id = preg_replace("/[^A-Z0-9]/", "", $id);
         $id = substr($id, 0, 30);
+
         return $id;
     }
-
 }

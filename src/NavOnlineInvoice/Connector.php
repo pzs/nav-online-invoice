@@ -3,30 +3,30 @@
 namespace NavOnlineInvoice;
 
 use RuntimeException;
+use SimpleXMLElement;
+use NavOnlineInvoice\Config;
 
-class Connector {
-
-    protected $config;
-
-    private $lastRequestUrl = null;
-    private $lastRequestHeader = null;
-    private $lastRequestBody = null;
-    private $lastResponseHeader = null;
-    private $lastResponseBody = null;
-    private $lastRequestId = null;
-    private $lastResponseXml = null;
+class Connector
+{
+    private ?string $lastRequestUrl = null;
+    private ?string $lastRequestHeader = null;
+    private ?string $lastRequestBody = null;
+    private ?string $lastResponseHeader = null;
+    private ?string $lastResponseBody = null;
+    private ?string $lastRequestId = null;
+    private ?SimpleXMLElement $lastResponseXml = null;
 
 
-    /**
-     *
-     * @param Config  $config
-     */
-    function __construct($config) {
+    public function __construct(
+        protected Config $config,
+    )
+    {
         $this->config = $config;
     }
 
 
-    private function resetDebugInfo() {
+    private function resetDebugInfo(): void
+    {
         $this->lastRequestUrl = null;
         $this->lastRequestHeader = null;
         $this->lastRequestBody = null;
@@ -40,9 +40,10 @@ class Connector {
     /**
      * Utolsó REST hívás adatainak lekérdezése
      *
-     * @return array
+     * @return array<string,mixed>
      */
-    public function getLastRequestData() {
+    public function getLastRequestData()
+    {
         return array(
             'requestUrl' => $this->lastRequestUrl,
             'requestHeader' => $this->lastRequestHeader,
@@ -55,14 +56,15 @@ class Connector {
     }
 
 
-    public function getLastResponseXml() {
+    public function getLastResponseXml(): ?SimpleXMLElement
+    {
         return $this->lastResponseXml;
     }
 
 
     /**
      *
-     * @param  string                   $url
+     * @param  string $url
      * @param  string|\SimpleXMLElement|BaseRequestXml $requestXml
      * @return \SimpleXMLElement
      * @throws \NavOnlineInvoice\CurlError
@@ -87,7 +89,7 @@ class Connector {
         }
 
         $ch = $this->getCurlHandle($url, $xmlString);
-        
+
         $response = curl_exec($ch);
         $errno = curl_errno($ch);
         $info = curl_getinfo($ch);
@@ -173,7 +175,7 @@ class Connector {
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
             curl_setopt($ch, CURLOPT_TIMEOUT, $this->config->curlTimeout);
         }
-        if($ch === false) {
+        if ($ch === false) {
             throw new RuntimeException('Cant initialize curl connection!');
         }
 
@@ -181,14 +183,19 @@ class Connector {
     }
 
 
-    private function parseResponse($xmlString) {
+    private function parseResponse(string $xmlString): ?SimpleXMLElement
+    {
         if (substr($xmlString, 0, 5) !== "<?xml") {
             return null;
         }
 
         $xmlString = XmlUtil::removeNamespacesFromXmlString($xmlString);
 
-        return simplexml_load_string($xmlString);
-    }
+        $xmlElement = simplexml_load_string($xmlString);
+        if($xmlElement === false) {
+            throw new RuntimeException('Cant parse response');
+        }
 
+        return $xmlElement;
+    }
 }

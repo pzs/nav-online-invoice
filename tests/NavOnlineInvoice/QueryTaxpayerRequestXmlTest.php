@@ -3,15 +3,18 @@
 use NavOnlineInvoice\QueryTaxpayerRequestXml;
 
 
-class QueryTaxpayerRequestXmlTest extends BaseTest {
+class QueryTaxpayerRequestXmlTest extends BaseTest
+{
 
-    private function createRequestXmlObject() {
+    private function createRequestXmlObject(): QueryTaxpayerRequestXml
+    {
         $taxNumber = "12341234";
         return new QueryTaxpayerRequestXml($this->getConfig(), $taxNumber);
     }
 
 
-    public function testResponseXml() {
+    public function testResponseXml(): void
+    {
         $requestXml = $this->createRequestXmlObject();
         $xmlObj = $requestXml->getXML();
 
@@ -20,11 +23,11 @@ class QueryTaxpayerRequestXmlTest extends BaseTest {
     }
 
 
-    public function testSchame() {
+    public function testSchame(): void
+    {
         $requestXml = $this->createRequestXmlObject();
 
         $requestXml->validateSchema();
         $this->addToAssertionCount(1);
     }
-
 }

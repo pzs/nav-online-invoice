@@ -3,11 +3,12 @@
 namespace NavOnlineInvoice;
 
 
-class ManageInvoiceRequestXml extends BaseRequestXml {
+class ManageInvoiceRequestXml extends BaseRequestXml
+{
 
-    protected $rootName = "ManageInvoiceRequest";
-    protected $invoiceOperations;
-    protected $token;
+    protected string $rootName = "ManageInvoiceRequest";
+    protected InvoiceOperations $invoiceOperations;
+    protected string $token;
 
 
     /**
@@ -15,7 +16,8 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
      * @param InvoiceOperations $invoiceOperations
      * @param string $token
      */
-    function __construct($config, $invoiceOperations, $token) {
+    function __construct($config, $invoiceOperations, $token)
+    {
         $this->invoiceOperations = $invoiceOperations;
         $this->token = $token;
 
@@ -23,19 +25,22 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
     }
 
 
-    protected function createXml() {
+    protected function createXml(): void
+    {
         parent::createXml();
         $this->addToken();
         $this->addInvoiceOperations();
     }
 
 
-    protected function addToken() {
+    protected function addToken(): void
+    {
         $this->xml->addChild("exchangeToken", $this->token);
     }
 
 
-    protected function addInvoiceOperations() {
+    protected function addInvoiceOperations(): void
+    {
         $operationsXml = $this->xml->addChild("invoiceOperations");
 
         $operationsXml->addChild("compressedContent", $this->invoiceOperations->isCompressed() ? "true" : "false");
@@ -60,7 +65,8 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
      *
      * Kapcsolódó fejezet: 1.5 A requestSignature számítása
      */
-    protected function getRequestSignatureString() {
+    protected function getRequestSignatureString(): string
+    {
         $string = parent::getRequestSignatureString();
 
         // A számlák hash értékének hozzáfűzése
@@ -70,5 +76,4 @@ class ManageInvoiceRequestXml extends BaseRequestXml {
 
         return $string;
     }
-
 }

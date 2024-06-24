@@ -2,19 +2,19 @@
 
 namespace NavOnlineInvoice;
 
+use NavOnlineInvoice\Config;
+
 
 class QueryTransactionListRequestXml extends BaseRequestXml {
 
-    protected $rootName = "QueryTransactionListRequest";
-
+    protected string $rootName = "QueryTransactionListRequest";
 
     /**
-     * QueryTransactionListRequestXml constructor.
-     * @param $config
-     * @param $insDate
-     * @param $page
+     * @param Config $config
+     * @param array<mixed> $insDate
+     * @param string|null $page
      */
-    function __construct($config, $insDate, $page) {
+    public function __construct(Config $config, array $insDate, ?string $page) {
         parent::__construct($config);
 
         $this->xml->addChild("page", $page);

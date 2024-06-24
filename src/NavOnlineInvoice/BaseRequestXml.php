@@ -1,21 +1,25 @@
 <?php
 
 namespace NavOnlineInvoice;
+
 use Exception;
+use SimpleXMLElement;
+use NavOnlineInvoice\Config;
 
 
-abstract class BaseRequestXml {
+abstract class BaseRequestXml
+{
 
-    protected $rootName;
-    protected $config;
+    protected string $rootName;
+    protected Config $config;
 
     /**
      * @var \SimpleXMLElement
      */
-    protected $xml;
+    protected \SimpleXMLElement $xml;
 
-    protected $requestId;
-    protected $timestamp;
+    protected string $requestId;
+    protected string $timestamp;
 
     const API_NS = "http://schemas.nav.gov.hu/OSA/3.0/api";
     const COMMON_NS = "http://schemas.nav.gov.hu/NTCA/1.0/common";
@@ -26,14 +30,16 @@ abstract class BaseRequestXml {
      *
      * @param Config $config    Konfigurációt tartalmazó objektum
      */
-    function __construct($config) {
+    function __construct($config)
+    {
         $this->config = $config;
 
         $this->createXml();
     }
 
 
-    protected function createXml() {
+    protected function createXml(): void
+    {
         $this->requestId = $this->config->getRequestIdGenerator()->generate();
         $this->timestamp = $this->getTimestamp();
 
@@ -49,7 +55,8 @@ abstract class BaseRequestXml {
      *
      * @return string
      */
-    protected function getTimestamp() {
+    protected function getTimestamp(): string
+    {
         $now = microtime(true);
         $milliseconds = round(($now - floor($now)) * 1000);
         $milliseconds = min($milliseconds, 999);
@@ -58,12 +65,14 @@ abstract class BaseRequestXml {
     }
 
 
-    protected function createXmlObject() {
-        $this->xml = new \SimpleXMLElement($this->getInitialXmlString());
+    protected function createXmlObject(): void
+    {
+        $this->xml = new SimpleXMLElement($this->getInitialXmlString());
     }
 
 
-    protected function getInitialXmlString() {
+    protected function getInitialXmlString(): string
+    {
 
         if (empty($this->rootName)) {
             throw new Exception("rootName has to be defined!");
@@ -72,7 +81,8 @@ abstract class BaseRequestXml {
     }
 
 
-    protected function addHeader() {
+    protected function addHeader(): void
+    {
         $header = $this->xml->addChild("header", null, self::COMMON_NS);
 
         $header->addChild("requestId", $this->requestId);
@@ -82,7 +92,8 @@ abstract class BaseRequestXml {
     }
 
 
-    protected function addUser() {
+    protected function addUser(): void
+    {
         $user = $this->xml->addChild("user", null, self::COMMON_NS);
 
         $passwordHash = isset($this->config->user["passwordHash"]) ? $this->config->user["passwordHash"] : Util::sha512($this->config->user["password"]);
@@ -95,7 +106,8 @@ abstract class BaseRequestXml {
     }
 
 
-    protected function addSoftware() {
+    protected function addSoftware(): void
+    {
         if (!$this->config->software) {
             return;
         }
@@ -116,9 +128,11 @@ abstract class BaseRequestXml {
      *
      * Kapcsolódó fejezet: 1.5 A requestSignature számítása
      */
-    protected function getRequestSignatureHash() {
+    protected function getRequestSignatureHash(): string
+    {
         $string = $this->getRequestSignatureString();
         $hash = Util::sha3_512($string);
+
         return $hash;
     }
 
@@ -131,7 +145,8 @@ abstract class BaseRequestXml {
      *
      * Kapcsolódó fejezet: 1.5 A requestSignature számítása
      */
-    protected function getRequestSignatureString() {
+    protected function getRequestSignatureString(): string
+    {
         $string = "";
 
         // requestId értéke
@@ -150,9 +165,10 @@ abstract class BaseRequestXml {
     /**
      * XML objektum lekérése
      *
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
-    public function getXML() {
+    public function getXML(): SimpleXMLElement
+    {
         return $this->xml;
     }
 
@@ -162,7 +178,8 @@ abstract class BaseRequestXml {
      *
      * @return string
      */
-    public function asXML() {
+    public function asXML()
+    {
         return $this->xml->asXML();
     }
 
@@ -171,13 +188,14 @@ abstract class BaseRequestXml {
      * A request XML-t validálja a NAV által biztosított 'invoiceApi.xsd'-vel.
      * Hiba esetén XsdValidationError exception-t dob.
      */
-    public function validateSchema() {
+    public function validateSchema(): void
+    {
         Xsd::validate($this->asXML(), Config::getApiXsdFilename());
     }
 
 
-    public function getRequestId() {
+    public function getRequestId(): string
+    {
         return $this->requestId;
     }
-
 }

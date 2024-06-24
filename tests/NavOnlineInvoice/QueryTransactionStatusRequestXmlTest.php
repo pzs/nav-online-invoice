@@ -3,16 +3,20 @@
 use NavOnlineInvoice\QueryTransactionStatusRequestXml;
 
 
-class QueryTransactionStatusRequestXmlTest extends BaseTest {
+class QueryTransactionStatusRequestXmlTest extends BaseTest
+{
 
-    private function createRequestXmlObject() {
+    private function createRequestXmlObject(): QueryTransactionStatusRequestXml
+    {
         $transactionId = "abc123";
         $returnOriginalRequest = true;
-        return new QueryTransactionStatusRequestXml($this->getConfig(), $transactionId, $returnOriginalRequest);
+        
+        return new QueryTransactionStatusRequestXml($this->getConfig(), $transactionId, (string)$returnOriginalRequest);
     }
 
 
-    public function testResponseXml() {
+    public function testResponseXml(): void
+    {
         $requestXml = $this->createRequestXmlObject();
         $xmlObj = $requestXml->getXML();
 
@@ -22,11 +26,11 @@ class QueryTransactionStatusRequestXmlTest extends BaseTest {
     }
 
 
-    public function testSchame() {
+    public function testSchame(): void
+    {
         $requestXml = $this->createRequestXmlObject();
 
         $requestXml->validateSchema();
         $this->addToAssertionCount(1);
     }
-
 }

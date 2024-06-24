@@ -1,36 +1,41 @@
 <?php
 
 namespace NavOnlineInvoice;
+
 use Exception;
 
 
-class Config {
+class Config
+{
 
     const TEST_URL = 'https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3';
     const PROD_URL = 'https://api.onlineszamla.nav.gov.hu/invoiceService/v3';
 
-    public $user;
-    public $software;
+    /** @var array<mixed> */
+    public array $user;
+    /** @var array<mixed> */
+    public array $software;
 
-    public $baseUrl;
-    public $verifySSL = true;
+    public string $baseUrl;
+    public bool $verifySSL = true;
 
-    public $validateApiSchema = true;
+    public bool $validateApiSchema = true;
 
-    public $curlTimeout = null;
+    public ?int $curlTimeout = null;
 
     /** @var RequestIdGeneratorInterface */
-    public $requestIdGenerator;
+    public RequestIdGeneratorInterface $requestIdGenerator;
 
     /**
      * NavOnlineInvoice Reporter osztály számára szükséges konfigurációs objektum készítése
      *
      * @param string       $baseUrl  NAV API URL
-     * @param array|string $user     User data array vagy json fájlnév
-     * @param array|string $software Software data array vagy json fájlnév
+     * @param array<mixed>|string $user     User data array vagy json fájlnév
+     * @param array<mixed>|string $software Software data array vagy json fájlnév
      * @throws \Exception
      */
-    function __construct($baseUrl, $user, $software) {
+    public function __construct(string $baseUrl, array|string $user, array|string $software)
+    {
 
         if (!$baseUrl) {
             throw new Exception("A baseUrl paraméter megadása kötelező!");
@@ -62,12 +67,14 @@ class Config {
     }
 
 
-    function setRequestIdGenerator(RequestIdGeneratorInterface $obj) {
+    function setRequestIdGenerator(RequestIdGeneratorInterface $obj): void
+    {
         $this->requestIdGenerator = $obj;
     }
 
 
-    function getRequestIdGenerator() {
+    function getRequestIdGenerator(): RequestIdGeneratorInterface
+    {
         return $this->requestIdGenerator;
     }
 
@@ -80,7 +87,8 @@ class Config {
      *
      * @param string $baseUrl  NAV eléréséhez használt környezet
      */
-    public function setBaseUrl($baseUrl) {
+    public function setBaseUrl(string $baseUrl): void
+    {
         $this->baseUrl = $baseUrl;
     }
 
@@ -90,16 +98,18 @@ class Config {
      *
      * @param  boolean $flag
      */
-    public function useApiSchemaValidation($flag = true) {
+    public function useApiSchemaValidation($flag = true): void
+    {
         $this->validateApiSchema = $flag;
     }
 
 
     /**
      *
-     * @param array $data
+     * @param array<mixed> $data
      */
-    public function setSoftware($data) {
+    public function setSoftware(array $data): void
+    {
         $this->software = $data;
     }
 
@@ -108,26 +118,27 @@ class Config {
      *
      * @param  string $jsonFile JSON file name
      */
-    public function loadSoftware($jsonFile) {
+    public function loadSoftware(string $jsonFile): void
+    {
         $data = $this->loadJsonFile($jsonFile);
         $this->setSoftware($data);
     }
 
 
     /**
-     *
-     * @param array $data
+     * @param array<mixed> $data
      */
-    public function setUser($data) {
+    public function setUser(array $data): void
+    {
         $this->user = $data;
     }
 
 
     /**
-     *
      * @param  string $jsonFile JSON file name
      */
-    public function loadUser($jsonFile) {
+    public function loadUser(string $jsonFile): void
+    {
         $data = $this->loadJsonFile($jsonFile);
         $this->setUser($data);
     }
@@ -137,10 +148,11 @@ class Config {
      * JSON fájl betöltése
      *
      * @param  string $jsonFile
-     * @return array
+     * @return mixed
      * @throws \Exception
      */
-    protected function loadJsonFile($jsonFile) {
+    protected function loadJsonFile($jsonFile): mixed
+    {
         if (!file_exists($jsonFile)) {
             throw new Exception("A megadott json fájl nem létezik: $jsonFile");
         }
@@ -162,23 +174,26 @@ class Config {
      *
      * @param null|int $timeoutSeconds
      */
-    public function setCurlTimeout($timeoutSeconds) {
+    public function setCurlTimeout(?int $timeoutSeconds): void
+    {
         $this->curlTimeout = $timeoutSeconds;
     }
 
 
-    public static function getDataXsdFilename() {
+    public static function getDataXsdFilename(): string
+    {
         return __DIR__ . "/xsd/invoiceData.xsd";
     }
 
 
-    public static function getAnnulmentXsdFilename() {
+    public static function getAnnulmentXsdFilename(): string
+    {
         return __DIR__ . "/xsd/invoiceAnnulment.xsd";
     }
 
 
-    public static function getApiXsdFilename() {
+    public static function getApiXsdFilename(): string
+    {
         return __DIR__ . "/xsd/invoiceApi.xsd";
     }
-
 }

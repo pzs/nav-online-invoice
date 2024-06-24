@@ -3,12 +3,12 @@
 namespace NavOnlineInvoice;
 
 
-class ManageAnnulmentRequestXml extends ManageInvoiceRequestXml {
+class ManageAnnulmentRequestXml extends ManageInvoiceRequestXml
+{
+    protected string $rootName = "ManageAnnulmentRequest";
 
-    protected $rootName = "ManageAnnulmentRequest";
-
-
-    protected function addInvoiceOperations() {
+    protected function addInvoiceOperations(): void
+    {
         $operationsXml = $this->xml->addChild("annulmentOperations");
 
         // Számlák hozzáadása az XML-hez
@@ -20,5 +20,4 @@ class ManageAnnulmentRequestXml extends ManageInvoiceRequestXml {
             $invoiceXml->addChild("invoiceAnnulment", $invoice["invoice"]);
         }
     }
-
 }

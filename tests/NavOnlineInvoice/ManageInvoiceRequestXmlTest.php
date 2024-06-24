@@ -3,9 +3,11 @@
 use NavOnlineInvoice\ManageInvoiceRequestXml;
 
 
-class ManageInvoiceRequestXmlTest extends BaseTest {
+class ManageInvoiceRequestXmlTest extends BaseTest
+{
 
-    private function createRequestXmlObject() {
+    private function createRequestXmlObject(): ManageInvoiceRequestXml
+    {
         $invoices = new NavOnlineInvoice\InvoiceOperations();
         $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1.xml"));
         $token = "token-123";
@@ -14,7 +16,8 @@ class ManageInvoiceRequestXmlTest extends BaseTest {
     }
 
 
-    public function testResponseXml() {
+    public function testResponseXml(): void
+    {
         $requestXml = $this->createRequestXmlObject();
         $xmlObj = $requestXml->getXML();
 
@@ -23,11 +26,11 @@ class ManageInvoiceRequestXmlTest extends BaseTest {
     }
 
 
-    public function testSchame() {
+    public function testSchame(): void
+    {
         $requestXml = $this->createRequestXmlObject();
 
         $requestXml->validateSchema();
         $this->addToAssertionCount(1);
     }
-
 }

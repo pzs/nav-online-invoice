@@ -1,9 +1,11 @@
 <?php
 
 
-class XmlUtilTest extends PHPUnit_Framework_TestCase {
+class XmlUtilTest extends PHPUnit_Framework_TestCase
+{
 
-    public function testAddChildArray1() {
+    public function testAddChildArray1(): void
+    {
         $xml = new SimpleXMLElement("<root/>");
         $name = "invoiceQueryParams";
 
@@ -22,7 +24,8 @@ class XmlUtilTest extends PHPUnit_Framework_TestCase {
     }
 
 
-    public function testAddChildArray2() {
+    public function testAddChildArray2(): void
+    {
         $xml = new SimpleXMLElement("<root/>");
         $name = "test";
         $data = ["2021-01-01", "2021-01-02", "2021-01-03"];
@@ -33,7 +36,8 @@ class XmlUtilTest extends PHPUnit_Framework_TestCase {
     }
 
 
-    public function testAddChildArray3() {
+    public function testAddChildArray3(): void
+    {
         $xml = new SimpleXMLElement("<root/>");
         $name = "invoiceQueryParams";
 
@@ -62,5 +66,4 @@ class XmlUtilTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals($xml->invoiceQueryParams->asXML(), "<invoiceQueryParams><mandatoryQueryParams><invoiceIssueDate><dateFrom>2021-01-01</dateFrom><dateTo>2021-01-30</dateTo></invoiceIssueDate></mandatoryQueryParams><relationalQueryParams><invoiceDelivery><queryOperator>GTE</queryOperator><queryValue>2021-01-01</queryValue></invoiceDelivery><invoiceDelivery><queryOperator>LTE</queryOperator><queryValue>2021-01-28</queryValue></invoiceDelivery></relationalQueryParams></invoiceQueryParams>");
     }
-
 }

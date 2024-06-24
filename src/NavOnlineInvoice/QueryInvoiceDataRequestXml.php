@@ -1,24 +1,26 @@
 <?php
 
 namespace NavOnlineInvoice;
+
 use Exception;
+use NavOnlineInvoice\Config;
 
 
-class QueryInvoiceDataRequestXml extends BaseRequestXml {
+class QueryInvoiceDataRequestXml extends BaseRequestXml
+{
 
-    protected $rootName = "QueryInvoiceDataRequest";
-
+    protected string $rootName = "QueryInvoiceDataRequest";
 
     /**
      * QueryInvoiceDataRequestXml constructor.
-     * @param $config
-     * @param $invoiceNumberQuery
+     * @param Config $config
+     * @param array<mixed> $invoiceNumberQuery
      * @throws \Exception
      */
-    function __construct($config, $invoiceNumberQuery) {
+    function __construct($config, $invoiceNumberQuery)
+    {
         parent::__construct($config);
 
         XmlUtil::addChildArray($this->xml, "invoiceNumberQuery", $invoiceNumberQuery);
     }
-
 }

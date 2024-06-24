@@ -1,33 +1,45 @@
 <?php
 
 namespace NavOnlineInvoice;
+
 use Exception;
 
 
-class XsdValidationError extends Exception {
+class XsdValidationError extends Exception
+{
 
-    protected $errors;
-
-    protected static $levelMap = array(
+    /**
+     * @var array<int,string>
+     */
+    protected static array $levelMap = array(
         LIBXML_ERR_WARNING => "Warning",
         LIBXML_ERR_ERROR => "Error",
         LIBXML_ERR_FATAL => "Fatal Error"
     );
 
 
-    function __construct($errors) {
-        $this->errors = $errors;
+    function __construct(
+        /**
+         * @var \LibXMLError[]
+         */
+        protected array $errors,
+    ) {
         $message = $this->createErrorMessage();
         parent::__construct($message);
     }
 
 
-    public function getErrors() {
+    /**
+     * @return \LibXMLError[]
+     */
+    public function getErrors(): array
+    {
         return $this->errors;
     }
 
 
-    protected function createErrorMessage() {
+    protected function createErrorMessage(): string
+    {
         $messages = array();
 
         foreach ($this->errors as $error) {
@@ -36,5 +48,4 @@ class XsdValidationError extends Exception {
 
         return implode("\n", $messages);
     }
-
 }

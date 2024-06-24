@@ -3,8 +3,7 @@
 namespace NavOnlineInvoice;
 
 
-class TokenExchangeRequestXml extends BaseRequestXml {
-
-    protected $rootName = "TokenExchangeRequest";
-
+class TokenExchangeRequestXml extends BaseRequestXml
+{
+    protected string $rootName = "TokenExchangeRequest";
 }

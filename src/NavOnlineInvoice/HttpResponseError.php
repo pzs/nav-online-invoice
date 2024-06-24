@@ -1,16 +1,18 @@
 <?php
 
 namespace NavOnlineInvoice;
+
 use Exception;
 
 
-class HttpResponseError extends Exception {
+class HttpResponseError extends Exception
+{
 
-    protected $result;
-    protected $httpStatusCode;
+    protected string $result;
+    protected mixed $httpStatusCode;
 
-
-    function __construct($result, $httpStatusCode) {
+    function __construct(string $result, mixed $httpStatusCode)
+    {
         $this->result = $result;
         $this->httpStatusCode = $httpStatusCode;
 
@@ -20,13 +22,14 @@ class HttpResponseError extends Exception {
     }
 
 
-    public function getResult() {
+    public function getResult(): string
+    {
         return $this->result;
     }
 
 
-    public function getHttpStatusCode() {
+    public function getHttpStatusCode(): mixed
+    {
         return $this->httpStatusCode;
     }
-
 }
