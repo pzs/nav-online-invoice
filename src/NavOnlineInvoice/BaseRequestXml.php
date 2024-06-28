@@ -180,7 +180,12 @@ abstract class BaseRequestXml
      */
     public function asXML()
     {
-        return $this->xml->asXML();
+        $wellFormat = $this->xml->asXML();
+        if(is_bool($wellFormat)) {
+            throw new \InvalidArgumentException("Well formatting xml error.");
+        }
+
+        return $wellFormat;
     }
 
 

@@ -10,8 +10,11 @@ class InvoiceOperationsTest extends BaseTest
     {
         $invoices = new NavOnlineInvoice\InvoiceOperations();
         $invoices->useDataSchemaValidation();
-
-        $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1.xml"));
+        $xml = simplexml_load_file(TEST_DATA_DIR . "invoice1.xml");
+        if($xml === false) {
+            throw new Exception('Xml simple load failed.');
+        }
+        $invoices->add($xml);
         $this->addToAssertionCount(1);
     }
 
@@ -21,7 +24,11 @@ class InvoiceOperationsTest extends BaseTest
         $invoices = new NavOnlineInvoice\InvoiceOperations();
 
         $this->expectException(NavOnlineInvoice\XsdValidationError::class);
-        $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1_invalid.xml"));
+        $xml = simplexml_load_file(TEST_DATA_DIR . "invoice1_invalid.xml");
+        if ($xml === false) {
+            throw new Exception('Xml simple load failed.');
+        }
+        $invoices->add($xml);
     }
 
 
@@ -29,8 +36,12 @@ class InvoiceOperationsTest extends BaseTest
     {
         $invoices = new NavOnlineInvoice\InvoiceOperations();
         $invoices->useDataSchemaValidation(false);
-
-        $invoices->add(simplexml_load_file(TEST_DATA_DIR . "invoice1_invalid.xml"));
+        $xml = simplexml_load_file(TEST_DATA_DIR . "invoice1_invalid.xml");
+        if ($xml === false) {
+            throw new Exception('Xml simple load failed.');
+        }
+        $invoices->add($xml);
+        
         $this->addToAssertionCount(1);
     }
 }

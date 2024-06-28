@@ -80,6 +80,9 @@ class Connector
         $this->lastRequestUrl = $url;
 
         $xmlString = is_string($requestXml) ? $requestXml : $requestXml->asXML();
+        if($xmlString === false) {
+            $xmlString = null;
+        }
         $this->lastRequestBody = $xmlString;
 
         $this->lastRequestId = $requestXml instanceof BaseRequestXml ? $requestXml->getRequestId() : null;
@@ -93,6 +96,9 @@ class Connector
         $response = curl_exec($ch);
         $errno = curl_errno($ch);
         $info = curl_getinfo($ch);
+        if(!is_string($response)){
+            throw new CurlError($errno);
+        }
         $header = substr($response, 0, $info["header_size"]);
         $result = substr($response, $info["header_size"]);
 
@@ -142,6 +148,9 @@ class Connector
     private function getCurlHandle(?string $url, mixed $requestBody): \CurlHandle
     {
         $ch = curl_init($url);
+        if($ch == false) {
+            throw new \InvalidArgumentException('Curl init failed');
+        }
 
         $headers = array(
             "Content-Type: application/xml;charset=UTF-8",
@@ -149,6 +158,9 @@ class Connector
         );
 
         $curl_version = curl_version();
+        if ($curl_version === false) {
+            throw new \InvalidArgumentException('Curl version is not available');
+        }
 
         if (version_compare($curl_version['version'], '7.69') < 0) {
             $headers[] = "Expect:";
@@ -174,9 +186,6 @@ class Connector
         if ($this->config->curlTimeout) {
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
             curl_setopt($ch, CURLOPT_TIMEOUT, $this->config->curlTimeout);
-        }
-        if ($ch === false) {
-            throw new RuntimeException('Cant initialize curl connection!');
         }
 
         return $ch;

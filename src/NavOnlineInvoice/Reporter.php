@@ -51,6 +51,10 @@ class Reporter
 
         $requestXml = new ManageAnnulmentRequestXml($this->config, $invoiceOperations, $token);
         $responseXml = $this->connector->post("/manageAnnulment", $requestXml);
+        if(!isset($responseXml->transactionId)) {
+            //@todo create custom exception
+            throw new \Exception("Transaction ID missing from NAV response");
+        }
 
         return (string)$responseXml->transactionId;
     }
@@ -90,6 +94,10 @@ class Reporter
 
         $requestXml = new ManageInvoiceRequestXml($this->config, $invoiceOperations, $token);
         $responseXml = $this->connector->post("/manageInvoice", $requestXml);
+        if (!isset($responseXml->transactionId)) {
+            //@todo create custom exception
+            throw new \Exception("Transaction ID missing from NAV response");
+        }
 
         return (string)$responseXml->transactionId;
     }
@@ -110,17 +118,27 @@ class Reporter
         $requestXml = new QueryInvoiceDataRequestXml($this->config, $invoiceNumberQuery);
         $responseXml = $this->connector->post("/queryInvoiceData", $requestXml);
 
+        if (!isset($responseXml->invoiceDataResult)) {
+            //@todo create custom exception
+            throw new \Exception("invoiceDataResult missing from NAV response");
+        }
         $result = $responseXml->invoiceDataResult;
+        if(!$result instanceof \SimpleXMLElement) {
+            return null;
+        }
 
         if ($returnDecodedInvoiceData) {
             if (empty($result->invoiceData)) {
                 return null;
             }
             if (!isset($result->compressedContentIndicator)) {
+                //@todo create custom exception
                 throw new \InvalidArgumentException('Result dont have compressedContentIndicator in /queryInvoiceData!');
             }
             $isCompressed = (bool)$result->compressedContentIndicator;
-            return InvoiceOperations::convertToXml($result->invoiceData, $isCompressed);
+            $convertedXml = InvoiceOperations::convertToXml($result->invoiceData, $isCompressed);
+
+            return $convertedXml instanceof \SimpleXMLElement ? $convertedXml : null;
         }
 
         return $result;
@@ -145,6 +163,10 @@ class Reporter
     {
         $requestXml = new QueryInvoiceDigestRequestXml($this->config, $invoiceQueryParams, (string)$page, $direction);
         $responseXml = $this->connector->post("/queryInvoiceDigest", $requestXml);
+        if (!isset($responseXml->invoiceDigestResult)) {
+            //@todo create custom exception 
+            throw new \Exception("InvoiceDigestResult missing in response");
+        }
 
         return $responseXml->invoiceDigestResult;
     }
@@ -183,6 +205,9 @@ class Reporter
     {
         $requestXml = new QueryTransactionListRequestXml($this->config, $insDate, (string)$page);
         $responseXml = $this->connector->post("/queryTransactionList", $requestXml);
+        if(!isset($responseXml->transactionListResult)) {
+            throw new \Exception('The transactionListResult is missing in response');
+        }
 
         return $responseXml->transactionListResult;
     }
@@ -205,6 +230,9 @@ class Reporter
     {
         $requestXml = new QueryInvoiceChainDigestRequestXml($this->config, $invoiceChainQuery, (string)$page);
         $responseXml = $this->connector->post("/queryInvoiceChainDigest", $requestXml);
+        if(!isset($responseXml->invoiceChainDigestResult) || !$responseXml->invoiceChainDigestResult instanceof \SimpleXMLElement) {
+            throw new \Exception('Invalid invoiceChainDigestResult in response.');
+        }
 
         return $responseXml->invoiceChainDigestResult;
     }
@@ -258,9 +286,15 @@ class Reporter
     {
         $requestXml = new TokenExchangeRequestXml($this->config);
         $responseXml = $this->connector->post("/tokenExchange", $requestXml);
+        if(!isset($responseXml->encodedExchangeToken)) {
+            throw new \Exception('Missing encoded exchange token in response.');
+        }
 
         $encodedToken = (string)$responseXml->encodedExchangeToken;
         $token = $this->decodeToken($encodedToken);
+        if($token === false) {
+            throw new \Exception('Token encode failed.');
+        }
 
         return $token;
     }
@@ -310,7 +344,11 @@ class Reporter
     public static function getInvoiceValidationError($xml)
     {
         try {
-            Xsd::validate($xml->asXML(), Config::getDataXsdFilename());
+            $wellFormat = $xml->asXML();
+            if($wellFormat === false) {
+                throw new \Exception('Xml well formatting error.');
+            }
+            Xsd::validate($wellFormat, Config::getDataXsdFilename());
         } catch (XsdValidationError $ex) {
             return $ex->getMessage();
         }

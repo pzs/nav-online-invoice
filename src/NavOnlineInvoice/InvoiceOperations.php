@@ -66,7 +66,11 @@ class InvoiceOperations
         // XSD validálás
         if ($this->schemaValidation) {
             $xsdFile = $operation === "ANNUL" ? Config::getAnnulmentXsdFilename() : Config::getDataXsdFilename();
-            Xsd::validate($xml->asXML(), $xsdFile);
+            $asXml = $xml->asXML();
+            if($asXml === false) {
+                throw new \InvalidArgumentException('Invalid XSD file!');
+            }
+            Xsd::validate($asXml, $xsdFile);
         }
 
         // Számlák maximum számának ellenőrzése
@@ -176,9 +180,15 @@ class InvoiceOperations
     protected function convertXml(\SimpleXMLElement $xml): string
     {
         $xml = $xml->asXML();
+        if($xml === false) {
+            throw new \InvalidArgumentException('Invalid xml string passed to convertXml');
+        }
 
         if ($this->compression) {
             $xml = gzencode($xml, self::COMPRESSION_LEVEL);
+            if ($xml === false) {
+                throw new \InvalidArgumentException('XML compression failed!');
+            }
         }
 
         return base64_encode($xml);
@@ -226,6 +236,9 @@ class InvoiceOperations
 
         if ($isCompressed) {
             $data = gzdecode($data);
+        }
+        if($data === false) {
+            throw new \InvalidArgumentException('Decode failed!');
         }
 
         return simplexml_load_string($data);

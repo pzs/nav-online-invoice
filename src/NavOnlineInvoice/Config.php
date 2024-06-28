@@ -158,6 +158,9 @@ class Config
         }
 
         $content = file_get_contents($jsonFile);
+        if ($content === false) {
+            throw new \InvalidArgumentException("A megadott json fájl nem létezik: $jsonFile");
+        }
         $data = json_decode($content, true);
 
         if ($data === null) {

@@ -61,10 +61,15 @@ class XmlUtil
     public static function removeNamespaces(\SimpleXMLElement $xmlNode)
     {
         $xmlString = $xmlNode->asXML();
-
+        if ($xmlString === false) {
+            throw new \RuntimeException('Xml formatting failed!');
+        }
         $cleanedXmlString = self::removeNamespacesFromXmlString($xmlString);
 
         $cleanedXmlNode = simplexml_load_string($cleanedXmlString);
+        if ($cleanedXmlNode === false) {
+            throw new \RuntimeException('Xml loading failed!');
+        }
 
         return $cleanedXmlNode;
     }
