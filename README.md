@@ -120,6 +120,8 @@ try {
 
 Ezt a metódust célszerű használni a technikai felhasználó adatainak (és a program) tesztelésére is.
 
+Megjegyzés: a `tokenExchange` csak akkor hívható meg, ha a létrehozott technikai felhasználónak a "Számlák kezelése" jogosultság is hozzá van adva. Lásd: https://github.com/pzs/nav-online-invoice/issues/64
+
 
 ```php
 try {
@@ -484,6 +486,6 @@ Szükséges modulok:
 
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2018-2021 github.com/pzs
+Copyright (c) 2018-2024 github.com/pzs
 
 https://github.com/pzs/nav-online-invoice
