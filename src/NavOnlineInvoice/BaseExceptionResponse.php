@@ -32,7 +32,9 @@ abstract class BaseExceptionResponse extends Exception {
     public function getResultMessage() {
         $result = $this->getResult();
 
-        if (empty($result["message"])) {
+        if (empty($result["message"]) and empty($result["errorCode"])) {
+            $message = "";
+        }elseif (empty($result["message"])) {
             $message = $result["errorCode"];
         } elseif (empty($result["errorCode"])) {
             $message = $result["message"];
