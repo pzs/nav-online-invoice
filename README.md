@@ -6,7 +6,7 @@ _PHP interfész a NAV Online számla adatszolgáltatásához_
 
 __Letöltés:__
 - Composer: [packagist.org/packages/pzs/nav-online-invoice](https://packagist.org/packages/pzs/nav-online-invoice)
-- Legfrissebb verzió: [v3.0.3](https://github.com/pzs/nav-online-invoice/releases/tag/v3.0.3) ([zip](https://github.com/pzs/nav-online-invoice/archive/v3.0.3.zip))
+- Legfrissebb verzió: [v3.0.4](https://github.com/pzs/nav-online-invoice/releases/tag/v3.0.4) ([zip](https://github.com/pzs/nav-online-invoice/archive/v3.0.4.zip))
 - Példa fájlok: [github.com/pzs/nav-online-invoice/tree/master/examples](https://github.com/pzs/nav-online-invoice/tree/master/examples)
 
 ## v3.0-ás API támogatás
@@ -411,6 +411,7 @@ __Metódusok__
 - `setUser($data)`
 - `loadUser($jsonFile)`
 - `setCurlTimeout($timeoutSeconds)`: NAV szerver hívásánál (cURL hívás) timeout értéke másodpercben. Alapértelmezetten nincs timeout beállítva. Megjegyzés: manageInvoice hívásnál 2 szerver hívás is történik (token kérés és számlák beküldése), itt külön-külön kell érteni a timeout-ot.
+- `setCurlOptions($curlOptions)`: NAV szerver hívásánál (cURL hívás) további cURL beállítások, pl. proxy beállítások
 - `setRequestIdGenerator(RequestIdGeneratorInterface $obj)`: opcionálisan egyedi request id generátor állítható be.
 
 

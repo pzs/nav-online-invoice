@@ -18,6 +18,7 @@ class Config {
     public $validateApiSchema = true;
 
     public $curlTimeout = null;
+    public $curlOptions = null;
 
     /** @var RequestIdGeneratorInterface */
     public $requestIdGenerator;
@@ -164,6 +165,16 @@ class Config {
      */
     public function setCurlTimeout($timeoutSeconds) {
         $this->curlTimeout = $timeoutSeconds;
+    }
+
+    /**
+     * További felhasználó specifikus cURL beállítások
+     * https://www.php.net/manual/en/function.curl-setopt-array.php
+     *
+     * @param null|array $curlOptions
+     */
+    public function setCurlOptions($curlOptions) {
+        $this->curlOptions = $curlOptions;
     }
 
 

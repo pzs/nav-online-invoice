@@ -6,6 +6,7 @@ namespace NavOnlineInvoice;
 class Connector {
 
     protected $config;
+    protected $curlUserOptions;
 
     private $lastRequestUrl = null;
     private $lastRequestHeader = null;
@@ -135,7 +136,7 @@ class Connector {
     }
 
 
-    private function getCurlHandle($url, $requestBody) {
+    protected function getCurlHandle($url, $requestBody) {
         $ch = curl_init($url);
 
         $headers = array(
@@ -171,7 +172,16 @@ class Connector {
             curl_setopt($ch, CURLOPT_TIMEOUT, $this->config->curlTimeout);
         }
 
+        $this->setCurlUserOptions($ch);
+
         return $ch;
+    }
+
+
+    protected function setCurlUserOptions($ch) {
+        if ($this->config->curlOptions) {
+            curl_setopt_array($ch, $this->config->curlOptions);
+        }
     }
 
 
