@@ -280,8 +280,21 @@ class Reporter {
     }
 
 
+    /**
+     * A tokenExchange által visszaadott, titkosított token dekódolása az exchangeKey-jel.
+     *
+     * @param  string $encodedToken
+     * @return string
+     * @throws \Exception  Ha a token nem dekódolható (tipikusan hibás exchangeKey esetén)
+     */
     protected function decodeToken($encodedToken) {
-        return Util::aes128_decrypt($encodedToken, $this->config->user["exchangeKey"]);
+        $token = Util::aes128_decrypt($encodedToken, $this->config->user["exchangeKey"]);
+
+        if ($token === false or $token === "") {
+            throw new Exception("A tokenExchange által visszaadott token dekódolása nem sikerült. Ellenőrizd az exchangeKey értékét!");
+        }
+
+        return $token;
     }
 
 
