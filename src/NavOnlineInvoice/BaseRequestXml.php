@@ -88,10 +88,10 @@ abstract class BaseRequestXml {
         $passwordHash = isset($this->config->user["passwordHash"]) ? $this->config->user["passwordHash"] : Util::sha512($this->config->user["password"]);
         $signature = $this->getRequestSignatureHash();
 
-        $user->addChild("login", $this->config->user["login"]);
-        $user->addChild("passwordHash", $passwordHash)->addAttribute("cryptoType", "SHA-512");
-        $user->addChild("taxNumber", $this->config->user["taxNumber"]);
-        $user->addChild("requestSignature", $signature)->addAttribute("cryptoType", "SHA3-512");
+        self::addEscapedChild($user, "login", $this->config->user["login"]);
+        self::addEscapedChild($user, "passwordHash", $passwordHash)->addAttribute("cryptoType", "SHA-512");
+        self::addEscapedChild($user, "taxNumber", $this->config->user["taxNumber"]);
+        self::addEscapedChild($user, "requestSignature", $signature)->addAttribute("cryptoType", "SHA3-512");
     }
 
 
@@ -103,8 +103,27 @@ abstract class BaseRequestXml {
         $software = $this->xml->addChild("software");
 
         foreach ($this->config->software as $key => $value) {
-            $software->addChild($key, $value);
+            self::addEscapedChild($software, $key, $value);
         }
+    }
+
+
+    /**
+     * Gyerek elem hozzáadása escape-elt szöveges értékkel.
+     *
+     * A SimpleXMLElement::addChild($name, $value) a $value-ban nem escape-eli az "&" jelet,
+     * hanem entitás kezdetnek tekinti, így pl. "Kovács & Társa" esetén üres elem jön létre.
+     * Lásd: https://github.com/pzs/nav-online-invoice/issues/34
+     *
+     * @param  \SimpleXMLElement $parent
+     * @param  string            $name
+     * @param  string            $value
+     * @return \SimpleXMLElement A létrehozott elem
+     */
+    protected static function addEscapedChild(\SimpleXMLElement $parent, $name, $value) {
+        $child = $parent->addChild($name);
+        $child[0] = $value;
+        return $child;
     }
 
 
