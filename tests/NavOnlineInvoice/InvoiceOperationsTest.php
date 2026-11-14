@@ -30,4 +30,21 @@ class InvoiceOperationsTest extends BaseTest {
         $this->addToAssertionCount(1);
     }
 
+
+    public function testMaxInvoiceCount() {
+        $invoices = new NavOnlineInvoice\InvoiceOperations();
+        $invoices->useDataSchemaValidation(false);
+        $xml = simplexml_load_file(TEST_DATA_DIR . "invoice1.xml");
+
+        for ($i = 0; $i < NavOnlineInvoice\InvoiceOperations::MAX_INVOICE_COUNT; $i++) {
+            $invoices->add($xml);
+        }
+
+        $this->assertCount(NavOnlineInvoice\InvoiceOperations::MAX_INVOICE_COUNT, $invoices->getInvoices());
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("Maximum " . NavOnlineInvoice\InvoiceOperations::MAX_INVOICE_COUNT . " számlát lehet egyszerre elküldeni!");
+        $invoices->add($xml);
+    }
+
 }
