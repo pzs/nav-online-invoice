@@ -458,7 +458,7 @@ Ezen az osztályon érhetjük el a NAV interfészén biztosított szolgáltatás
 
 ### PHP verzió és modulok
 
-A NavOnlineInvoice modul tesztelve PHP 5.5 és 7.2 alatt.
+A NavOnlineInvoice modul automatikusan tesztelve PHP 7.0 – 8.5 alatt.
 
 Szükséges modulok:
 
