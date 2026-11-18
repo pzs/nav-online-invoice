@@ -63,7 +63,7 @@ class InvoiceOperations {
         }
 
         // Számlák maximum számának ellenőrzése
-        if (count($this->invoices) > self::MAX_INVOICE_COUNT) {
+        if (count($this->invoices) >= self::MAX_INVOICE_COUNT) {
             throw new Exception("Maximum " . self::MAX_INVOICE_COUNT . " számlát lehet egyszerre elküldeni!");
         }
 
