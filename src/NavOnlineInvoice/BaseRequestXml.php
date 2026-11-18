@@ -88,10 +88,10 @@ abstract class BaseRequestXml {
         $passwordHash = isset($this->config->user["passwordHash"]) ? $this->config->user["passwordHash"] : Util::sha512($this->config->user["password"]);
         $signature = $this->getRequestSignatureHash();
 
-        $user->addChild("login", $this->config->user["login"]);
-        $user->addChild("passwordHash", $passwordHash)->addAttribute("cryptoType", "SHA-512");
-        $user->addChild("taxNumber", $this->config->user["taxNumber"]);
-        $user->addChild("requestSignature", $signature)->addAttribute("cryptoType", "SHA3-512");
+        XmlUtil::addEscapedChild($user, "login", $this->config->user["login"]);
+        XmlUtil::addEscapedChild($user, "passwordHash", $passwordHash)->addAttribute("cryptoType", "SHA-512");
+        XmlUtil::addEscapedChild($user, "taxNumber", $this->config->user["taxNumber"]);
+        XmlUtil::addEscapedChild($user, "requestSignature", $signature)->addAttribute("cryptoType", "SHA3-512");
     }
 
 
@@ -103,7 +103,7 @@ abstract class BaseRequestXml {
         $software = $this->xml->addChild("software");
 
         foreach ($this->config->software as $key => $value) {
-            $software->addChild($key, $value);
+            XmlUtil::addEscapedChild($software, $key, $value);
         }
     }
 
