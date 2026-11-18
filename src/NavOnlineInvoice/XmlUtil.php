@@ -23,13 +23,30 @@ class XmlUtil {
             if (is_array($value)) {
                 self::addChildArray($node, $childName, $value);
             } else {
-                // NOTE: addChild($childName, $value) does not escape the "&" sign,
-                // see: https://stackoverflow.com/questions/552957/rationale-behind-simplexmlelements-handling-of-text-values-in-addchild-and-adda
-                // and: https://github.com/pzs/nav-online-invoice/issues/34
-                // NOTE 2: This solution escape the "&" sing and allows multiple children with the same tag name, works from PHP 5.2
-                $node->addChild($childName)[0] = $value;
+                self::addEscapedChild($node, $childName, $value);
             }
         }
+    }
+
+
+    /**
+     * Gyerek elem hozzáadása escape-elt szöveges értékkel.
+     *
+     * A SimpleXMLElement::addChild($name, $value) a $value-ban nem escape-eli az "&" jelet,
+     * hanem entitás kezdetnek tekinti, így pl. "Kovács & Társa" esetén üres elem jön létre.
+     * Lásd:
+     *  - https://github.com/pzs/nav-online-invoice/issues/34
+     *  - https://stackoverflow.com/questions/552957/rationale-behind-simplexmlelements-handling-of-text-values-in-addchild-and-adda
+     *
+     * @param  \SimpleXMLElement $parent
+     * @param  string            $name
+     * @param  string            $value
+     * @return \SimpleXMLElement A létrehozott elem
+     */
+    public static function addEscapedChild(\SimpleXMLElement $xmlNode, $childName, $value) {
+        $child = $xmlNode->addChild($childName);
+        $child[0] = $value;
+        return $child;
     }
 
 
